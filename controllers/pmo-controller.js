@@ -1,9 +1,9 @@
 const PMO = require("../models/pmo-model");
 const Supervisor = require("../models/supervisor-model");
-
-const Student = require("../models/student-model");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
+
+const Student = require("../models/student-model");
 
 const createStudent = async (req, res) => {
   const std = await Student.create({ ...req.body });
@@ -13,7 +13,7 @@ const createStudent = async (req, res) => {
 const viewStudentList = async (req, res) => {
   const std = await Student.find({});
   res.send(std);
-}
+};
 
 const editStudent = async (req, res) => {
   const std = await Student.updateOne({roll_number:req.body.roll_number}, {$set:req.body});
@@ -47,10 +47,16 @@ const createSupervisors = async (req, res) => {
     .json({ supervisor: { name: supervisor.name } });
 };
 
+const viewSupervisors = async (req, res) => {
+  const supervisor = await Supervisor.find({});
+  res.status(StatusCodes.OK).json({ supervisor });
+};
+
 module.exports = {
   login,
   createSupervisors,
   createStudent,
   viewStudentList,
   editStudent,
+  viewSupervisors,
 };
