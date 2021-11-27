@@ -17,7 +17,11 @@ const viewStudentList = async (req, res) => {
 
 const editStudent = async (req, res) => {
   const std = await Student.updateOne({roll_number:req.body.roll_number}, {$set:req.body});
-  //console.log(req.body.roll_number,"---",req.body)
+  res.send(std);
+}
+
+const deleteStudent = async (req, res) => {
+  const std = await Student.deleteOne({roll_number:req.params.roll_number});
   res.send(std);
 }
 
@@ -59,4 +63,5 @@ module.exports = {
   viewStudentList,
   editStudent,
   viewSupervisors,
+  deleteStudent,
 };
