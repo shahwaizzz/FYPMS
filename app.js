@@ -23,7 +23,9 @@ const port = process.env.PORT || 3000;
 
 const start = async () => {
   try {
-    await connectDB('mongodb+srv://ali:ali7676@cluster0.ozphx.mongodb.net/FYPMS?retryWrites=true&w=majority');
+    await connectDB(
+      "mongodb+srv://ali:ali7676@cluster0.ozphx.mongodb.net/FYPMS?retryWrites=true&w=majority"
+    );
     app.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );

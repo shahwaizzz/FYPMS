@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const { login } = require("../controllers/pmo-controller");
+const { login, createSupervisors } = require("../controllers/pmo-controller");
 
-// router.post('/register', register)
 router.post("/login", login);
-// router.post('/register', register)
+router.post("/create-supervisor", createSupervisors);
 
 module.exports = router;
