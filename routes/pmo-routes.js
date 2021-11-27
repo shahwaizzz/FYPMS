@@ -7,15 +7,22 @@ const {
   createStudent,
   viewStudentList,
   editStudent,
-  viewSupervisors
+  viewSupervisors,
+  deleteStudent
 } = require("../controllers/pmo-controller");
 
 router.post("/login", login);
+
+//Student Routes
 router.get('/students', viewStudentList)
-router.post("/create-supervisor", createSupervisors);
 router.post("/create-student", createStudent);
 router.post("/edit-student", editStudent);
+router.delete("/delete-student/:roll_number", deleteStudent);
+
+//Supervisor Routes
 router.get("/supervisors", viewSupervisors);
+router.post("/create-supervisor", createSupervisors);
+
  
 
 

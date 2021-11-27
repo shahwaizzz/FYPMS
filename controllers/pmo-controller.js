@@ -5,7 +5,30 @@ const { BadRequestError, UnauthenticatedError } = require("../errors");
 
 const Student = require("../models/student-model");
 
+<<<<<<< HEAD
 // PMO Login
+=======
+const createStudent = async (req, res) => {
+  const std = await Student.create({ ...req.body });
+  res.status(StatusCodes.OK).json({ ...req.body.roll_number });
+};
+
+const viewStudentList = async (req, res) => {
+  const std = await Student.find({});
+  res.send(std);
+};
+
+const editStudent = async (req, res) => {
+  const std = await Student.updateOne({roll_number:req.body.roll_number}, {$set:req.body});
+  res.send(std);
+}
+
+const deleteStudent = async (req, res) => {
+  const std = await Student.deleteOne({roll_number:req.params.roll_number});
+  res.send(std);
+}
+
+>>>>>>> ed73a33a0a7e9feac5783c6bef617e65c154fc98
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -74,5 +97,9 @@ module.exports = {
   viewStudentList,
   editStudent,
   viewSupervisors,
+<<<<<<< HEAD
   editSupervisor,
+=======
+  deleteStudent,
+>>>>>>> ed73a33a0a7e9feac5783c6bef617e65c154fc98
 };
