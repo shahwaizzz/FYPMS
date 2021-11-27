@@ -5,12 +5,14 @@ const {
   login,
   createSupervisors,
   createStudent,
-  viewStudent,
+  viewStudentList,
+  editStudent,
 } = require("../controllers/pmo-controller");
 
 router.post("/login", login);
-router.get('/student', viewStudent)
+router.get('/students', viewStudentList)
 router.post("/create-supervisor", createSupervisors);
-router.post("/create-students", createStudent);
+router.post("/create-student", createStudent);
+router.post("/edit-student", editStudent);
 
 module.exports = router;

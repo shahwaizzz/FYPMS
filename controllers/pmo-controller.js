@@ -10,8 +10,14 @@ const createStudent = async (req, res) => {
   res.status(StatusCodes.OK).json({ ...req.body.roll_number });
 };
 
-const viewStudent = async (req, res) => {
+const viewStudentList = async (req, res) => {
   const std = await Student.find({});
+  res.send(std);
+}
+
+const editStudent = async (req, res) => {
+  const std = await Student.updateOne({roll_number:req.body.roll_number}, {$set:req.body});
+  //console.log(req.body.roll_number,"---",req.body)
   res.send(std);
 }
 
@@ -45,5 +51,6 @@ module.exports = {
   login,
   createSupervisors,
   createStudent,
-  viewStudent,
+  viewStudentList,
+  editStudent,
 };
