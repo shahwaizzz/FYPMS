@@ -8,6 +8,11 @@ const createStudent = async (req, res) => {
    res.status(StatusCodes.OK).json({...req.body.roll_number});
 }
 
+const viewStudent = async (req, res) => {
+  const std = await Student.find({});
+  res.send(std);
+}
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -29,4 +34,5 @@ const login = async (req, res) => {
 module.exports = {
   login, 
   createStudent,
+  viewStudent,
 };
