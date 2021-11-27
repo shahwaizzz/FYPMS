@@ -5,22 +5,7 @@ const { BadRequestError, UnauthenticatedError } = require("../errors");
 
 const Student = require("../models/student-model");
 
-const createStudent = async (req, res) => {
-  const std = await Student.create({ ...req.body });
-  res.status(StatusCodes.OK).json({ ...req.body.roll_number });
-};
-
-const viewStudentList = async (req, res) => {
-  const std = await Student.find({});
-  res.send(std);
-};
-
-const editStudent = async (req, res) => {
-  const std = await Student.updateOne({roll_number:req.body.roll_number}, {$set:req.body});
-  //console.log(req.body.roll_number,"---",req.body)
-  res.send(std);
-}
-
+// PMO Login
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -39,6 +24,27 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({ pmo: { name: pmo.name }, token });
 };
 
+// Create And Manage Students
+const createStudent = async (req, res) => {
+  const std = await Student.create({ ...req.body });
+  res.status(StatusCodes.OK).json({ ...req.body.roll_number });
+};
+
+const viewStudentList = async (req, res) => {
+  const std = await Student.find({});
+  res.send(std);
+};
+
+const editStudent = async (req, res) => {
+  const std = await Student.updateOne(
+    { roll_number: req.body.roll_number },
+    { $set: req.body }
+  );
+  //console.log(req.body.roll_number,"---",req.body)
+  res.send(std);
+};
+
+// Create And Manage Supervisors
 const createSupervisors = async (req, res) => {
   console.log(req.body);
   const supervisor = await Supervisor.create({ ...req.body });
@@ -52,6 +58,15 @@ const viewSupervisors = async (req, res) => {
   res.status(StatusCodes.OK).json({ supervisor });
 };
 
+const editSupervisor = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    throw new BadRequestError("Please Provide the values");
+  }
+  const std = await Supervisor.updateOne({ email: email }, { $set: req.body });
+  res.status(StatusCodes.OK).send(std);
+};
+
 module.exports = {
   login,
   createSupervisors,
@@ -59,4 +74,5 @@ module.exports = {
   viewStudentList,
   editStudent,
   viewSupervisors,
+  editSupervisor,
 };
