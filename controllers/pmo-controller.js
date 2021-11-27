@@ -1,9 +1,11 @@
 const PMO = require("../models/pmo-model");
+const Student = require("../models/student-model");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 
 const createStudent = async (req, res) => {
-  res.send(req.body);
+  const std = await Student.create({...req.body})
+   res.status(StatusCodes.OK).json({...req.body.roll_number});
 }
 
 const login = async (req, res) => {
