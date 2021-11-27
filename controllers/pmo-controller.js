@@ -6,22 +6,6 @@ const { BadRequestError, UnauthenticatedError } = require("../errors");
 const Student = require("../models/student-model");
 
 // PMO Login
-// const createStudent = async (req, res) => {
-//   const std = await Student.create({ ...req.body });
-//   res.status(StatusCodes.OK).json({ ...req.body.roll_number });
-// };
-
-// const viewStudentList = async (req, res) => {
-//   const std = await Student.find({});
-//   res.send(std);
-// };
-
-// const editStudent = async (req, res) => {
-//   const std = await Student.updateOne({roll_number:req.body.roll_number}, {$set:req.body});
-//   res.send(std);
-// }
-
-
 
 const login = async (req, res) => {
   const { email, password } = req.body;
