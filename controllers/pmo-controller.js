@@ -3,14 +3,23 @@ const Supervisor = require("../models/supervisor-model");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 
+const Student = require("../models/student-model");
+const { StatusCodes } = require("http-status-codes");
+const { BadRequestError, UnauthenticatedError } = require("../errors");
+
+const createStudent = async (req, res) => {
+  const std = await Student.create({ ...req.body });
+  res.status(StatusCodes.OK).json({ ...req.body.roll_number });
+};
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     throw new BadRequestError("Please Provide Email and Password");
   }
+
   const pmo = await PMO.findOne({ email });
   if (!pmo) {
-    console.log(req.body);
     throw new UnauthenticatedError("Invalid Credentials");
   }
   const isPasswordCorrect = await pmo.comparePassword(password);
@@ -32,4 +41,5 @@ const createSupervisors = async (req, res) => {
 module.exports = {
   login,
   createSupervisors,
+  createStudent,
 };
