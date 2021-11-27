@@ -6,6 +6,7 @@ const connectDB = require("./db/connect");
 const authenticateUser = require("./middleware/authentication");
 
 const pmoRoutes = require("./routes/pmo-routes");
+const supervisorRoutes = require("./routes/supervisor-routes");
 
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
@@ -16,6 +17,8 @@ app.use(express.json());
 
 // routes
 app.use("/api/v1/pmo", pmoRoutes);
+app.use("/api/v1/supervisor", supervisorRoutes);
+
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
