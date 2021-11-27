@@ -1,13 +1,16 @@
 const PMO = require("../models/pmo-model");
 const Supervisor = require("../models/supervisor-model");
-const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError } = require("../errors");
 
 const Student = require("../models/student-model");
 
 const createStudent = async (req, res) => {
   const std = await Student.create({ ...req.body });
   res.status(StatusCodes.OK).json({ ...req.body.roll_number });
+};
+
+const viewStudent = async (req, res) => {
+  const std = await Student.find({});
+  res.send(std);
 };
 
 const login = async (req, res) => {
@@ -46,4 +49,5 @@ module.exports = {
   createSupervisors,
   createStudent,
   viewSupervisors,
+  viewStudent,
 };
