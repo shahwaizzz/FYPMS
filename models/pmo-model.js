@@ -31,11 +31,13 @@ pmoSchema.pre("save", async function () {
 });
 pmoSchema.methods.createJWT = function () {
   return jwt.sign(
-    { userSchemaId: this._id, name: this.name },
+    { userId: this._id, name: this.name },
     process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_Lifetime }
-  );
-};
+    {
+      expiresIn: process.env.JWT_Lifetime,
+    }
+  )
+}
 pmoSchema.methods.comparePassword = async function (candidatePassword) {
   const isMatch = await bycrypt.compare(candidatePassword, this.password);
   return isMatch;
