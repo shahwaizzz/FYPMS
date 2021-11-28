@@ -6,29 +6,6 @@ const { BadRequestError, UnauthenticatedError } = require("../errors");
 const Student = require("../models/student-model");
 
 // PMO Login
-const createStudent = async (req, res) => {
-  const std = await Student.create({ ...req.body });
-  res.status(StatusCodes.OK).json({ ...req.body.roll_number });
-};
-
-const viewStudentList = async (req, res) => {
-  const std = await Student.find({});
-  res.send(std);
-};
-
-const editStudent = async (req, res) => {
-  const std = await Student.updateOne(
-    { roll_number: req.body.roll_number },
-    { $set: req.body }
-  );
-  res.send(std);
-};
-
-const deleteStudent = async (req, res) => {
-  const std = await Student.deleteOne({ roll_number: req.params.roll_number });
-  res.send(std);
-};
-
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -55,7 +32,7 @@ const createStudent = async (req, res) => {
 
 const viewStudentList = async (req, res) => {
   const std = await Student.find({});
-  res.send(std);
+  res.status(StatusCodes.OK).send(std);
 };
 
 const editStudent = async (req, res) => {
@@ -63,8 +40,12 @@ const editStudent = async (req, res) => {
     { roll_number: req.body.roll_number },
     { $set: req.body }
   );
-  //console.log(req.body.roll_number,"---",req.body)
-  res.send(std);
+  res.status(StatusCodes.OK).send(std);
+};
+
+const deleteStudent = async (req, res) => {
+  const std = await Student.deleteOne({ roll_number: req.params.roll_number });
+  res.status(StatusCodes.OK).send(std);
 };
 
 // Create And Manage Supervisors
@@ -86,17 +67,24 @@ const editSupervisor = async (req, res) => {
   if (!email) {
     throw new BadRequestError("Please Provide the values");
   }
-  const std = await Supervisor.updateOne({ email: email }, { $set: req.body });
-  res.status(StatusCodes.OK).send(std);
+  const supervisor = await Supervisor.updateOne(
+    { email: email },
+    { $set: req.body }
+  );
+  res.status(StatusCodes.OK).send(supervisor);
 };
-
+const deleteSupervisor = async (req, res) => {
+  const supervisor = await Supervisor.deleteOne({ email: req.params.email });
+  res.status(StatusCodes.OK).send(supervisor);
+};
 module.exports = {
   login,
   createSupervisors,
   createStudent,
   viewStudentList,
-  editStudent,
   viewSupervisors,
+  editStudent,
   editSupervisor,
   deleteStudent,
+  deleteSupervisor,
 };
