@@ -4,7 +4,7 @@ const ProjectSchema = new mongoose.Schema({
   title: {
     type: String,
     trim: true,
-    minlength: 30,
+    minlength: 20,
     required: [true, "Please Provide Title"],
   },
   description: {
@@ -16,27 +16,33 @@ const ProjectSchema = new mongoose.Schema({
   },
   group: {
     type: [mongoose.Types.ObjectId],
-    ref: "Students",
+    ref: "students",
     required: [true, "Please Provide Group members"],
     maxlength: 3,
   },
+  // group: [{
+
+  // }],
   supervisor: {
     type: mongoose.Types.ObjectId,
-    ref: "Supervisors",
+    ref: "supervisors",
     maxlength: 1,
   },
   meetings: {
-    type: [mongoose.Types.ObjectId],
+    // type: [mongoose.Types.ObjectId],
+    type:String
   },
-  projectDoc: [
-    {
-      proposal: String,
-      midevaluation: String,
-      finaldocumentation: String,
+  projectDoc: {
+      proposal: {type:String},
+      midEvaluation: {type:String},
+      finalDocumentation: {type:String},
     },
-  ],
-
   status: {
-    type: St,
+    type: String,
+    enum: {
+      values: ['Pending','Rejected', 'Approved', 'Working', 'Completed' ],
+      default: 'Pending'    
+    }
   },
 });
+module.exports = mongoose.model("Project", ProjectSchema);

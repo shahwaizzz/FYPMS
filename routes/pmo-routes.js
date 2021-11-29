@@ -15,7 +15,10 @@ const {
 } = require("../controllers/pmo-controller");
 
 //Student Routes
-router.route("/students").get(viewStudentList).post(createStudent);
+router.route("/students")
+  .get(viewStudentList)
+  .post(createStudent);
+
 router
   .route("/students/:id")
   .get(getStudent)
@@ -23,7 +26,10 @@ router
   .patch(editStudent);
 
 //Supervisor Routes
-router.route("/supervisors").get(viewSupervisors).post(createSupervisors);
+router.route("/supervisors")
+  .get(viewSupervisors)
+  .post(createSupervisors);
+  
 router
   .route("/supervisors/:id")
   .get(getSupervisor)

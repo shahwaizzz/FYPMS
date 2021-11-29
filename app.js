@@ -8,6 +8,7 @@ const authenticateUser = require("./middleware/authentication");
 const pmoAuthRoutes = require("./routes/pmo-auth-routes");
 const pmoRoutes = require("./routes/pmo-routes");
 const supervisorRoutes = require("./routes/supervisor-routes");
+const testRoutes = require('./routes/test-route');
 
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
@@ -19,6 +20,8 @@ app.use(express.json());
 // routes
 app.use("/api/v1/auth/pmo", pmoAuthRoutes);
 app.use("/api/v1/pmo", authenticateUser, pmoRoutes);
+app.use("/api/v1/test", testRoutes)
+
 app.use("/api/v1/supervisor", supervisorRoutes);
 app.use("/api/v1/student", supervisorRoutes);
 
