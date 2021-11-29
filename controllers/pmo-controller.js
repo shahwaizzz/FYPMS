@@ -1,33 +1,25 @@
 const PMO = require("../models/pmo-model");
 const Supervisor = require("../models/supervisor-model");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError } = require("../errors");
+const { BadRequestError, NotFoundError } = require("../errors");
 
 const Student = require("../models/student-model");
 
-// PMO Login
-const login = async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    throw new BadRequestError("Please Provide Email and Password");
-  }
-
-  const pmo = await PMO.findOne({ email });
-  if (!pmo) {
-    throw new UnauthenticatedError("Invalid Credentials");
-  }
-  const isPasswordCorrect = await pmo.comparePassword(password);
-  if (!isPasswordCorrect) {
-    throw new UnauthenticatedError("Your password does not match");
-  }
-  const token = pmo.createJWT();
-  res.status(StatusCodes.OK).json({ pmo: { name: pmo.name }, token });
-};
-
 // Create And Manage Students
 const createStudent = async (req, res) => {
-  const std = await Student.create({ ...req.body });
-  res.status(StatusCodes.OK).json({ ...req.body.roll_number });
+  const student = await Student.create({ ...req.body });
+  res.status(StatusCodes.OK).json({ student });
+};
+const getStudent = async (req, res) => {
+  const { id: studentId } = req.params;
+
+  const student = await Student.findOne({ _id: studentId });
+
+  if (!student) {
+    throw new NotFoundError("Student does not found");
+  }
+
+  res.status(StatusCodes.OK).json({ student });
 };
 
 const viewStudentList = async (req, res) => {
@@ -36,16 +28,55 @@ const viewStudentList = async (req, res) => {
 };
 
 const editStudent = async (req, res) => {
-  const std = await Student.updateOne(
-    { roll_number: req.body.roll_number },
-    { $set: req.body }
+  const { id: studentId } = req.params;
+  const {
+    email,
+    rollNumber,
+    name,
+    phone,
+    password,
+    section,
+    batch,
+    department,
+  } = req.body;
+  if (
+    email === "" ||
+    rollNumber === "" ||
+    name === "" ||
+    phone === "" ||
+    password === "" ||
+    section === "" ||
+    batch === "" ||
+    department === ""
+  ) {
+    throw new BadRequestError("Values cannot be empty");
+  }
+  const student = await Student.findByIdAndUpdate(
+    { _id: studentId },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
   );
-  res.status(StatusCodes.OK).send(std);
+
+  if (!student) {
+    throw new NotFoundError("Student does not exist");
+  }
+
+  res.status(StatusCodes.OK).json({ student });
 };
 
 const deleteStudent = async (req, res) => {
-  const std = await Student.deleteOne({ roll_number: req.params.roll_number });
-  res.status(StatusCodes.OK).send(std);
+  const { id: studentId } = req.params;
+
+  const student = await Student.findOneAndRemove({ _id: studentId });
+
+  if (!student) {
+    throw new NotFoundError("Student does not exist");
+  }
+
+  res.status(StatusCodes.OK).send("Deleted");
 };
 
 // Create And Manage Supervisors
@@ -62,29 +93,58 @@ const viewSupervisors = async (req, res) => {
   res.status(StatusCodes.OK).json({ supervisor });
 };
 
-const editSupervisor = async (req, res) => {
-  const { email } = req.body;
-  if (!email) {
-    throw new BadRequestError("Please Provide the values");
+const getSupervisor = async (req, res) => {
+  const { id: supervisorId } = req.params;
+
+  const supervisor = await Supervisor.findOne({ _id: supervisorId });
+
+  if (!supervisor) {
+    throw new NotFoundError("Supervisor does not exist");
   }
-  const supervisor = await Supervisor.updateOne(
-    { email: email },
-    { $set: req.body }
+
+  res.status(StatusCodes.OK).json({ supervisor });
+};
+
+const editSupervisor = async (req, res) => {
+  const { id: supervisorId } = req.params;
+  const { name, email, department, password } = req.body;
+  if (name === "" || email === "" || department === "" || password === "") {
+    throw new BadRequestError("Values cannot be empty");
+  }
+  const supervisor = await Supervisor.findByIdAndUpdate(
+    { _id: supervisorId },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
   );
-  res.status(StatusCodes.OK).send(supervisor);
+  if (!supervisor) {
+    throw new NotFoundError("Student does not exist");
+  }
+  res.status(StatusCodes.OK).json({ supervisor });
 };
+
 const deleteSupervisor = async (req, res) => {
-  const supervisor = await Supervisor.deleteOne({ email: req.params.email });
-  res.status(StatusCodes.OK).send(supervisor);
+  const { id: supervisorId } = req.params;
+  const supervisor = await Supervisor.findOneAndRemove({ _id: supervisorId });
+
+  if (!supervisor) {
+    throw new NotFoundError("Student does not exist");
+  }
+
+  res.status(StatusCodes.OK).send("Deleted");
 };
+
 module.exports = {
-  login,
-  createSupervisors,
   createStudent,
-  viewStudentList,
-  viewSupervisors,
+  getStudent,
   editStudent,
-  editSupervisor,
+  viewStudentList,
   deleteStudent,
+  createSupervisors,
+  getSupervisor,
+  viewSupervisors,
+  editSupervisor,
   deleteSupervisor,
 };

@@ -2,33 +2,32 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  login,
-  createSupervisors,
   createStudent,
   viewStudentList,
   editStudent,
+  getStudent,
+  deleteStudent,
+  createSupervisors,
+  getSupervisor,
   editSupervisor,
   viewSupervisors,
-  deleteStudent,
-  deleteSupervisor
+  deleteSupervisor,
 } = require("../controllers/pmo-controller");
 
-router.post("/login", login);
-
 //Student Routes
-router.get('/students', viewStudentList)
-router.post("/create-student", createStudent);
-router.post("/edit-student", editStudent);
-router.delete("/delete-student/:roll_number", deleteStudent);
+router.route("/students").get(viewStudentList).post(createStudent);
+router
+  .route("/students/:id")
+  .get(getStudent)
+  .delete(deleteStudent)
+  .patch(editStudent);
 
 //Supervisor Routes
-router.get("/supervisors", viewSupervisors);
-router.post("/create-supervisor", createSupervisors);
-router.post("/edit-supervisor", editSupervisor);
-router.delete("/delete-supervisor/:email", deleteSupervisor);
- 
-
-
-
+router.route("/supervisors").get(viewSupervisors).post(createSupervisors);
+router
+  .route("/supervisors/:id")
+  .get(getSupervisor)
+  .delete(deleteSupervisor)
+  .patch(editSupervisor);
 
 module.exports = router;
