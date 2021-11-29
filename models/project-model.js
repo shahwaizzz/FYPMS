@@ -14,12 +14,12 @@ const ProjectSchema = new mongoose.Schema({
   objectives: {
     type: String,
   },
-  group: {
+  group: [{
     type: [mongoose.Types.ObjectId],
     ref: "students",
     required: [true, "Please Provide Group members"],
     maxlength: 3,
-  },
+  }],
   // group: [{
 
   // }],
