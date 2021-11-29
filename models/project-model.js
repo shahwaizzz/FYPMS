@@ -35,5 +35,8 @@ const ProjectSchema = new mongoose.Schema({
       finaldocumentation: String,
     },
   ],
-  grades: {},
+
+  status: {
+    type: St,
+  },
 });
