@@ -21,13 +21,15 @@ app.use(express.json());
 
 // routes
 app.use("/api/v1/auth/pmo", pmoAuthRoutes);
-app.use("/api/v1/pmo", authenticateUser, pmoRoutes);
+//app.use("/api/v1/pmo", authenticateUser, pmoRoutes);
+app.use("/api/v1/pmo", pmoRoutes);
 
 app.use("/api/v1/auth/supervisor", supervisorAuthRoutes);
 app.use("/api/v1/supervisor", authenticateUser, supervisorRoutes);
 
-// app.use("/api/v1/auth/student", studentAuthRoutes);
-// app.use("/api/v1/student", authenticateUser, studentRoutes);
+app.use("/api/v1/auth/student", studentAuthRoutes);
+app.use("/api/v1/student", authenticateUser, studentRoutes);
+// app.use("/api/v1/student", studentRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
@@ -37,7 +39,7 @@ const port = process.env.PORT || 3000;
 const start = async () => {
   try {
     await connectDB(
-      process.env.MONGO_URI
+      process.env.MONGO_URL
       // "mongodb+srv://ali:ali7676@cluster0.ozphx.mongodb.net/FYPMS?retryWrites=true&w=majority"
     );
     app.listen(port, () =>
