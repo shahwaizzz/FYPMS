@@ -15,14 +15,14 @@ var routes = [
   {
     path: "/students",
     name: "Students",
-    icon: "nc-icon nc-bell-55",
+    icon: "nc-icon nc-single-02",
     component: Students,
     layout: "/admin",
   },
   {
     path: "/supervisors",
     name: "Supervisors",
-    icon: "nc-icon nc-bell-55",
+    icon: "nc-icon nc-single-02",
     component: Supervisors,
     layout: "/admin",
   },
