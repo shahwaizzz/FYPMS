@@ -7,7 +7,7 @@ import Progressbar from '../progressbar';
 import { students } from '../../apis';
 
 export default function Student() {
-    const [viewStudent, setViewStudent] = useState(false);
+    const [addStudent, setAddStudent] = useState(false);
     const [editForm, setEditForm] = useState(false);
     const [searchData, setSearchData] = useState("");
     const [searchBy, setSearchBy] = useState("Roll Number");
@@ -51,8 +51,8 @@ export default function Student() {
 
     function toggleModel(e,student){
         setDisplayData(student);
-        if(e==="view"){
-            viewStudent ? setViewStudent(false) : setViewStudent(true);
+        if(e==="add"){
+            addStudent ? setAddStudent(false) : setAddStudent(true);
         }else if(e==="form"){
             if(editForm){
                 setEditForm(false) 
@@ -104,7 +104,7 @@ export default function Student() {
                     <option value="Email">Email</option>
                     <option value="Phone">Phone</option>
                 </select>
-                <button>
+                <button className="add-data-btn" onClick={()=>toggleModel("add")}>
                      Add Student
                 </button>
             </div>
@@ -144,26 +144,55 @@ export default function Student() {
          </tbody>
      </table> }
            
-        {/* {viewStudent && (
+         {addStudent && (
         <div className="popup-container">
             <div className="popup">
-                { displayData && (
-                <div className="data-details">
+            <h2>Add Student</h2>
+                <div className="form-modal">
+                    <form className="data-form" autoComplete="off" id="student-form">
                     <div>
-                        <h4>Roll Number: <span>{displayData.rollNumber}</span></h4>
-                        <h4>Name: <span>{displayData.name}</span></h4>
-                        <h4>Section: <span>{displayData.section}</span></h4>
-                        <h4>Batch: <span>{displayData.batch}</span></h4>
-                        <h4>Email: <span>{displayData.email}</span></h4>
-                        <h4>Phone: <span>{displayData.phone}</span></h4>
+                    <label>Student Roll Number</label>
+                    <input type="text" name="rollNumber" onChange={handleChange}/>
+                    
                     </div>
-                    <span className="close-data"><AiFillCloseCircle size="1.7rem" onClick={()=>toggleModel("view")}/></span>
-                    <button onClick={()=>toggleModel("view")}>Close</button>
+                    <div>
+                    <label>Student Name</label>
+                    <input type="text" name="name" onChange={handleChange} />
+                    </div>
+                    <div>
+                    <label>Department</label>
+                    <input type="text" name="department" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Section</label>
+                    <input type="text" name="section" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Batch</label>
+                    <input type="text" name="batch" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Email</label>
+                    <input type="email" name="email" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Phone Number</label>
+                    <input type="number" name="phone" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Password</label>
+                    <input type="password" name="password" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <button type="submit">Add Student</button>
+                    </div> 
+                    </form>
+                    <span><AiFillCloseCircle size="1.7rem" onClick={()=>toggleModel("add")}/></span>
+                    <button className="close-data" onClick={()=>toggleModel("add")}>Close</button>
                 </div>
-                )}
             </div>
         </div>
-        )} */}
+        )} 
         { editForm && (
             displayData && (
         <div className="popup-container">

@@ -167,21 +167,17 @@ select:focus{
   box-shadow:inset 0 -4px 3px rgb(218, 216, 216);
 }
 .title-bar-icons{
-  margin: 17px 35px 0 35px;
-}
-.title-bar div{
-  cursor: pointer;
-}
-.title-bar div:hover{
-  background-color: #00A65A;
-  color: white;
-  transition: 0.5s;
-}
-.notification-icons-container{
+  margin: 15px 35px 10px 35px;
   display: flex;
 }
-.notification-icons-container>:last-child{
-  margin-left: 5px;
+.title-bar-icons div{
+  cursor: pointer;
+}
+.title-bar-icons>:last-child{
+  margin-left: 10px;
+}
+.title-bar-icons div:hover{
+  color: #004d2a;
 }
 /* Menubar */
 .menubar{
@@ -280,6 +276,9 @@ select:focus{
 .data-container-top{
   display: flex;
   margin-bottom: 30px;
+}
+.add-data-btn{
+  margin-left: 10px;
 }
 .manage-buttons{
   display: flex;

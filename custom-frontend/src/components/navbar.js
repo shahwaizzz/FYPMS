@@ -9,17 +9,14 @@ export default function Navbar() {
             <div className="title-bar">
                 <span></span>
                 <h2>FYPMS</h2>
-                <div className="notification-icons-container">
-                <IconContext.Provider value={{ className:"icons title-bar-icons"}}>
-                    <div className="notification-icon">
+                <div className="title-bar-icons">
+                    <div>
                         <IoNotificationsCircleSharp size="2.5rem"/>
                     </div>
-                    </IconContext.Provider> 
-                    <IconContext.Provider value={{ className:"icons title-bar-icons"}}>
-                    <div className="notification-icon">
+                    <div>
                         <CgProfile size="2.5rem"/>
                     </div>
-                    </IconContext.Provider>
+                    
                 </div>
             </div>
         </div>
