@@ -135,8 +135,8 @@ export default function Student() {
                  <td data-label="Options">
                  <div className="manage-buttons">
                      {/* <button className="view-btn" title="Student View" onClick={()=>toggleModel("view",student)}><BsFillImageFill size="1.5rem"/></button> */}
-                     <button className="update-btn" title="Edit Student" onClick={()=>toggleModel("form",student)}><FaEdit size="1.5rem"/></button>
-                     <button className="delete-btn" title="Delete Student" onClick={()=>deleteStudent(student._id)}><AiFillDelete size="1.5rem"/></button>
+                     <button className="update-user" title="Edit Student" onClick={()=>toggleModel("form",student)}><FaEdit size="1.5rem"/></button>
+                     <button className="delete-user" title="Delete Student" onClick={()=>deleteStudent(student._id)}><AiFillDelete size="1.5rem"/></button>
                      </div>
                  </td>
              </tr>)))

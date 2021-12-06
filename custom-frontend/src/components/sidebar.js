@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { IconContext } from "react-icons";
-import { AiFillLeftCircle, AiOutlineHome, AiOutlineBook, AiOutlineProfile} from "react-icons/ai";
-import { MdOutlineSupervisedUserCircle ,MdLogout} from "react-icons/md";
+import { AiFillLeftCircle, AiOutlineHome, AiOutlineBook, AiOutlineProfile,AiOutlineProject} from "react-icons/ai";
+import { MdOutlineSupervisedUserCircle ,MdLogout,MdOutlineEmojiEvents} from "react-icons/md";
 import Home from './main-components/home';
 import Student from './main-components/student';
 import Supervisor from './main-components/supervisor';
 import UserProfile from './main-components/user-profile';
 import Logout from './logout';
+import Projects from './main-components/projects';
+import Events from './main-components/events';
 
 export default function Sidebar() {
     const [changePages, setChangePages] = useState(<Home/>);
@@ -19,6 +21,14 @@ export default function Sidebar() {
         if(e==="Home"){
             setPageName("Home");
             setChangePages(<Home/>);
+        }
+        if(e==="Projects"){
+            setPageName("Projects");
+            setChangePages(<Projects/>);
+        }
+        if(e==="Events"){
+            setPageName("Events");
+            setChangePages(<Events/>);
         }
         if(e==="Student"){
             setPageName("Students");
@@ -68,6 +78,14 @@ export default function Sidebar() {
                 <li onClick={()=>changePage("Home")}>
                     <AiOutlineHome/>
                     <span>Home</span>
+                </li>
+                <li onClick={()=>changePage("Projects")}>
+                    <AiOutlineProject/>
+                    <span>Manage Projects</span>
+                </li>
+                <li onClick={()=>changePage("Events")}>
+                    <MdOutlineEmojiEvents/>
+                    <span>Mange Events</span>
                 </li>
                 <li onClick={()=>changePage("Student")}>
                     <AiOutlineBook/>

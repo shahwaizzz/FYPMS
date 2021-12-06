@@ -150,19 +150,9 @@ select:focus{
   width: 200px;
   margin: 20px;
 }
-.form-modal img{
-  width: 32%;
-  height: 32%;
-}
 .progress-bar{
   background-color: white;
   padding: 20px;
-}
-img {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-  object-fit: cover;
 }
 /* Title Bar */
 .title-bar{
@@ -187,7 +177,12 @@ img {
   color: white;
   transition: 0.5s;
 }
-
+.notification-icons-container{
+  display: flex;
+}
+.notification-icons-container>:last-child{
+  margin-left: 5px;
+}
 /* Menubar */
 .menubar{
   height: 100%;
@@ -260,7 +255,25 @@ img {
   background-color: white;
   position: relative;
 }
-/*Manage Products*/
+/*Home*/
+.home{
+  margin: 10px;
+   display: flex; 
+}
+.home-box{
+  cursor: pointer;
+  background-color: white;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  width: 30%;
+}
+.home-box:hover{
+  border-radius: 10px;
+  border: 2px solid #00A65A;
+  transition: 0.3s;
+}
+/*Manage Data*/
 .data-container{
   margin-right: 10px;
 }
@@ -285,10 +298,10 @@ img {
 .view-btn:hover{
   color: rgb(0, 204, 255);
 }
-.update-btn:hover{
+.update-user:hover{
   color: #085c1b;
 }
-.delete-btn:hover{
+.delete-user:hover{
   color: #721C24;
 }
 .data-details{
@@ -317,43 +330,29 @@ img {
   display: none;
 }
 
-/*All Sales*/
-.fc-col-header-cell{
-  color: white;
-  background-color: #00A65A;
-}
-.fc-daygrid-day-frame{
-  background-color: white;
-}
-.fc-event-title-container{
-  background-color: #00A65A;
-  padding: 2px;
-}
 /*Footer*/
 footer{
-    position: absolute;
+    position: fixed;
     bottom: 5px;
     width: 100%;
+    background-color: rgb(230, 230, 230);
     text-align: center;
+    padding: 5px;
 }
 @media only screen and (max-width: 1080px){
-  .home{
-    flex-direction: column; 
-  }
-  .home-table{
-    margin: 10px;
-  }
   .update-btn{
     margin-left: 3px;
     margin-right: 3px;
   }
+  .home{
+    flex-direction: column;
+  }
+  .home-box{
+    width: 80%;
+  }
 }
 /*Mobile View*/
 @media only screen and (max-width: 760px){
-  img {
-    width: 100%;
-    height: auto;
-  }
   .title-bar h2{
     padding-left: 50px;
   }
@@ -371,12 +370,6 @@ footer{
   }
   .data-width {
     margin-left: 1rem; 
-  }
-  .home-img-form{
-    flex-direction: column;
-  }
-  .home-img-form form{
-    margin-top: 5px;
   }
   .table thead{
 		display: none;
@@ -406,9 +399,6 @@ footer{
 	}
   .border-line{
     width:200px;
-  }
-  .bill-record-data{
-    flex-direction: column;
   }
   .data-details{
     flex-direction: column;
