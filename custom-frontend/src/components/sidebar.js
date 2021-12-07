@@ -6,7 +6,7 @@ import Home from './main-components/home';
 import Student from './main-components/student';
 import Supervisor from './main-components/supervisor';
 import UserProfile from './main-components/user-profile';
-import Logout from './logout';
+import Logout from './main-components/logout';
 import Projects from './main-components/projects';
 import Events from './main-components/events';
 

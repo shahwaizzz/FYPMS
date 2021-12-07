@@ -153,7 +153,6 @@ export default function Student() {
                     <div>
                     <label>Student Roll Number</label>
                     <input type="text" name="rollNumber" onChange={handleChange}/>
-                    
                     </div>
                     <div>
                     <label>Student Name</label>
