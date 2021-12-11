@@ -1,6 +1,7 @@
 const Project = require("../models/project-model");
 const Supervisor = require("../models/supervisor-model");
 const Student = require("../models/student-model");
+const Meeting = require("../models/meeting-model");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
@@ -64,10 +65,22 @@ const updateProject = async (req, res) => {
   res.status(StatusCodes.OK).json({ project });
 };
 
+const viewEvents = async (req, res) => {
+  const events = await Event.find({});
+  res.status(StatusCodes.OK).json({ events });
+};
+
+const createMeeting = async (req, res) => {
+  const meeting = await Meeting.create({ ...req.body });
+  res.status(StatusCodes.OK).json({ meeting, msg: "Meeting Created" });
+};
+
 module.exports = {
   createProject,
   getAllProjects,
   getSingleProject,
   deleteProject,
   updateProject,
+  viewEvents,
+  createMeeting,
 };

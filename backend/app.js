@@ -18,9 +18,9 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use((req, res, next) => {
-  res.append('Access-Control-Allow-Origin', ['*']);
-  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
-  res.append('Access-Control-Allow-Headers', 'Content-Type');
+  res.append("Access-Control-Allow-Origin", ["*"]);
+  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH");
+  res.append("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
 // extra packages
@@ -44,10 +44,7 @@ const port = process.env.PORT || 3000;
 
 const start = async () => {
   try {
-    await connectDB(
-      process.env.MONGO_URL
-      // "mongodb+srv://ali:ali7676@cluster0.ozphx.mongodb.net/FYPMS?retryWrites=true&w=majority"
-    );
+    await connectDB(process.env.MONGO_URL);
     app.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );

@@ -1,8 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const { addProjectDetails } = require("../controllers/student-controller");
+const {
+  addProjectDetails,
+  viewEvents,
+} = require("../controllers/student-controller");
 
 router.patch("/add-details", addProjectDetails);
+router.route("/events").get(viewEvents);
 
 module.exports = router;
