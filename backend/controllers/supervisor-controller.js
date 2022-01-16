@@ -71,8 +71,29 @@ const viewEvents = async (req, res) => {
 };
 
 const createMeeting = async (req, res) => {
+  req.body.supervisor = req.user.userId;
   const meeting = await Meeting.create({ ...req.body });
   res.status(StatusCodes.OK).json({ meeting, msg: "Meeting Created" });
+};
+const addMarks = async (req, res) => {
+  const { marks, studentId } = req.body;
+
+  const updateStudent = await Student.findByIdAndUpdate(
+    { _id: req.body.studentId },
+    {
+      $set: {
+        "marks.supervisor": marks,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  // console.log(updateStudent);
+  // res.status(StatusCodes.OK).json({ project });
+  res.status(StatusCodes.OK).json({ updateStudent });
 };
 
 module.exports = {
@@ -83,4 +104,5 @@ module.exports = {
   updateProject,
   viewEvents,
   createMeeting,
+  addMarks,
 };

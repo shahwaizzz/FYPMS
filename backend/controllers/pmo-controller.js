@@ -76,7 +76,7 @@ const deleteStudent = async (req, res) => {
     throw new NotFoundError("Student does not exist");
   }
 
-  res.status(StatusCodes.OK).send("Deleted");
+  res.status(StatusCodes.OK).json({ msg: "Deleted" });
 };
 
 // Create And Manage Supervisors
@@ -146,6 +146,59 @@ const viewEvents = async (req, res) => {
   const events = await Event.find({});
   res.status(StatusCodes.OK).json({ events });
 };
+// adding student marks
+const addMarks = async (req, res) => {
+  const { id: studentId } = req.params;
+  const { marks, flag } = req.body;
+  if (flag === "proposal") {
+    const updatedStudent = await Student.findByIdAndUpdate(
+      { _id: studentId },
+      {
+        $set: {
+          "marks.proposal": marks,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.status(StatusCodes.OK).json({ updatedStudent });
+  }
+  if (flag === "mid") {
+    const updatedStudent = await Student.findByIdAndUpdate(
+      { _id: studentId },
+      {
+        $set: {
+          "marks.mid": marks,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.status(StatusCodes.OK).json({ updatedStudent });
+  }
+  if (flag === "final") {
+    const updatedStudent = await Student.findByIdAndUpdate(
+      { _id: studentId },
+      {
+        $set: {
+          "marks.final": marks,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.status(StatusCodes.OK).json({ updatedStudent });
+  }
+
+  // console.log(updateStudent);
+  // res.status(StatusCodes.OK).json({ project });
+};
 
 module.exports = {
   createStudent,
@@ -160,4 +213,5 @@ module.exports = {
   deleteSupervisor,
   createEvent,
   viewEvents,
+  addMarks,
 };

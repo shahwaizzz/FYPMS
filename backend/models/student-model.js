@@ -51,6 +51,12 @@ const StudentSchema = new mongoose.Schema({
     minlength: 4,
     maxlength: 15,
   },
+  marks: {
+    proposal: Number,
+    mid: Number,
+    final: Number,
+    supervisor: Number,
+  },
 });
 StudentSchema.pre("save", async function () {
   const salt = await bycrypt.genSalt(10);

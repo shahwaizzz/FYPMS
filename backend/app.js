@@ -31,7 +31,8 @@ app.use("/api/v1/auth/pmo", pmoAuthRoutes);
 app.use("/api/v1/pmo", pmoRoutes);
 
 app.use("/api/v1/auth/supervisor", supervisorAuthRoutes);
-app.use("/api/v1/supervisor", authenticateUser, supervisorRoutes);
+app.use("/api/v1/supervisor", supervisorRoutes);
+// app.use("/api/v1/supervisor", authenticateUser, supervisorRoutes);
 
 app.use("/api/v1/auth/student", studentAuthRoutes);
 app.use("/api/v1/student", authenticateUser, studentRoutes);

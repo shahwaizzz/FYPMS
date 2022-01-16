@@ -18,6 +18,7 @@ const meetingSchema = new mongoose.Schema({
   },
   project: {
     type: mongoose.Types.ObjectId,
+    required: [true, "Please Provide Project"],
   },
 });
 

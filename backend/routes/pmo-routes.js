@@ -14,6 +14,7 @@ const {
   deleteSupervisor,
   viewEvents,
   createEvent,
+  addMarks,
 } = require("../controllers/pmo-controller");
 
 //Student Routes
@@ -35,5 +36,6 @@ router
   .patch(editSupervisor);
 
 router.route("/events").get(viewEvents).post(createEvent);
+router.route("/:id/marks").patch(addMarks);
 
 module.exports = router;
