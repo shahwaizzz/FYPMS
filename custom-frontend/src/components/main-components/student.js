@@ -28,27 +28,14 @@ export default function Student() {
      function deleteStudent(id){
         var check = window.confirm("Are sure you want to delete the student");
         if(check){
-            // const options = {
-            //     method: 'DELETE'
-            // }
             api.delete(`/${id}`).then(res => {
+              console.log(res)
                 if(res.status === 200){
                     setRefresh(!refresh);
-                    alert(res.data)
+                    alert("Student Delete Successfully");
                 }
             })
             .catch(res => {alert(res)})
-            // fetch(`${students}/${id}`, options)
-            // .then(res => res.json())
-            // .then(
-            //     (result) => {
-            //     setRefresh(!refresh);
-            //     alert(result.message);
-            //     },
-            //     (error) => {
-            //         alert(error);
-            //     }
-            // )
         }
      }
 
@@ -62,19 +49,6 @@ export default function Student() {
         }
   }
 
-  function toggleModel(e, student) {
-    setDisplayData(student);
-    if (e === "add") {
-      addStudent ? setAddStudent(false) : setAddStudent(true);
-    } else if (e === "form") {
-      if (editForm) {
-        setEditForm(false);
-      } else {
-        setEditForm(true);
-      }
-    }
-  }
-
   function handleChange(e) {
     const name = e.target.name;
     var value = e.target.value;
@@ -83,29 +57,27 @@ export default function Student() {
 
 function submitStudent(e) {
     e.preventDefault();
-    api.post("/",displayData).then(res => {
-        console.log(res);
-        if(res.status === 200){
+    const options = {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(displayData)
+    };
+    fetch(students, options)
+    .then(res => res.json())
+        .then((result) => {
+          console.log(result);
+          if(result.err.code === 0){
+            setDisplayData(false);
             setRefresh(!refresh);
-            alert(res.data)
+            alert("Student Add Successfully");
+        }else if((result.err.code === 11000)){
+          alert(`This ${JSON.stringify(result.err.keyValue)} is already in use`);
+        }else if(result.err.message){
+          alert(result.err.message)
         }
-    })
-    .catch(res => {alert(res)})
-    // const options = {
-    //     method: 'post',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(displayData)
-    // };
-    // fetch(students, options)
-    // .then(res => res.json())
-    //     .then((result) => {
-    //         setDisplayData(false);
-    //         setRefresh(!refresh);
-    //         alert(result.message);
-            
-    //     },(error) => {
-    //         alert(error);
-    // });
+        },(error) => {
+            alert(error);
+    });
 }
 
     function onSubmit(e){
@@ -118,9 +90,15 @@ function submitStudent(e) {
         fetch(`${students}/${displayData._id}`, options)
         .then(res => res.json())
             .then((result) => {
+              if(result.err.code === 0){
                 setDisplayData(false);
                 setRefresh(!refresh);
-                alert(result.message);
+                alert("Student Update Successfully");
+            }else if((result.err.code === 11000)){
+              alert(`This ${JSON.stringify(result.err.keyValue)} is already in use`);
+            }else if(result.err.message){
+              alert(result.err.message)
+            }
             },(error) => {
                 alert(error);
         });
@@ -224,36 +202,6 @@ function submitStudent(e) {
                     <button className="close-data" onClick={()=>toggleModel("add")}>Close</button>
                     <form/>
                 </div>
-                {/* <div>
-                  <label>Batch</label>
-                  <input type='text' name='batch' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Email</label>
-                  <input type='email' name='email' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Phone Number</label>
-                  <input type='number' name='phone' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Password</label>
-                  <input type='password' name='password' onChange={handleChange}/>
-                </div>
-                <div>
-                  <button type='submit'>Add Student</button>
-                </div> */}
-              {/* </form>
-              <span>
-                <AiFillCloseCircle
-                  size='1.7rem'
-                  onClick={() => toggleModel("add")}
-                />
-              </span>
-              <button className='close-data' onClick={() => toggleModel("add")}>
-                Close
-              </button>
-            </div> */}
           </div>
         </div>
         )} 
@@ -301,72 +249,10 @@ function submitStudent(e) {
                     <button type="submit">Edit Student</button>
                     </div> 
                     </form>
-                    <span><AiFillCloseCircle size="1.7rem" onClick={()=>toggleModel("form")}/></span>
-                    <button className="close-data" onClick={()=>toggleModel("form")}>Close</button>
+                    <span><AiFillCloseCircle size="1.7rem" onClick={()=>toggleModel("update")}/></span>
+                    <button className="close-data" onClick={()=>toggleModel("update")}>Close</button>
                     <form/>
                 </div>
-                {/* <div>
-                  <label>Section</label>
-                  <input
-                    type='text'
-                    name='section'
-                    value={displayData.section}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Batch</label>
-                  <input
-                    type='text'
-                    name='batch'
-                    value={displayData.batch}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Email</label>
-                  <input
-                    type='email'
-                    name='email'
-                    value={displayData.email}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Phone Number</label>
-                  <input
-                    type='number'
-                    name='phone'
-                    value={displayData.phone}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Password</label>
-                  <input
-                    type='password'
-                    name='password'
-                    value={displayData.password}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <button type='submit'>Edit Student</button>
-                </div>
-              </form>
-              <span>
-                <AiFillCloseCircle
-                  size='1.7rem'
-                  onClick={() => toggleModel("form")}
-                />
-              </span>
-              <button
-                className='close-data'
-                onClick={() => toggleModel("form")}
-              >
-                Close
-              </button>
-            </div>*/}
           </div>
         </div>
          ) )}

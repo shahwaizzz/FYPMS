@@ -8,7 +8,7 @@ const Student = require("../models/student-model");
 // Create And Manage Students
 const createStudent = async (req, res) => {
   const student = await Student.create({ ...req.body });
-  res.status(StatusCodes.OK).json({ student });
+  res.status(StatusCodes.OK).json({ student,err:{code:0,message:"No error found"} });
 };
 const getStudent = async (req, res) => {
   const { id: studentId } = req.params;
@@ -19,7 +19,7 @@ const getStudent = async (req, res) => {
     throw new NotFoundError("Student does not found");
   }
 
-  res.status(StatusCodes.OK).json({ student });
+  res.status(StatusCodes.OK).json({student,err:{code:0,message:"No error found"}});
 };
 
 const viewStudentList = async (req, res) => {
@@ -64,7 +64,7 @@ const editStudent = async (req, res) => {
     throw new NotFoundError("Student does not exist");
   }
 
-  res.status(StatusCodes.OK).json({ student });
+  res.status(StatusCodes.OK).json({ student,err:{code:0,message:"No error found"} });
 };
 
 const deleteStudent = async (req, res) => {
