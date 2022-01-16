@@ -23,7 +23,7 @@ router
   .route("/students/:id")
   .get(getStudent)
   .delete(deleteStudent)
-  .patch(editStudent);
+  .put(editStudent);
 
 //Supervisor Routes
 router.route("/supervisors").get(viewSupervisors).post(createSupervisors);

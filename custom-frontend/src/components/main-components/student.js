@@ -20,7 +20,6 @@ export default function Student() {
     .then(res => res.json())
     .then(
         (result)=>{
-            console.log(result);
           setGetData(result);
             },
         (error) => {
@@ -30,21 +29,23 @@ export default function Student() {
     },[refresh]);
       
      function deleteStudent(id){
-         console.log("Delete ",id);
-        const options = {
-          method: 'DELETE'
-        }
-        fetch(`${students}/${id}`, options)
-        .then(res => res.json())
-          .then(
-            (result) => {
-              console.log(result);
-              setRefresh(!refresh);
-            },
-            (error) => {
-                console.log(error);
+        var check = window.confirm("Are sure you want to delete the student");
+        if(check){
+            const options = {
+                method: 'DELETE'
             }
-          )
+            fetch(`${students}/${id}`, options)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                setRefresh(!refresh);
+                alert("Student Delete Successfully");
+                },
+                (error) => {
+                    alert(error);
+                }
+            )
+        }
      }
 
 
@@ -52,12 +53,8 @@ export default function Student() {
         setDisplayData(student);
         if(e==="add"){
             addStudent ? setAddStudent(false) : setAddStudent(true);
-        }else if(e==="form"){
-            if(editForm){
-                setEditForm(false) 
-            }else{
-                setEditForm(true);
-            }    
+        }else if(e==="update"){
+            editForm ? setEditForm(false) : setEditForm(true);
         }
         
     }
@@ -68,26 +65,39 @@ export default function Student() {
         setDisplayData({...displayData,[name]:value});
 }
 
+function submitStudent(e) {
+    e.preventDefault();
+    const options = {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(displayData)
+    };
+    fetch(students, options)
+    .then(res => res.json())
+        .then((result) => {
+            console.log(result);
+            alert(result.message);
+            
+        },(error) => {
+            alert(error);
+    });
+}
+
     function onSubmit(e){
         e.preventDefault();
-        console.log(displayData._id);
-        console.log(`${students}/${displayData._id}`);
-        const update = {
-            "email" : "frontend@gmail.com"
-        }
         const options = {
-            method: 'patch',
+            method: 'put',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({update})
+            body: JSON.stringify(displayData)
         };
         fetch(`${students}/${displayData._id}`, options)
         .then(res => res.json())
             .then((result) => {
-                console.log(result)
                 setDisplayData(false);
                 setRefresh(!refresh);
+                alert("Student Update Successfully");
             },(error) => {
-                console.log(error);
+                alert(error);
         });
     }
     return (
@@ -134,7 +144,7 @@ export default function Student() {
                  <td data-label="Options">
                  <div className="manage-buttons">
                      {/* <button className="view-btn" title="Student View" onClick={()=>toggleModel("view",student)}><BsFillImageFill size="1.5rem"/></button> */}
-                     <button className="update-user" title="Edit Student" onClick={()=>toggleModel("form",student)}><FaEdit size="1.5rem"/></button>
+                     <button className="update-user" title="Edit Student" onClick={()=>toggleModel("update",student)}><FaEdit size="1.5rem"/></button>
                      <button className="delete-user" title="Delete Student" onClick={()=>deleteStudent(student._id)}><AiFillDelete size="1.5rem"/></button>
                      </div>
                  </td>
@@ -148,7 +158,7 @@ export default function Student() {
             <div className="popup">
             <h2>Add Student</h2>
                 <div className="form-modal">
-                    <form className="data-form" autoComplete="off" id="student-form">
+                    <form className="data-form" onSubmit={submitStudent} autoComplete="off" id="student-form">
                     <div>
                     <label>Student Roll Number</label>
                     <input type="text" name="rollNumber" onChange={handleChange}/>
@@ -229,7 +239,7 @@ export default function Student() {
                     </div>
                     <div>
                     <label>Password</label>
-                    <input type="password" name="password" value={displayData.password} onChange={handleChange}/>
+                    <input type="password" name="password" onChange={handleChange}/>
                     </div>
                     <div>
                     <button type="submit">Edit Student</button>
