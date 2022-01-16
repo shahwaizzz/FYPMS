@@ -1,50 +1,54 @@
-import React, { useState, useEffect } from "react";
-import { AiFillDelete } from "react-icons/ai";
-import { FaEdit } from "react-icons/fa";
-import { BsFillImageFill } from "react-icons/bs";
-import { AiFillCloseCircle } from "react-icons/ai";
-import Progressbar from "../progressbar";
-import { students } from "../../apis";
+import React, { useState,useEffect }  from 'react';
+import {AiFillDelete} from "react-icons/ai";
+import {FaEdit} from "react-icons/fa";
+import {AiFillCloseCircle} from "react-icons/ai";
+import Progressbar from '../progressbar';
+import { students } from '../../apis';
+import axios from 'axios';
 
 export default function Student() {
-  const [addStudent, setAddStudent] = useState(false);
-  const [editForm, setEditForm] = useState(false);
-  const [searchData, setSearchData] = useState("");
-  const [searchBy, setSearchBy] = useState("Roll Number");
-  const [getData, setGetData] = useState(false);
-  const [displayData, setDisplayData] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+    const [addStudent, setAddStudent] = useState(false);
+    const [editForm, setEditForm] = useState(false);
+    const [searchData, setSearchData] = useState("");
+    const [searchBy, setSearchBy] = useState("Roll Number");
+    const [getData, setGetData] = useState(false);
+    const [displayData, setDisplayData] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+    
+    const api = axios.create({
+        baseURL : students
+    });
 
-  useEffect(() => {
-    fetch(students)
-    .then(res => res.json())
-    .then(
-        (result)=>{
-          setGetData(result);
-        },
-        (error) => {
-          setGetData(error);
-        }
-    )
+    useEffect(() => {
+    api.get("/")
+    .then(res =>  {setGetData(res.data)})
+    .catch(res => {alert(res)})
     },[refresh]);
       
      function deleteStudent(id){
         var check = window.confirm("Are sure you want to delete the student");
         if(check){
-            const options = {
-                method: 'DELETE'
-            }
-            fetch(`${students}/${id}`, options)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                setRefresh(!refresh);
-                alert("Student Delete Successfully");
-                },
-                (error) => {
-                    alert(error);
+            // const options = {
+            //     method: 'DELETE'
+            // }
+            api.delete(`/${id}`).then(res => {
+                if(res.status === 200){
+                    setRefresh(!refresh);
+                    alert(res.data)
                 }
-            )
+            })
+            .catch(res => {alert(res)})
+            // fetch(`${students}/${id}`, options)
+            // .then(res => res.json())
+            // .then(
+            //     (result) => {
+            //     setRefresh(!refresh);
+            //     alert(result.message);
+            //     },
+            //     (error) => {
+            //         alert(error);
+            //     }
+            // )
         }
      }
 
@@ -56,7 +60,6 @@ export default function Student() {
         }else if(e==="update"){
             editForm ? setEditForm(false) : setEditForm(true);
         }
-      );
   }
 
   function toggleModel(e, student) {
@@ -80,20 +83,29 @@ export default function Student() {
 
 function submitStudent(e) {
     e.preventDefault();
-    const options = {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(displayData)
-    };
-    fetch(students, options)
-    .then(res => res.json())
-        .then((result) => {
-            console.log(result);
-            alert(result.message);
+    api.post("/",displayData).then(res => {
+        console.log(res);
+        if(res.status === 200){
+            setRefresh(!refresh);
+            alert(res.data)
+        }
+    })
+    .catch(res => {alert(res)})
+    // const options = {
+    //     method: 'post',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify(displayData)
+    // };
+    // fetch(students, options)
+    // .then(res => res.json())
+    //     .then((result) => {
+    //         setDisplayData(false);
+    //         setRefresh(!refresh);
+    //         alert(result.message);
             
-        },(error) => {
-            alert(error);
-    });
+    //     },(error) => {
+    //         alert(error);
+    // });
 }
 
     function onSubmit(e){
@@ -108,7 +120,7 @@ function submitStudent(e) {
             .then((result) => {
                 setDisplayData(false);
                 setRefresh(!refresh);
-                alert("Student Update Successfully");
+                alert(result.message);
             },(error) => {
                 alert(error);
         });
@@ -210,8 +222,9 @@ function submitStudent(e) {
                     </form>
                     <span><AiFillCloseCircle size="1.7rem" onClick={()=>toggleModel("add")}/></span>
                     <button className="close-data" onClick={()=>toggleModel("add")}>Close</button>
+                    <form/>
                 </div>
-                <div>
+                {/* <div>
                   <label>Batch</label>
                   <input type='text' name='batch' onChange={handleChange} />
                 </div>
@@ -225,16 +238,12 @@ function submitStudent(e) {
                 </div>
                 <div>
                   <label>Password</label>
-                  <input
-                    type='password'
-                    name='password'
-                    onChange={handleChange}
-                  />
+                  <input type='password' name='password' onChange={handleChange}/>
                 </div>
                 <div>
                   <button type='submit'>Add Student</button>
-                </div>
-              </form>
+                </div> */}
+              {/* </form>
               <span>
                 <AiFillCloseCircle
                   size='1.7rem'
@@ -244,7 +253,7 @@ function submitStudent(e) {
               <button className='close-data' onClick={() => toggleModel("add")}>
                 Close
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         )} 
@@ -294,8 +303,9 @@ function submitStudent(e) {
                     </form>
                     <span><AiFillCloseCircle size="1.7rem" onClick={()=>toggleModel("form")}/></span>
                     <button className="close-data" onClick={()=>toggleModel("form")}>Close</button>
+                    <form/>
                 </div>
-                <div>
+                {/* <div>
                   <label>Section</label>
                   <input
                     type='text'
@@ -356,10 +366,10 @@ function submitStudent(e) {
               >
                 Close
               </button>
-            </div>
+            </div>*/}
           </div>
         </div>
-      )}
-    </div>
+         ) )}
+    </div> 
   );
 }
