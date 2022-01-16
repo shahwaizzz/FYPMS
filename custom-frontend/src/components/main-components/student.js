@@ -1,7 +1,6 @@
 import React, { useState,useEffect }  from 'react';
 import {AiFillDelete} from "react-icons/ai";
 import {FaEdit} from "react-icons/fa";
-import {BsFillImageFill} from "react-icons/bs";
 import {AiFillCloseCircle} from "react-icons/ai";
 import Progressbar from '../progressbar';
 import { students } from '../../apis';
