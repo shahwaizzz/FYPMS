@@ -17,32 +17,44 @@ export default function Student() {
 
   useEffect(() => {
     fetch(students)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          console.log(result);
+    .then(res => res.json())
+    .then(
+        (result)=>{
           setGetData(result);
         },
         (error) => {
           setGetData(error);
         }
-      );
-  }, [refresh]);
+    )
+    },[refresh]);
+      
+     function deleteStudent(id){
+        var check = window.confirm("Are sure you want to delete the student");
+        if(check){
+            const options = {
+                method: 'DELETE'
+            }
+            fetch(`${students}/${id}`, options)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                setRefresh(!refresh);
+                alert("Student Delete Successfully");
+                },
+                (error) => {
+                    alert(error);
+                }
+            )
+        }
+     }
 
-  function deleteStudent(id) {
-    console.log("Delete ", id);
-    const options = {
-      method: "DELETE",
-    };
-    fetch(`${students}/${id}`, options)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-          setRefresh(!refresh);
-        },
-        (error) => {
-          console.log(error);
+
+    function toggleModel(e,student){
+        setDisplayData(student);
+        if(e==="add"){
+            addStudent ? setAddStudent(false) : setAddStudent(true);
+        }else if(e==="update"){
+            editForm ? setEditForm(false) : setEditForm(true);
         }
       );
   }
@@ -66,137 +78,138 @@ export default function Student() {
     setDisplayData({ ...displayData, [name]: value });
   }
 
-  function onSubmit(e) {
+function submitStudent(e) {
     e.preventDefault();
-    console.log(displayData._id);
-    console.log(`${students}/${displayData._id}`);
-    const update = {
-      email: "frontend@gmail.com",
-    };
     const options = {
-      method: "patch",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ update }),
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(displayData)
     };
-    fetch(`${students}/${displayData._id}`, options)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-          setDisplayData(false);
-          setRefresh(!refresh);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
-  return (
-    <div className='data-container'>
-      <div className='data-container-top'>
-        <input
-          type='search'
-          value={searchData}
-          onChange={(e) => setSearchData(e.target.value)}
-          placeholder={"Search Student By " + searchBy}
-        />
-        <select onChange={(e) => setSearchBy(e.target.value)}>
-          <option value='Roll Number'>Roll Number</option>
-          <option value='Name'>Name</option>
-          <option value='Batch'>Batch</option>
-          <option value='Section'>Section</option>
-          <option value='Department'>Department</option>
-          <option value='Email'>Email</option>
-          <option value='Phone'>Phone</option>
-        </select>
-        <button className='add-data-btn' onClick={() => toggleModel("add")}>
-          Add Student
-        </button>
-      </div>
-      {!getData ? (
-        <div>
-          <Progressbar visibility={true} />
-        </div>
-      ) : (
-        <table className='table'>
-          <thead>
-            <tr>
-              <th scope='col'>#Roll-No</th>
-              <th scope='col'>Name</th>
-              <th scope='col'>Department</th>
-              <th scope='col'>Section</th>
-              <th scope='col'>Batch</th>
-              <th scope='col'>Email</th>
-              <th scope='col'>Phone</th>
-              <th colSpan='2' scope='col'>
-                Options
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {getData.map((student) => (
-              <tr key={student._id}>
-                <td data-label='#Roll-No'>{student.rollNumber}</td>
-                <td data-label='Name'>{student.name}</td>
-                <td data-label='Department'>{student.department}</td>
-                <td data-label='Section'>{student.section}</td>
-                <td data-label='Batch'>{student.batch}</td>
-                <td data-label='Email'>{student.email}</td>
-                <td data-label='Phone'>{student.phone}</td>
-                <td data-label='Options'>
-                  <div className='manage-buttons'>
-                    {/* <button className="view-btn" title="Student View" onClick={()=>toggleModel("view",student)}><BsFillImageFill size="1.5rem"/></button> */}
-                    <button
-                      className='update-user'
-                      title='Edit Student'
-                      onClick={() => toggleModel("form", student)}
-                    >
-                      <FaEdit size='1.5rem' />
-                    </button>
-                    <button
-                      className='delete-user'
-                      title='Delete Student'
-                      onClick={() => deleteStudent(student._id)}
-                    >
-                      <AiFillDelete size='1.5rem' />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+    fetch(students, options)
+    .then(res => res.json())
+        .then((result) => {
+            console.log(result);
+            alert(result.message);
+            
+        },(error) => {
+            alert(error);
+    });
+}
 
-      {addStudent && (
-        <div className='popup-container'>
-          <div className='popup'>
+    function onSubmit(e){
+        e.preventDefault();
+        const options = {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(displayData)
+        };
+        fetch(`${students}/${displayData._id}`, options)
+        .then(res => res.json())
+            .then((result) => {
+                setDisplayData(false);
+                setRefresh(!refresh);
+                alert("Student Update Successfully");
+            },(error) => {
+                alert(error);
+        });
+    }
+    return (
+        <div className="data-container">
+            <div className="data-container-top">
+                <input type="search" value={searchData} onChange={(e)=>setSearchData(e.target.value)} placeholder={"Search Student By " + searchBy}/>
+                <select onChange={(e)=>setSearchBy(e.target.value)}>
+                    <option value="Roll Number">Roll Number</option>
+                    <option value="Name">Name</option>
+                    <option value="Batch">Batch</option>
+                    <option value="Section">Section</option>
+                    <option value="Department">Department</option>
+                    <option value="Email">Email</option>
+                    <option value="Phone">Phone</option>
+                </select>
+                <button className="add-data-btn" onClick={()=>toggleModel("add")}>
+                     Add Student
+                </button>
+            </div>
+            { !getData ? <div><Progressbar visibility={true}/></div>:
+             <table className="table">
+             <thead>
+                 <tr>
+                     <th scope="col">#Roll-No</th>
+                     <th scope="col">Name</th>
+                     <th scope="col">Department</th>
+                     <th scope="col">Section</th>
+                     <th scope="col">Batch</th>
+                     <th scope="col">Email</th>
+                     <th scope="col">Phone</th>
+                     <th colSpan="2" scope="col">Options</th>
+                 </tr>
+         </thead>
+         <tbody>
+        {(getData.map(student =>(
+                 <tr key={student._id}>
+                 <td data-label="#Roll-No">{student.rollNumber}</td>
+                 <td data-label="Name">{student.name}</td>
+                 <td data-label="Department">{student.department}</td>
+                 <td data-label="Section">{student.section}</td>
+                 <td data-label="Batch">{student.batch}</td>
+                 <td data-label="Email">{student.email}</td>
+                 <td data-label="Phone">{student.phone}</td>
+                 <td data-label="Options">
+                 <div className="manage-buttons">
+                     {/* <button className="view-btn" title="Student View" onClick={()=>toggleModel("view",student)}><BsFillImageFill size="1.5rem"/></button> */}
+                     <button className="update-user" title="Edit Student" onClick={()=>toggleModel("update",student)}><FaEdit size="1.5rem"/></button>
+                     <button className="delete-user" title="Delete Student" onClick={()=>deleteStudent(student._id)}><AiFillDelete size="1.5rem"/></button>
+                     </div>
+                 </td>
+             </tr>)))
+    }
+         </tbody>
+     </table> }
+           
+         {addStudent && (
+        <div className="popup-container">
+            <div className="popup">
             <h2>Add Student</h2>
-            <div className='form-modal'>
-              <form className='data-form' autoComplete='off' id='student-form'>
-                <div>
-                  <label>Student Roll Number</label>
-                  <input
-                    type='text'
-                    name='rollNumber'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Student Name</label>
-                  <input type='text' name='name' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Department</label>
-                  <input
-                    type='text'
-                    name='department'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Section</label>
-                  <input type='text' name='section' onChange={handleChange} />
+                <div className="form-modal">
+                    <form className="data-form" onSubmit={submitStudent} autoComplete="off" id="student-form">
+                    <div>
+                    <label>Student Roll Number</label>
+                    <input type="text" name="rollNumber" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Student Name</label>
+                    <input type="text" name="name" onChange={handleChange} />
+                    </div>
+                    <div>
+                    <label>Department</label>
+                    <input type="text" name="department" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Section</label>
+                    <input type="text" name="section" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Batch</label>
+                    <input type="text" name="batch" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Email</label>
+                    <input type="email" name="email" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Phone Number</label>
+                    <input type="number" name="phone" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Password</label>
+                    <input type="password" name="password" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <button type="submit">Add Student</button>
+                    </div> 
+                    </form>
+                    <span><AiFillCloseCircle size="1.7rem" onClick={()=>toggleModel("add")}/></span>
+                    <button className="close-data" onClick={()=>toggleModel("add")}>Close</button>
                 </div>
                 <div>
                   <label>Batch</label>
@@ -234,50 +247,53 @@ export default function Student() {
             </div>
           </div>
         </div>
-      )}
-      {editForm && displayData && (
-        <div className='popup-container'>
-          <div className='popup'>
-            <h2>Edit Student</h2>
-            <div className='form-modal'>
-              <form
-                className='data-form'
-                onSubmit={onSubmit}
-                autoComplete='off'
-                id='student-form'
-              >
-                <div>
-                  <label>Student Roll Number</label>
-                  <input
-                    type='text'
-                    name='rollNumber'
-                    value={displayData.rollNumber}
-                    onChange={handleChange}
-                  />
-                  <input
-                    type='text'
-                    name='_id'
-                    value={displayData._id}
-                    hidden
-                  />
-                </div>
-                <div>
-                  <label>Student Name</label>
-                  <input
-                    type='text'
-                    name='name'
-                    value={displayData.name}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Department</label>
-                  <input
-                    type='text'
-                    name='department'
-                    value={displayData.department}
-                    onChange={handleChange}
-                  />
+        )} 
+        { editForm && (
+            displayData && (
+        <div className="popup-container">
+            <div className="popup">
+                <h2>Edit Student</h2>
+                <div className="form-modal">
+                    <form className="data-form" onSubmit={onSubmit} autoComplete="off" id="student-form">
+                    <div>
+                    <label>Student Roll Number</label>
+                    <input type="text" name="rollNumber" value={displayData.rollNumber} onChange={handleChange}/>
+                    <input type="text" name="_id" value={displayData._id} hidden/>
+                    </div>
+                    <div>
+                    <label>Student Name</label>
+                    <input type="text" name="name" value={displayData.name} onChange={handleChange} />
+                    </div>
+                    <div>
+                    <label>Department</label>
+                    <input type="text" name="department" value={displayData.department} onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Section</label>
+                    <input type="text" name="section" value={displayData.section} onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Batch</label>
+                    <input type="text" name="batch" value={displayData.batch} onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Email</label>
+                    <input type="email" name="email" value={displayData.email} onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Phone Number</label>
+                    <input type="number" name="phone" value={displayData.phone} onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Password</label>
+                    <input type="password" name="password" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <button type="submit">Edit Student</button>
+                    </div> 
+                    </form>
+                    <span><AiFillCloseCircle size="1.7rem" onClick={()=>toggleModel("form")}/></span>
+                    <button className="close-data" onClick={()=>toggleModel("form")}>Close</button>
                 </div>
                 <div>
                   <label>Section</label>
