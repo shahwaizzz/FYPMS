@@ -131,7 +131,7 @@ select:focus{
   padding: 20px;
   border: 1px solid #888;
   margin-bottom: 80px;
-  width: 80%;
+  width: 45%;
 }
 .data-form{
   padding: 15px;
@@ -378,6 +378,9 @@ footer{
 }
 /*Mobile View*/
 @media only screen and (max-width: 760px){
+  .popup{
+    width: 80%;
+  }
   .title-bar h2{
     padding-left: 50px;
   }
