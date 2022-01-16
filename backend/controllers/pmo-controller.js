@@ -133,7 +133,7 @@ const deleteSupervisor = async (req, res) => {
     throw new NotFoundError("Student does not exist");
   }
 
-  res.status(StatusCodes.OK).json({msg:"Deleted"});
+  res.status(StatusCodes.OK).json({ msg: "Deleted" });
 };
 
 const Event = require("../models/event-model");
