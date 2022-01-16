@@ -7,15 +7,15 @@ export default function Events() {
   //   const api = axios.create({
   //     baseURL: "http://localhost:3000/api/v1/pmo/events",
   //   });
-  useEffect(() => {
-    fetch("http://localhost:3000/api/v1/pmo/events")
-      .then((res) => res.json())
-      .then((resp) => {
-        setGetData(resp.events);
-        console.log(getData);
-      })
-      .catch((err) => console.log(err));
-  });
+  // useEffect(() => {
+  //   fetch("http://localhost:3000/api/v1/pmo/events")
+  //     .then((res) => res.json())
+  //     .then((resp) => {
+  //       setGetData(resp.events);
+  //       console.log(getData);
+  //     })
+  //     .catch((err) => console.log(err));
+  // });
   //   useEffect(() => {
   //     api
   //       .get("/")
@@ -31,10 +31,10 @@ export default function Events() {
     <div>
       <button className='btn'>Create Event</button>
       <br />
-      {getData.map((e) => {
+      {/* {getData.map((e) => {
         <h4>{e.name}</h4>;
       })}
-      al
+      al */}
     </div>
   );
 }

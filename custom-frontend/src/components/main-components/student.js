@@ -156,7 +156,7 @@ function submitStudent(e) {
                  </tr>
          </thead>
          <tbody>
-            {getData.filter((student)=> student[searchValue].toString().indexOf(searchData.toUpperCase())>-1).map(student =>(
+            {getData.filter((student)=> student[searchValue].toString().indexOf(searchData)>-1).map(student =>(
                  <tr key={student._id}>
                  <td data-label="#Roll-No">{student.rollNumber}</td>
                  <td data-label="Name">{student.name}</td>
