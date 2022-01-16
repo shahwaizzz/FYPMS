@@ -14,7 +14,8 @@ export default function Student() {
     const [getData, setGetData] = useState(false);
     const [displayData, setDisplayData] = useState(false);
     const [refresh, setRefresh] = useState(false);
-    
+    const [searchValue, setSearchValue] = useState("rollNumber");
+
     const api = axios.create({
         baseURL : students
     });
@@ -55,6 +56,25 @@ export default function Student() {
     setDisplayData({ ...displayData, [name]: value });
   }
 
+  function handleSearch(e){
+    var getValue = e.target.value;
+    if(getValue === "Roll Number"){
+      setSearchValue("rollNumber")
+    }else if(getValue === "Name"){
+      setSearchValue("name")
+    }else if(getValue === "Batch"){
+      setSearchValue("batch")
+    }else if(getValue === "Section"){
+      setSearchValue("section")
+    }else if(getValue === "Department"){
+      setSearchValue("department")
+    }else if(getValue === "Email"){
+      setSearchValue("email")
+    }else if(getValue === "Phone"){
+      setSearchValue("phone")
+    }
+    setSearchBy(e.target.value);
+  }
 function submitStudent(e) {
     e.preventDefault();
     const options = {
@@ -107,7 +127,8 @@ function submitStudent(e) {
         <div className="data-container">
             <div className="data-container-top">
                 <input type="search" value={searchData} onChange={(e)=>setSearchData(e.target.value)} placeholder={"Search Student By " + searchBy}/>
-                <select onChange={(e)=>setSearchBy(e.target.value)}>
+                
+                <select onChange={handleSearch}>
                     <option value="Roll Number">Roll Number</option>
                     <option value="Name">Name</option>
                     <option value="Batch">Batch</option>
@@ -135,7 +156,7 @@ function submitStudent(e) {
                  </tr>
          </thead>
          <tbody>
-        {(getData.map(student =>(
+            {getData.filter((student)=> student[searchValue].toString().indexOf(searchData.toUpperCase())>-1).map(student =>(
                  <tr key={student._id}>
                  <td data-label="#Roll-No">{student.rollNumber}</td>
                  <td data-label="Name">{student.name}</td>
@@ -146,16 +167,14 @@ function submitStudent(e) {
                  <td data-label="Phone">{student.phone}</td>
                  <td data-label="Options">
                  <div className="manage-buttons">
-                     {/* <button className="view-btn" title="Student View" onClick={()=>toggleModel("view",student)}><BsFillImageFill size="1.5rem"/></button> */}
                      <button className="update-user" title="Edit Student" onClick={()=>toggleModel("update",student)}><FaEdit size="1.5rem"/></button>
                      <button className="delete-user" title="Delete Student" onClick={()=>deleteStudent(student._id)}><AiFillDelete size="1.5rem"/></button>
                      </div>
                  </td>
-             </tr>)))
-    }
+             </tr>))
+          } 
          </tbody>
      </table> }
-           
          {addStudent && (
         <div className="popup-container">
             <div className="popup">
