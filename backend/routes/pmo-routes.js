@@ -33,7 +33,7 @@ router
   .route("/supervisors/:id")
   .get(getSupervisor)
   .delete(deleteSupervisor)
-  .patch(editSupervisor);
+  .put(editSupervisor);
 
 router.route("/events").get(viewEvents).post(createEvent);
 router.route("/:id/marks").patch(addMarks);

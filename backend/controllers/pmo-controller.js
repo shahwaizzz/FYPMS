@@ -76,7 +76,7 @@ const deleteStudent = async (req, res) => {
     throw new NotFoundError("Student does not exist");
   }
 
-  res.status(StatusCodes.OK).json({ msg: "Deleted" });
+  res.status(StatusCodes.OK).json({ msg: "Deleted",err:{code:0,message:"No error found"} });
 };
 
 // Create And Manage Supervisors
@@ -85,12 +85,12 @@ const createSupervisors = async (req, res) => {
   const supervisor = await Supervisor.create({ ...req.body });
   res
     .status(StatusCodes.CREATED)
-    .json({ supervisor: { name: supervisor.name } });
+    .json({ supervisor: { name: supervisor.name },err:{code:0,message:"No error found"} });
 };
 
 const viewSupervisors = async (req, res) => {
   const supervisor = await Supervisor.find({});
-  res.status(StatusCodes.OK).json({ supervisor });
+  res.status(StatusCodes.OK).json({ supervisor,err:{code:0,message:"No error found"} });
 };
 
 const getSupervisor = async (req, res) => {
@@ -102,7 +102,7 @@ const getSupervisor = async (req, res) => {
     throw new NotFoundError("Supervisor does not exist");
   }
 
-  res.status(StatusCodes.OK).json({ supervisor });
+  res.status(StatusCodes.OK).json({ supervisor,err:{code:0,message:"No error found"} });
 };
 
 const editSupervisor = async (req, res) => {
@@ -122,7 +122,7 @@ const editSupervisor = async (req, res) => {
   if (!supervisor) {
     throw new NotFoundError("Student does not exist");
   }
-  res.status(StatusCodes.OK).json({ supervisor });
+  res.status(StatusCodes.OK).json({ supervisor,err:{code:0,message:"No error found"} });
 };
 
 const deleteSupervisor = async (req, res) => {
@@ -133,7 +133,7 @@ const deleteSupervisor = async (req, res) => {
     throw new NotFoundError("Student does not exist");
   }
 
-  res.status(StatusCodes.OK).json({ msg: "Deleted" });
+  res.status(StatusCodes.OK).json({ msg: "Deleted",err:{code:0,message:"No error found"} });
 };
 
 const Event = require("../models/event-model");

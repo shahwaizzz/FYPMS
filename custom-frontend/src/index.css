@@ -139,9 +139,12 @@ select:focus{
   display: flex;
   flex-direction: column;
 }
-.data-form input{
+.data-form input,.data-form select{
   margin: 5px 5px 10px 10px;
   padding: 5px;
+}
+.data-form select{
+  width:61%;
 }
 .data-form input[type=file],.data-form input[type=date]{
  width: auto;
@@ -354,7 +357,10 @@ select:focus{
 .form-modal .close-data{
   display: none;
 }
-
+/* .data-form div select{
+  width: 62%;
+  margin-left: 10px;
+} */
 /*Footer*/
 footer{
     position: fixed;

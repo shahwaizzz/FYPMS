@@ -7,7 +7,7 @@ import { supervisorsUrl } from '../../apis';
 import axios from 'axios';
 
 export default function Supervisor() {
-    const [addStudent, setAddStudent] = useState(false);
+    const [addSupervisor, setAddSupervisor] = useState(false);
     const [editForm, setEditForm] = useState(false);
     const [searchData, setSearchData] = useState("");
     const [searchBy, setSearchBy] = useState("Name");
@@ -27,13 +27,13 @@ export default function Supervisor() {
     },[refresh]);
       
      function deleteStudent(id){
-        var check = window.confirm("Are sure you want to delete the student");
+        var check = window.confirm("Are sure you want to delete the supervisor");
         if(check){
             api.delete(`/${id}`).then(res => {
               console.log(res)
                 if(res.status === 200){
                     setRefresh(!refresh);
-                    alert("Student Delete Successfully");
+                    alert("Supervisor Delete Successfully");
                 }
             })
             .catch(res => {alert(res)})
@@ -41,10 +41,10 @@ export default function Supervisor() {
      }
 
 
-    function toggleModel(e,student){
-        setDisplayData(student);
+    function toggleModel(e,supervisor){
+        setDisplayData(supervisor);
         if(e==="add"){
-            addStudent ? setAddStudent(false) : setAddStudent(true);
+            addSupervisor ? setAddSupervisor(false) : setAddSupervisor(true);
         }else if(e==="update"){
             editForm ? setEditForm(false) : setEditForm(true);
         }
@@ -58,14 +58,10 @@ export default function Supervisor() {
 
   function handleSearch(e){
     var getValue = e.target.value;
-    if(getValue === "Roll Number"){
-      setSearchValue("rollNumber")
+    if(getValue === "ID"){
+      setSearchValue("_id")
     }else if(getValue === "Name"){
       setSearchValue("name")
-    }else if(getValue === "Batch"){
-      setSearchValue("batch")
-    }else if(getValue === "Section"){
-      setSearchValue("section")
     }else if(getValue === "Department"){
       setSearchValue("department")
     }else if(getValue === "Email"){
@@ -75,7 +71,7 @@ export default function Supervisor() {
     }
     setSearchBy(e.target.value);
   }
-function submitStudent(e) {
+function submitSupervisor(e) {
     e.preventDefault();
     const options = {
         method: 'post',
@@ -85,11 +81,10 @@ function submitStudent(e) {
     fetch(supervisorsUrl, options)
     .then(res => res.json())
         .then((result) => {
-          console.log(result);
           if(result.err.code === 0){
             setDisplayData(false);
             setRefresh(!refresh);
-            alert("Student Add Successfully");
+            alert("Supervisor Add Successfully");
         }else if((result.err.code === 11000)){
           alert(`This ${JSON.stringify(result.err.keyValue)} is already in use`);
         }else if(result.err.message){
@@ -102,6 +97,7 @@ function submitStudent(e) {
 
     function onSubmit(e){
         e.preventDefault();
+        console.log(displayData);
         const options = {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
@@ -110,10 +106,11 @@ function submitStudent(e) {
         fetch(`${supervisorsUrl}/${displayData._id}`, options)
         .then(res => res.json())
             .then((result) => {
+              console.log(result);
               if(result.err.code === 0){
                 setDisplayData(false);
                 setRefresh(!refresh);
-                alert("Student Update Successfully");
+                alert("Supervisor Update Successfully");
             }else if((result.err.code === 11000)){
               alert(`This ${JSON.stringify(result.err.keyValue)} is already in use`);
             }else if(result.err.message){
@@ -126,19 +123,17 @@ function submitStudent(e) {
     return (
         <div className="data-container">
             <div className="data-container-top">
-                <input type="search" value={searchData} onChange={(e)=>setSearchData(e.target.value)} placeholder={"Search Student By " + searchBy}/>
+                <input type="search" value={searchData} onChange={(e)=>setSearchData(e.target.value)} placeholder={"Search Supervisor By " + searchBy}/>
                 
                 <select onChange={handleSearch}>
-                    <option value="Roll Number">Roll Number</option>
-                    <option value="Name">Name</option>
-                    <option value="Batch">Batch</option>
-                    <option value="Section">Section</option>
-                    <option value="Department">Department</option>
-                    <option value="Email">Email</option>
-                    <option value="Phone">Phone</option>
+                  <option value="Name">Name</option>
+                  <option value="ID">ID</option>
+                  <option value="Department">Department</option>
+                  <option value="Email">Email</option>
+                  <option value="Phone">Phone</option>
                 </select>
                 <button className="add-data-btn" onClick={()=>toggleModel("add")}>
-                     Add Student
+                     Add Supervisor
                 </button>
             </div>
             { !getData ? <div><Progressbar visibility={true}/></div>:
@@ -171,31 +166,24 @@ function submitStudent(e) {
           } 
          </tbody>
      </table> }
-         {addStudent && (
+         {addSupervisor && (
         <div className="popup-container">
             <div className="popup">
-            <h2>Add Student</h2>
+            <h2>Add Supervisor</h2>
                 <div className="form-modal">
-                    <form className="data-form" onSubmit={submitStudent} autoComplete="off" id="student-form">
+                    <form className="data-form" onSubmit={submitSupervisor} autoComplete="off" id="student-form">
                     <div>
-                    <label>Student Roll Number</label>
-                    <input type="text" name="rollNumber" onChange={handleChange}/>
-                    </div>
-                    <div>
-                    <label>Student Name</label>
+                    <label>Supervisor Name</label>
                     <input type="text" name="name" onChange={handleChange} />
                     </div>
                     <div>
                     <label>Department</label>
-                    <input type="text" name="department" onChange={handleChange}/>
-                    </div>
-                    <div>
-                    <label>Section</label>
-                    <input type="text" name="section" onChange={handleChange}/>
-                    </div>
-                    <div>
-                    <label>Batch</label>
-                    <input type="text" name="batch" onChange={handleChange}/>
+                    <select name="department" onChange={handleChange} required>
+                      <option value="">Select Department</option>
+                      <option value="CS">Computer Science</option>
+                      <option value="IT">Information Security</option>
+                      <option value="SE">Software Engineering</option>
+                    </select>
                     </div>
                     <div>
                     <label>Email</label>
@@ -210,7 +198,7 @@ function submitStudent(e) {
                     <input type="password" name="password" onChange={handleChange}/>
                     </div>
                     <div>
-                    <button type="submit">Add Student</button>
+                    <button type="submit">Add Supervisor</button>
                     </div> 
                     </form>
                     <span><AiFillCloseCircle size="1.7rem" onClick={()=>toggleModel("add")}/></span>
@@ -224,29 +212,14 @@ function submitStudent(e) {
             displayData && (
         <div className="popup-container">
             <div className="popup">
-                <h2>Edit Student</h2>
+                <h2>Edit Supervisor</h2>
                 <div className="form-modal">
                     <form className="data-form" onSubmit={onSubmit} autoComplete="off" id="student-form">
-                    <div>
-                    <label>Student Roll Number</label>
-                    <input type="text" name="rollNumber" value={displayData.rollNumber} onChange={handleChange}/>
+                  
                     <input type="text" name="_id" value={displayData._id} hidden/>
-                    </div>
                     <div>
-                    <label>Student Name</label>
+                    <label>Supervisor Name</label>
                     <input type="text" name="name" value={displayData.name} onChange={handleChange} />
-                    </div>
-                    <div>
-                    <label>Department</label>
-                    <input type="text" name="department" value={displayData.department} onChange={handleChange}/>
-                    </div>
-                    <div>
-                    <label>Section</label>
-                    <input type="text" name="section" value={displayData.section} onChange={handleChange}/>
-                    </div>
-                    <div>
-                    <label>Batch</label>
-                    <input type="text" name="batch" value={displayData.batch} onChange={handleChange}/>
                     </div>
                     <div>
                     <label>Email</label>
@@ -257,11 +230,20 @@ function submitStudent(e) {
                     <input type="number" name="phone" value={displayData.phone} onChange={handleChange}/>
                     </div>
                     <div>
+                    <label>Department</label>
+                    <select name="department" value={displayData.department} onChange={handleChange} required>
+                      <option value="">Select Department</option>
+                      <option value="CS">Computer Science</option>
+                      <option value="IT">Information Security</option>
+                      <option value="SE">Software Engineering</option>
+                    </select>
+                    </div>
+                    <div>
                     <label>Password</label>
                     <input type="password" name="password" onChange={handleChange}/>
                     </div>
                     <div>
-                    <button type="submit">Edit Student</button>
+                    <button type="submit">Edit Supervisor</button>
                     </div> 
                     </form>
                     <span><AiFillCloseCircle size="1.7rem" onClick={()=>toggleModel("update")}/></span>
