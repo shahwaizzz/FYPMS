@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { AiFillDelete } from "react-icons/ai";
-import { FaEdit } from "react-icons/fa";
-import { AiFillCloseCircle } from "react-icons/ai";
-import Progressbar from "../progressbar";
-import { supervisorsUrl } from "../../apis";
-import axios from "axios";
+import React, { useState,useEffect }  from 'react';
+import {AiFillDelete} from "react-icons/ai";
+import {FaEdit} from "react-icons/fa";
+import {AiFillCloseCircle} from "react-icons/ai";
+import Progressbar from '../progressbar';
+import { supervisorsUrl } from '../../apis';
+import axios from 'axios';
 
 export default function Supervisor() {
   const [addSupervisor, setAddSupervisor] = useState(false);
@@ -16,21 +16,29 @@ export default function Supervisor() {
   const [refresh, setRefresh] = useState(false);
   const [searchValue, setSearchValue] = useState("rollNumber");
 
-  const api = axios.create({
-    baseURL: supervisorsUrl,
-  });
+    const api = axios.create({
+        baseURL : supervisorsUrl
+    });
 
-  useEffect(() => {
-    api
-      .get("/")
-      .then((res) => {
-        setGetData(res.data.supervisor);
-        console.log(getData);
-      })
-      .catch((res) => {
-        alert(res);
-      });
-  }, [refresh]);
+    useEffect(() => {
+    api.get("/")
+    .then(res =>  {console.log(res.data)})
+    .catch(res => {alert(res)})
+    },[refresh]);
+      
+     function deleteStudent(id){
+        var check = window.confirm("Are sure you want to delete the student");
+        if(check){
+            api.delete(`/${id}`).then(res => {
+              console.log(res)
+                if(res.status === 200){
+                    setRefresh(!refresh);
+                    alert("Student Delete Successfully");
+                }
+            })
+            .catch(res => {alert(res)})
+        }
+     }
 
   function deleteSupervisor(id) {
     var check = window.confirm("Are sure you want to delete the supervisor");
@@ -86,9 +94,8 @@ export default function Supervisor() {
       body: JSON.stringify(displayData),
     };
     fetch(supervisorsUrl, options)
-      .then((res) => res.json())
-      .then(
-        (result) => {
+    .then(res => res.json())
+        .then((result) => {
           console.log(result);
           if (result.err.code === 0) {
             setDisplayData(false);
@@ -108,99 +115,118 @@ export default function Supervisor() {
       );
   }
 
-  function onSubmit(e) {
-    e.preventDefault();
-    const options = {
-      method: "put",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(displayData),
-    };
-    fetch(`${supervisorsUrl}/${displayData._id}`, options)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          if (result.err.code === 0) {
-            setDisplayData(false);
-            setRefresh(!refresh);
-            alert("Supervisor Update Successfully");
-          } else if (result.err.code === 11000) {
-            alert(
-              `This ${JSON.stringify(result.err.keyValue)} is already in use`
-            );
-          } else if (result.err.message) {
-            alert(result.err.message);
-          }
-        },
-        (error) => {
-          alert(error);
-        }
-      );
-  }
-  return (
-    <div className='data-container'>
-      <div className='data-container-top'>
-        <input
-          type='search'
-          value={searchData}
-          onChange={(e) => setSearchData(e.target.value)}
-          placeholder={"Search Supervisor By " + searchBy}
-        />
-
-        <select onChange={handleSearch}>
-          <option value='Id'>Id</option>
-          <option value='Name'>Name</option>
-          <option value='Email'>Email</option>
-          <option value='Department'>Department</option>
-        </select>
-        <button className='add-data-btn' onClick={() => toggleModel("add")}>
-          Add Supervisor
-        </button>
-      </div>
-      {!getData ? (
-        <div>
-          <Progressbar visibility={true} />
-        </div>
-      ) : (
-        <table className='table'>
-          <thead>
-            <tr>
-              <th scope='col'>#Id</th>
-              <th scope='col'>Name</th>
-              <th scope='col'>Email</th>
-              <th scope='col'>Department</th>
-              <th colSpan='2' scope='col'>
-                Options
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {getData
-              .filter(
-                (supervisor) =>
-                  supervisor[searchValue].toString().indexOf(searchData) > -1
-              )
-              .map((supervisor) => (
-                <tr key={supervisor._id}>
-                  <td data-label='#id'>{supervisor._id}</td>
-                  <td data-label='Name'>{supervisor.name}</td>
-                  <td data-label='Email'>{supervisor.email}</td>
-                  <td data-label='Department'>{supervisor.department}</td>
-                  <td data-label='Options'>
-                    <div className='manage-buttons'>
-                      <button
-                        className='update-user'
-                        title='Edit Supervisor'
-                        onClick={() => toggleModel("update", supervisor)}
-                      >
-                        <FaEdit size='1.5rem' />
-                      </button>
-                      <button
-                        className='delete-user'
-                        title='Delete Supervisor'
-                        onClick={() => deleteSupervisor(supervisor._id)}
-                      >
-                        <AiFillDelete size='1.5rem' />
-                      </button>
+    function onSubmit(e){
+        e.preventDefault();
+        const options = {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(displayData)
+        };
+        fetch(`${supervisorsUrl}/${displayData._id}`, options)
+        .then(res => res.json())
+            .then((result) => {
+              if(result.err.code === 0){
+                setDisplayData(false);
+                setRefresh(!refresh);
+                alert("Student Update Successfully");
+            }else if((result.err.code === 11000)){
+              alert(`This ${JSON.stringify(result.err.keyValue)} is already in use`);
+            }else if(result.err.message){
+              alert(result.err.message)
+            }
+            },(error) => {
+                alert(error);
+        });
+    }
+    return (
+        <div className="data-container">
+            <div className="data-container-top">
+                <input type="search" value={searchData} onChange={(e)=>setSearchData(e.target.value)} placeholder={"Search Student By " + searchBy}/>
+                
+                <select onChange={handleSearch}>
+                    <option value="Roll Number">Roll Number</option>
+                    <option value="Name">Name</option>
+                    <option value="Batch">Batch</option>
+                    <option value="Section">Section</option>
+                    <option value="Department">Department</option>
+                    <option value="Email">Email</option>
+                    <option value="Phone">Phone</option>
+                </select>
+                <button className="add-data-btn" onClick={()=>toggleModel("add")}>
+                     Add Student
+                </button>
+            </div>
+            { !getData ? <div><Progressbar visibility={true}/></div>:
+             <table className="table">
+             <thead>
+                 <tr>
+                     <th scope="col">#Roll-No</th>
+                     <th scope="col">Name</th>
+                     <th scope="col">Department</th>
+                     <th scope="col">Section</th>
+                     <th scope="col">Batch</th>
+                     <th scope="col">Email</th>
+                     <th scope="col">Phone</th>
+                     <th colSpan="2" scope="col">Options</th>
+                 </tr>
+         </thead>
+         <tbody>
+            {getData.filter((student)=> student[searchValue].toString().indexOf(searchData)>-1).map(student =>(
+                 <tr key={student._id}>
+                 <td data-label="#Roll-No">{student.rollNumber}</td>
+                 <td data-label="Name">{student.name}</td>
+                 <td data-label="Department">{student.department}</td>
+                 <td data-label="Section">{student.section}</td>
+                 <td data-label="Batch">{student.batch}</td>
+                 <td data-label="Email">{student.email}</td>
+                 <td data-label="Phone">{student.phone}</td>
+                 <td data-label="Options">
+                 <div className="manage-buttons">
+                     <button className="update-user" title="Edit Student" onClick={()=>toggleModel("update",student)}><FaEdit size="1.5rem"/></button>
+                     <button className="delete-user" title="Delete Student" onClick={()=>deleteStudent(student._id)}><AiFillDelete size="1.5rem"/></button>
+                     </div>
+                 </td>
+             </tr>))
+          } 
+         </tbody>
+     </table> }
+         {addStudent && (
+        <div className="popup-container">
+            <div className="popup">
+            <h2>Add Student</h2>
+                <div className="form-modal">
+                    <form className="data-form" onSubmit={submitStudent} autoComplete="off" id="student-form">
+                    <div>
+                    <label>Student Roll Number</label>
+                    <input type="text" name="rollNumber" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Student Name</label>
+                    <input type="text" name="name" onChange={handleChange} />
+                    </div>
+                    <div>
+                    <label>Department</label>
+                    <input type="text" name="department" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Section</label>
+                    <input type="text" name="section" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Batch</label>
+                    <input type="text" name="batch" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Email</label>
+                    <input type="email" name="email" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Phone Number</label>
+                    <input type="number" name="phone" onChange={handleChange}/>
+                    </div>
+                    <div>
+                    <label>Password</label>
+                    <input type="password" name="password" onChange={handleChange}/>
                     </div>
                   </td>
                 </tr>
