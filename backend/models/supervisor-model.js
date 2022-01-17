@@ -31,6 +31,10 @@ const SupervisorSchema = new mongoose.Schema({
     required: [true, "Please Provide Password"],
     minlength: 6,
   },
+  phone:{
+    type: String,
+    maxlength:13,
+  }
 });
 
 SupervisorSchema.pre("save", async function () {
