@@ -4,30 +4,21 @@ import axios from 'axios';
 
 export default function Events() {
   const [getData, setGetData] = useState(false);
-// useEffect(() => {
-//   fetch(eventUrl)
-//   .then(res => res.json())
-//   .then((result) => {
-//     console.log(result);
-//     setGetData(result.events);
-//     console.log(getData);
-//   },(error) => {
-//       alert(error);
-// });
-// }, []);
 const api = axios.create({
   baseURL : eventUrl
 });
 
 useEffect(() => {
 api.get("/")
-.then(res =>  {setGetData(res.events);console.log(getData)})
+.then(res =>  {setGetData(res.data.events)})
 .catch(res => {alert(res)})
 },[]);
   return (
     <div>
       <button className='btn'>Create Event</button>
-      {/* {getData&&getData.} */}
+     {getData&&getData.map(e=>(
+       <h1>{e.name}</h1>
+     ))} 
     </div>
   );
 }

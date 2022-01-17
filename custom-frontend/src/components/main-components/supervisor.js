@@ -3,7 +3,7 @@ import {AiFillDelete} from "react-icons/ai";
 import {FaEdit} from "react-icons/fa";
 import {AiFillCloseCircle} from "react-icons/ai";
 import Progressbar from '../progressbar';
-import { students } from '../../apis';
+import { supervisorsUrl } from '../../apis';
 import axios from 'axios';
 
 export default function Supervisor() {
@@ -17,12 +17,12 @@ export default function Supervisor() {
     const [searchValue, setSearchValue] = useState("rollNumber");
 
     const api = axios.create({
-        baseURL : students
+        baseURL : supervisorsUrl
     });
 
     useEffect(() => {
     api.get("/")
-    .then(res =>  {setGetData(res.data)})
+    .then(res =>  {console.log(res.data)})
     .catch(res => {alert(res)})
     },[refresh]);
       
@@ -82,7 +82,7 @@ function submitStudent(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(displayData)
     };
-    fetch(students, options)
+    fetch(supervisorsUrl, options)
     .then(res => res.json())
         .then((result) => {
           console.log(result);
@@ -107,7 +107,7 @@ function submitStudent(e) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(displayData)
         };
-        fetch(`${students}/${displayData._id}`, options)
+        fetch(`${supervisorsUrl}/${displayData._id}`, options)
         .then(res => res.json())
             .then((result) => {
               if(result.err.code === 0){
