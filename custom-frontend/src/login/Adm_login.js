@@ -7,9 +7,25 @@ export default function Adm_login() {
 
   const pmoLogin = async (event) => {
     event.preventDefault();
+  //   const data = {
+  //     email:"ali@gmail.com",
+  //     password:"password",
+  //   }
+  //   const options = {
+  //     method: 'post',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(data)
+  // };
+  // fetch("/api/v1/auth/pmo/login", options)
+  // .then(res => res.json())
+  //     .then((result) => {
+  //       console.log(result);
+  //     },(error) => {
+  //         console.log(error);
+  // });
     const response = await fetch("/api/v1/auth/pmo/login", {
       mode: "no-cors",
-      method: "POST",
+      method: "post",
       headers: {
         "Content-Type": "application/json",
       },
