@@ -21,23 +21,16 @@ export default function Supervisor() {
   });
 
   useEffect(() => {
-    fetch("/")
+    api
+      .get("/")
       .then((res) => {
-        console.log(res);
-        res.json();
+        console.log("sssss");
+        setGetData(res.data.supervisor);
       })
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err));
-    // api
-    //   .get("/")
-    //   .then((res) => {
-    //     console.log("sssss");
-    //     setGetData(res.data.supervisor);
-    //   })
-    //   .catch((err) => {
-    //     // alert(err, "hello");
-    //     console.log("hello");
-    //   });
+      .catch((err) => {
+        // alert(err, "hello");
+        console.log("hello");
+      });
   }, [refresh]);
 
   function deleteStudent(id) {
