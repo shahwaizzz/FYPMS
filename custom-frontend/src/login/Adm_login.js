@@ -8,18 +8,23 @@ export default function Adm_login() {
   const pmoLogin = async (event) => {
     event.preventDefault();
     const response = await fetch("/api/v1/auth/pmo/login", {
-      mode: "no-cors",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: "email",
-        password: "password",
+        email: email,
+        password: password,
       }),
     });
-
     const data = await response.json();
+    if (data.token) {
+      alert("login successfully");
+      window.location.href = "../../admin";
+    } else {
+      alert("Invalid email or passwords");
+    }
+    console.log(data);
 
     // if(data.user){
     //   alert('login successflly')

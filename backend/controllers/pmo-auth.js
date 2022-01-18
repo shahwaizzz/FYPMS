@@ -11,12 +11,12 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    console.log(req.body);
     throw new BadRequestError("Please Provide Email and Password");
   }
 
   const pmo = await PMO.findOne({ email });
   if (!pmo) {
+    console.log(req.body);
     throw new UnauthenticatedError("Invalid Credentials");
   }
   const isPasswordCorrect = await pmo.comparePassword(password);
