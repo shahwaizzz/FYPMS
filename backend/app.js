@@ -18,16 +18,16 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use((req, res, next) => {
-  res.append('Access-Control-Allow-Origin', ['*']);
-  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.append('Access-Control-Allow-Headers', 'Content-Type');
+  res.append("Access-Control-Allow-Origin", ["*"]);
+  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.append("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
 // extra packages
 
 // routes
 app.use("/api/v1/auth/pmo", pmoAuthRoutes);
-//app.use("/api/v1/pmo", authenticateUser, pmoRoutes);
+// app.use("/api/v1/pmo", authenticateUser, pmoRoutes);
 app.use("/api/v1/pmo", pmoRoutes);
 
 app.use("/api/v1/auth/supervisor", supervisorAuthRoutes);
