@@ -260,6 +260,11 @@ const updateProject = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ project });
 };
+const createProject = async (req, res) => {
+  const project = await Project.create({ ...req.body });
+
+  res.status(StatusCodes.OK).json({ project });
+};
 
 module.exports = {
   createStudent,
@@ -279,4 +284,5 @@ module.exports = {
   getSingleProject,
   deleteProject,
   updateProject,
+  createProject,
 };

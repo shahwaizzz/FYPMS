@@ -63,7 +63,7 @@ export default function Adm_login() {
           />
           {/* Uncomment the next line to show the error message */}
           {/* <span id="last-name-error">Please enter a last name</span> */}
-          <button className='form-field button1' type='submit'>
+          <button className='form-field button1' type='submit' name='login'>
             Sign in as Admin
           </button>
           <p className='t-center'>-OR-</p>
