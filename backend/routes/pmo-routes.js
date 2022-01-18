@@ -49,5 +49,5 @@ router
   .route("/projects/:id")
   .get(getSingleProject)
   .delete(deleteProject)
-  .patch(updateProject);
+  .put(updateProject);
 module.exports = router;
