@@ -1,93 +1,94 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-html{
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+html {
   box-sizing: border-box;
   background-color: rgb(221, 221, 221);
 }
-body{
+body {
   margin: 0;
   padding: 0;
   color: #097545;
   font-family: Montserrat, Helvetica, Arial, sans-serif;
 }
-.icons{
+.icons {
   cursor: pointer;
   background-color: transparent;
   vertical-align: middle;
 }
-.data{
+.data {
   margin-top: 80px;
- margin-left: 15rem; 
- transition: all 0.5s;
- }
- .data-width {
-   margin-left: 3rem; 
- }
- .table{
+  margin-left: 15rem;
+  transition: all 0.5s;
+}
+.data-width {
+  margin-left: 3rem;
+}
+.table {
   width: 100%;
-	border-collapse: collapse;
- }
- .table td,.table th{
-  padding:10px 12px;
-  border:1px solid rgb(219, 225, 233);
+  border-collapse: collapse;
+}
+.table td,
+.table th {
+  padding: 10px 12px;
+  border: 1px solid rgb(219, 225, 233);
   text-align: center;
   font-weight: 500;
-  font-size:16px;
+  font-size: 16px;
 }
 
-.table  thead th{
-	background-color: #00A65A;
-	color:#ffffff;
-	position:relative;
-	z-index: 1;
-	position: sticky;
-	top: 10%;
+.table thead th {
+  background-color: #00a65a;
+  color: #ffffff;
+  position: relative;
+  z-index: 1;
+  position: sticky;
+  top: 10%;
 }
-.table tbody tr{
+.table tbody tr {
   background-color: #ffffff;
 }
-.table tbody tr:nth-child(even){
-	background-color: #e2dddd;
+.table tbody tr:nth-child(even) {
+  background-color: #e2dddd;
 }
-button{
+button {
   cursor: pointer;
   padding: 10px;
   font-size: 15px;
   color: white;
-  background: #00A65A;
+  background: #00a65a;
   letter-spacing: 0.1rem;
   border: none;
 }
-button:hover{
-  border: 1px solid #00A65A;
-    background: rgb(238, 238, 238);
-    color: #00A65A;
-    transition: 0.3s;
+button:hover {
+  border: 1px solid #00a65a;
+  background: rgb(238, 238, 238);
+  color: #00a65a;
+  transition: 0.3s;
 }
-.edit-btn{
+.edit-btn {
   background-color: #daf8d7;
   color: #1c721c;
 }
-.edit-btn:hover{
+.edit-btn:hover {
   background-color: #1c721c;
   color: #daf8d7;
 }
-.delete-btn{
-  background-color: #F8D7DA;
-    color: #721C24;
+.delete-btn {
+  background-color: #f8d7da;
+  color: #721c24;
 }
-.delete-btn:hover{
-  color: #F8D7DA;
-  background-color:#721C24;;
-	transition: 0.3s;
+.delete-btn:hover {
+  color: #f8d7da;
+  background-color: #721c24;
+  transition: 0.3s;
 }
-input[type=text],
-input[type=password],
-input[type=search],
-input[type=date],
-input[type=number],
-input[type=email],
-input[type=file],
-select{
+input[type="text"],
+input[type="password"],
+input[type="search"],
+input[type="date"],
+input[type="number"],
+input[type="email"],
+input[type="file"],
+select {
   padding: 10px;
   font-size: 17px;
   box-sizing: border-box;
@@ -96,36 +97,36 @@ select{
   outline: none;
   background-color: white;
 }
-input[type=search]{
+input[type="search"] {
   width: 60%;
 }
-input[type=date]{
+input[type="date"] {
   width: 300px;
 }
-select{
+select {
   width: 20%;
 }
-input[type=search]:focus,
-input[type=date]:focus,
-input[type=text]:focus,
-input[type=number]:focus,
-input[type=file]:focus,
-select:focus{
-  border: 2px solid #00A65A;
+input[type="search"]:focus,
+input[type="date"]:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="file"]:focus,
+select:focus {
+  border: 2px solid #00a65a;
 }
-.popup-container{
+.popup-container {
   position: fixed;
-  z-index: 3; 
-  padding-top: 100px; 
+  z-index: 3;
+  padding-top: 100px;
   left: 0;
   top: 0;
-  width: 100%; 
+  width: 100%;
   height: 100%;
-  overflow: auto; 
-  background-color: rgb(0,0,0); 
-  background-color: rgba(0,0,0,0.4); 
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
-.popup{
+.popup {
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
@@ -133,32 +134,34 @@ select:focus{
   margin-bottom: 80px;
   width: 45%;
 }
-.data-form{
+.data-form {
   padding: 15px;
   text-align: right;
   display: flex;
   flex-direction: column;
 }
-.data-form input,.data-form select{
+.data-form input,
+.data-form select {
   margin: 5px 5px 10px 10px;
   padding: 5px;
 }
-.data-form select{
-  width:61%;
+.data-form select {
+  width: 61%;
 }
-.data-form input[type=file],.data-form input[type=date]{
- width: auto;
+.data-form input[type="file"],
+.data-form input[type="date"] {
+  width: auto;
 }
-.data-form button{
+.data-form button {
   width: 200px;
   margin: 20px;
 }
-.progress-bar{
+.progress-bar {
   background-color: white;
   padding: 20px;
 }
 /* Title Bar */
-.title-bar{
+.title-bar {
   display: flex;
   position: fixed;
   justify-content: space-between;
@@ -167,23 +170,23 @@ select:focus{
   z-index: 2;
   top: 0;
   background-color: white;
-  box-shadow:inset 0 -4px 3px rgb(218, 216, 216);
+  box-shadow: inset 0 -4px 3px rgb(218, 216, 216);
 }
-.title-bar-icons{
+.title-bar-icons {
   margin: 15px 35px 10px 35px;
   display: flex;
 }
-.title-bar-icons div{
+.title-bar-icons div {
   cursor: pointer;
 }
-.title-bar-icons>:last-child{
+.title-bar-icons > :last-child {
   margin-left: 10px;
 }
-.title-bar-icons div:hover{
+.title-bar-icons div:hover {
   color: #004d2a;
 }
 /* Menubar */
-.menubar{
+.menubar {
   height: 100%;
   width: 0;
   position: fixed;
@@ -191,77 +194,80 @@ select:focus{
   top: 0;
   left: 0;
   overflow-x: hidden;
-  background: #00A65A;
+  background: #00a65a;
   padding: 0;
   transition: 0.5s;
 }
 
-.menubar-icons{
-  margin:0px 10px 5px 5px;
+.menubar-icons {
+  margin: 0px 10px 5px 5px;
 }
-  .menubar-title{
-  position:fixed;
+.menubar-title {
+  position: fixed;
   background-color: white;
   font-weight: 550;
   padding: 5px;
   padding-right: 100px;
-  top:0;
+  top: 0;
   margin-top: 12px;
   text-transform: uppercase;
   letter-spacing: 0.1rem;
   transition: 0.4s;
 }
-.menubar-title-icon{
+.menubar-title-icon {
   cursor: pointer;
 }
-.menubar-title-icon:hover{
+.menubar-title-icon:hover {
   color: white;
   padding-top: 9px;
   padding-bottom: 9px;
   padding-left: 4px;
-  background-color: #00A65A;
+  background-color: #00a65a;
   border-radius: 50%;
   transition: 0.5s;
 }
-.menubar ul{
+.menubar ul {
   list-style: none;
   margin-top: 80px;
   padding-left: 0;
   color: white;
- }
-.menubar li{
-   cursor: pointer;
-   padding: 7px;
-   border-bottom: 1px solid rgba(255,255,255,0.05);
-   transition: 0.3s;
- }
-.menubar li:hover{
-  color:#00A65A;
+}
+.menubar li {
+  cursor: pointer;
+  padding: 7px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: 0.3s;
+}
+.menubar li:hover {
+  color: #00a65a;
   background-color: white;
 }
-.menu-hide{
+.menu-hide {
   width: 45px;
 }
-.menu-show{
+.menu-show {
   width: 235px;
- 
 }
-.menubar-list span{
+.links {
+  text-decoration: none;
+  color: white;
+}
+.menubar-list span {
   display: none;
 }
-.hide-menu{
+.hide-menu {
   text-align: left;
   background-color: white;
   position: relative;
 }
 /*Login*/
-.login{
+.login {
   background-color: rgb(243, 241, 241);
   position: absolute;
   width: 100%;
   height: 100%;
 }
-.login-form{
+.login-form {
   background-color: #ebfff6;
   width: 25rem;
   height: 30rem;
@@ -270,22 +276,22 @@ select:focus{
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.login-form-wrap{
+.login-form-wrap {
   margin: 10px 0 0 0;
 }
-.login-form-wrap h1{
+.login-form-wrap h1 {
   text-align: center;
   margin-bottom: 100px;
 }
-.login-form-wrap div{
+.login-form-wrap div {
   margin-right: 30px;
 }
 /*Home*/
-.home{
+.home {
   margin: 10px;
-   display: flex; 
+  display: flex;
 }
-.home-box{
+.home-box {
   cursor: pointer;
   background-color: white;
   padding: 10px;
@@ -293,68 +299,68 @@ select:focus{
   text-align: center;
   width: 30%;
 }
-.home-box:hover{
+.home-box:hover {
   border-radius: 10px;
-  border: 2px solid #00A65A;
+  border: 2px solid #00a65a;
   transition: 0.3s;
 }
 /*Manage Data*/
-.data-container{
+.data-container {
   margin-right: 10px;
 }
-.data-container-top{
+.data-container-top {
   display: flex;
   margin-bottom: 30px;
 }
-.add-data-btn{
+.add-data-btn {
   margin-left: 10px;
 }
-.manage-buttons{
+.manage-buttons {
   display: flex;
   justify-content: space-around;
 }
-.manage-buttons button{
+.manage-buttons button {
   background: transparent;
-  color: #00A65A;
+  color: #00a65a;
   padding: 0;
 }
-.manage-buttons button:hover{
+.manage-buttons button:hover {
   padding: 0;
   border: none;
   transition: 0.3s;
 }
-.view-btn:hover{
+.view-btn:hover {
   color: rgb(0, 204, 255);
 }
-.update-user:hover{
+.update-user:hover {
   color: #085c1b;
 }
-.delete-user:hover{
-  color: #721C24;
+.delete-user:hover {
+  color: #721c24;
 }
-.data-details{
+.data-details {
   display: flex;
   justify-content: space-between;
 }
-.data-details div{
+.data-details div {
   width: 50%;
   text-align: left;
   padding: 30px;
   background-color: rgb(238, 238, 238);
 }
-.data-details div h4{
+.data-details div h4 {
   letter-spacing: 00.1rem;
-  border-bottom: 2px solid white ;
+  border-bottom: 2px solid white;
   padding: 7px;
 }
-.data-details button{
+.data-details button {
   display: none;
 }
-.form-modal{
+.form-modal {
   display: flex;
   justify-content: space-between;
 }
-.form-modal .close-data{
+.form-modal .close-data {
   display: none;
 }
 /* .data-form div select{
@@ -362,79 +368,82 @@ select:focus{
   margin-left: 10px;
 } */
 /*Footer*/
-footer{
-    position: fixed;
-    bottom: 5px;
-    width: 100%;
-    background-color: rgb(230, 230, 230);
-    text-align: center;
-    padding: 5px;
+footer {
+  position: fixed;
+  bottom: 5px;
+  width: 100%;
+  background-color: rgb(230, 230, 230);
+  text-align: center;
+  padding: 5px;
 }
-@media only screen and (max-width: 1080px){
-  .update-btn{
+@media only screen and (max-width: 1080px) {
+  .update-btn {
     margin-left: 3px;
     margin-right: 3px;
   }
-  .home{
+  .home {
     flex-direction: column;
   }
-  .home-box{
+  .home-box {
     width: 80%;
   }
 }
 /*Mobile View*/
-@media only screen and (max-width: 760px){
-  .popup{
+@media only screen and (max-width: 760px) {
+  .popup {
     width: 80%;
   }
-  .title-bar h2{
+  .title-bar h2 {
     padding-left: 50px;
   }
-  .menubar-title{
+  .menubar-title {
     padding-right: 10px;
   }
-  .menubar-title-test{
-   display: none;
+  .menubar-title-test {
+    display: none;
   }
-  .menu-hide{
+  .menu-hide {
     width: 0px;
   }
-  .menu-show{
+  .menu-show {
     width: 100%;
   }
   .data-width {
-    margin-left: 1rem; 
+    margin-left: 1rem;
   }
-  .table thead{
-		display: none;
-	}
+  .table thead {
+    display: none;
+  }
 
-  .table, .table tbody, .table tr, .table td{
-		display: block;
-	}
-	.table tr{
-		margin-bottom:15px;
-	}
-	.table td{
-		text-align: right;
-		padding-left: 50%;
-		text-align: right;
-		position: relative;
-	}
-	.table td::before{
-		content: attr(data-label);
-		position: absolute;
-		left:0;
-		width: 50%;
-		padding-left:15px;
-		font-size:15px;
-		font-weight: bold;
-		text-align: left;
-	}
-  .border-line{
-    width:200px;
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
   }
-  .data-details{
+  .table tr {
+    margin-bottom: 15px;
+  }
+  .table td {
+    text-align: right;
+    padding-left: 50%;
+    text-align: right;
+    position: relative;
+  }
+  .table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left;
+  }
+  .border-line {
+    width: 200px;
+  }
+  .data-details {
     flex-direction: column;
   }
   /* .data-details img{
@@ -442,35 +451,35 @@ footer{
     width: 100%;
     height: 100%;
   } */
-  .data-details div{
+  .data-details div {
     margin: 10px;
     width: 80%;
   }
-  .data-details .close-data{
+  .data-details .close-data {
     display: none;
   }
-  .data-details button{
+  .data-details button {
     margin-top: 5px;
     display: block;
   }
-  .data-container .popup-container .popup h2{
-    padding-top:10px;
+  .data-container .popup-container .popup h2 {
+    padding-top: 10px;
   }
-  .form-modal{
+  .form-modal {
     flex-direction: column;
   }
-  .form-modal img{
+  .form-modal img {
     width: 100%;
     height: 100%;
   }
-  .form-modal span{
+  .form-modal span {
     display: none;
   }
-  .form-modal .close-data{
+  .form-modal .close-data {
     display: block;
     margin-top: 10px;
   }
-  .data-form div{
+  .data-form div {
     display: flex;
     flex-direction: column;
     text-align: left;
