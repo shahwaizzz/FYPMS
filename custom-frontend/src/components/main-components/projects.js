@@ -3,7 +3,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Progressbar from "../progressbar";
-import { supervisorsUrl } from "../../apis";
+import { projectUrl, supervisorsUrl } from "../../apis";
 import axios from "axios";
 
 export default function Projects() {
@@ -17,15 +17,15 @@ export default function Projects() {
   const [searchValue, setSearchValue] = useState("name");
 
   const api = axios.create({
-    baseURL: supervisorsUrl,
+    baseURL: projectUrl,
   });
 
   useEffect(() => {
     api
       .get("/")
       .then((res) => {
-        console.log("sssss");
-        setGetData(res.data.supervisor);
+        // setGetData(res.data.projects);
+        console.log(res.data.projects);
       })
       .catch((err) => {
         // alert(err, "hello");
@@ -161,60 +161,60 @@ export default function Projects() {
           Create New Project
         </button>
       </div>
-      {!getData ? (
+      {/* {!getData ? (
         <div>
           <Progressbar visibility={true} />
         </div>
       ) : (
-        <table className='table'>
-          <thead>
-            <tr>
-              <th scope='col'>ID</th>
-              <th scope='col'>Name</th>
-              <th scope='col'>Department</th>
-              <th scope='col'>Email</th>
-              <th scope='col'>Phone</th>
-              <th colSpan='2' scope='col'>
-                Options
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {getData
-              .filter(
-                (supervisor) =>
-                  supervisor[searchValue].toString().indexOf(searchData) > -1
-              )
-              .map((supervisor) => (
-                <tr key={supervisor._id}>
-                  <td data-label='ID'>{supervisor._id}</td>
-                  <td data-label='Name'>{supervisor.name}</td>
-                  <td data-label='Department'>{supervisor.department}</td>
-                  <td data-label='Email'>{supervisor.email}</td>
-                  <td data-label='Phone'>{supervisor.phone}</td>
-                  <td data-label='Options'>
-                    <div className='manage-buttons'>
-                      <button
-                        className='update-user'
-                        title='Edit Student'
-                        onClick={() => toggleModel("update", supervisor)}
-                      >
-                        <FaEdit size='1.5rem' />
-                      </button>
-                      <button
-                        className='delete-user'
-                        title='Delete Student'
-                        onClick={() => deleteStudent(supervisor._id)}
-                      >
-                        <AiFillDelete size='1.5rem' />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      )}
+        // <table className='table'>
+        //   <thead>
+        //     <tr>
+        //       <th scope='col'>ID</th>
+        //       <th scope='col'>Title</th>
+        //       <th scope='col'>Department</th>
+        //       <th scope='col'>Email</th>
+        //       <th scope='col'>Phone</th>
+        //       <th colSpan='2' scope='col'>
+        //         Options
+        //       </th>
+        //     </tr>
+        //   </thead>
+        //   <tbody>
+        //     {getData
+        //       .filter(
+        //         (project) =>
+        //           project[searchValue].toString().indexOf(searchData) > -1
+        //       )
+        //       .map((project) => (
+        //         <tr key={project._id}>
+        //           <td data-label='ID'>{supervisor._id}</td>
+        //           <td data-label='Name'>{supervisor.name}</td>
+        //           <td data-label='Department'>{supervisor.department}</td>
+        //           <td data-label='Email'>{supervisor.email}</td>
+        //           <td data-label='Phone'>{supervisor.phone}</td>
+        //           <td data-label='Options'>
+        //             <div className='manage-buttons'>
+        //               <button
+        //                 className='update-user'
+        //                 title='Edit Student'
+        //                 onClick={() => toggleModel("update", supervisor)}
+        //               >
+        //                 <FaEdit size='1.5rem' />
+        //               </button>
+        //               <button
+        //                 className='delete-user'
+        //                 title='Delete Student'
+        //                 onClick={() => deleteStudent(supervisor._id)}
+        //               >
+        //                 <AiFillDelete size='1.5rem' />
+        //               </button>
+        //             </div>
+        //           </td>
+        //         </tr>
+        //       ))}
+        //   </tbody>
+        // </table>
+      )} */}
       {addSupervisor && (
         <div className='popup-container'>
           <div className='popup'>
