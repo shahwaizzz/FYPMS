@@ -10,8 +10,8 @@ const register = async (req, res) => {
 };
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
   if (!email || !password) {
+    console.log(req.body);
     throw new BadRequestError("Please Provide Email and Password");
   }
 

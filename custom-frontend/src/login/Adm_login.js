@@ -5,7 +5,7 @@ export default function Adm_login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function pmoLogin(event) {
+  const pmoLogin = async (event) => {
     event.preventDefault();
     const response = await fetch("/api/v1/auth/pmo/login", {
       mode: "no-cors",
@@ -14,8 +14,8 @@ export default function Adm_login() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email,
-        password,
+        email: "email",
+        password: "password",
       }),
     });
 
@@ -29,7 +29,7 @@ export default function Adm_login() {
     //   alert('Invalid Username or Password !')
     // }
     console.log(data);
-  }
+  };
 
   return (
     <div className='body-div'>
@@ -59,6 +59,7 @@ export default function Adm_login() {
             type='password'
             placeholder='Password'
             name='password'
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           {/* Uncomment the next line to show the error message */}
