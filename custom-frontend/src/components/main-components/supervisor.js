@@ -24,12 +24,10 @@ export default function Supervisor() {
     api
       .get("/")
       .then((res) => {
-        console.log("sssss");
         setGetData(res.data.supervisor);
       })
       .catch((err) => {
-        // alert(err, "hello");
-        console.log("hello");
+        alert(err);
       });
   }, [refresh]);
 
