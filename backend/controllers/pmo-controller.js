@@ -8,7 +8,9 @@ const Student = require("../models/student-model");
 // Create And Manage Students
 const createStudent = async (req, res) => {
   const student = await Student.create({ ...req.body });
-  res.status(StatusCodes.OK).json({ student,err:{code:0,message:"No error found"} });
+  res
+    .status(StatusCodes.OK)
+    .json({ student, err: { code: 0, message: "No error found" } });
 };
 const getStudent = async (req, res) => {
   const { id: studentId } = req.params;
@@ -19,7 +21,9 @@ const getStudent = async (req, res) => {
     throw new NotFoundError("Student does not found");
   }
 
-  res.status(StatusCodes.OK).json({student,err:{code:0,message:"No error found"}});
+  res
+    .status(StatusCodes.OK)
+    .json({ student, err: { code: 0, message: "No error found" } });
 };
 
 const viewStudentList = async (req, res) => {
@@ -64,7 +68,9 @@ const editStudent = async (req, res) => {
     throw new NotFoundError("Student does not exist");
   }
 
-  res.status(StatusCodes.OK).json({ student,err:{code:0,message:"No error found"} });
+  res
+    .status(StatusCodes.OK)
+    .json({ student, err: { code: 0, message: "No error found" } });
 };
 
 const deleteStudent = async (req, res) => {
@@ -76,21 +82,26 @@ const deleteStudent = async (req, res) => {
     throw new NotFoundError("Student does not exist");
   }
 
-  res.status(StatusCodes.OK).json({ msg: "Deleted",err:{code:0,message:"No error found"} });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Deleted", err: { code: 0, message: "No error found" } });
 };
 
 // Create And Manage Supervisors
 const createSupervisors = async (req, res) => {
   console.log(req.body);
   const supervisor = await Supervisor.create({ ...req.body });
-  res
-    .status(StatusCodes.CREATED)
-    .json({ supervisor: { name: supervisor.name },err:{code:0,message:"No error found"} });
+  res.status(StatusCodes.CREATED).json({
+    supervisor: { name: supervisor.name },
+    err: { code: 0, message: "No error found" },
+  });
 };
 
 const viewSupervisors = async (req, res) => {
   const supervisor = await Supervisor.find({});
-  res.status(StatusCodes.OK).json({ supervisor,err:{code:0,message:"No error found"} });
+  res
+    .status(StatusCodes.OK)
+    .json({ supervisor, err: { code: 0, message: "No error found" } });
 };
 
 const getSupervisor = async (req, res) => {
@@ -102,7 +113,9 @@ const getSupervisor = async (req, res) => {
     throw new NotFoundError("Supervisor does not exist");
   }
 
-  res.status(StatusCodes.OK).json({ supervisor,err:{code:0,message:"No error found"} });
+  res
+    .status(StatusCodes.OK)
+    .json({ supervisor, err: { code: 0, message: "No error found" } });
 };
 
 const editSupervisor = async (req, res) => {
@@ -122,7 +135,9 @@ const editSupervisor = async (req, res) => {
   if (!supervisor) {
     throw new NotFoundError("Student does not exist");
   }
-  res.status(StatusCodes.OK).json({ supervisor,err:{code:0,message:"No error found"} });
+  res
+    .status(StatusCodes.OK)
+    .json({ supervisor, err: { code: 0, message: "No error found" } });
 };
 
 const deleteSupervisor = async (req, res) => {
@@ -133,7 +148,9 @@ const deleteSupervisor = async (req, res) => {
     throw new NotFoundError("Student does not exist");
   }
 
-  res.status(StatusCodes.OK).json({ msg: "Deleted",err:{code:0,message:"No error found"} });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Deleted", err: { code: 0, message: "No error found" } });
 };
 
 const Event = require("../models/event-model");
@@ -199,6 +216,50 @@ const addMarks = async (req, res) => {
   // console.log(updateStudent);
   // res.status(StatusCodes.OK).json({ project });
 };
+// manage projects
+const Project = require("../models/project-model");
+const getAllProjects = async (req, res) => {
+  const projects = await Project.find({}).sort("title");
+  res.status(StatusCodes.OK).json({ count: projects.length, projects });
+};
+
+const getSingleProject = async (req, res) => {
+  const { id: projectId } = req.params;
+  const project = await Project.findOne({
+    _id: projectId,
+  });
+  if (!project) {
+    throw new NotFoundError("Project does not found");
+  }
+  res.status(StatusCodes.OK).json({ project });
+};
+
+const deleteProject = async (req, res) => {
+  const { id: projectId } = req.params;
+  const project = await Project.findOneAndRemove({
+    _id: projectId,
+  });
+  if (!project) {
+    throw new NotFoundError("Project does not found");
+  }
+  res.status(StatusCodes.OK).send("Deleted");
+};
+const updateProject = async (req, res) => {
+  const { id: projectId } = req.params;
+  // const { title, group } = req.body;
+  // if (title === "" || group === "") {
+  //   throw new BadRequestError("Company and Position values cannot be empty");
+  // }
+  const project = await Project.findByIdAndUpdate(
+    { _id: projectId },
+    req.body,
+    { new: true, runValidators: true }
+  );
+  if (!project) {
+    throw new NotFoundError("Project does not exist");
+  }
+  res.status(StatusCodes.OK).json({ project });
+};
 
 module.exports = {
   createStudent,
@@ -214,4 +275,8 @@ module.exports = {
   createEvent,
   viewEvents,
   addMarks,
+  getAllProjects,
+  getSingleProject,
+  deleteProject,
+  updateProject,
 };

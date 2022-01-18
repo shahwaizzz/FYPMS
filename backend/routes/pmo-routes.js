@@ -15,6 +15,10 @@ const {
   viewEvents,
   createEvent,
   addMarks,
+  getAllProjects,
+  getSingleProject,
+  deleteProject,
+  updateProject,
 } = require("../controllers/pmo-controller");
 
 //Student Routes
@@ -38,4 +42,11 @@ router
 router.route("/events").get(viewEvents).post(createEvent);
 router.route("/:id/marks").patch(addMarks);
 
+// Manage Projects routes
+router.route("/projects").get(getAllProjects);
+router
+  .route("/projects/:id")
+  .get(getSingleProject)
+  .delete(deleteProject)
+  .patch(updateProject);
 module.exports = router;

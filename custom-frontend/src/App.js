@@ -2,21 +2,22 @@ import React, { useState } from "react";
 import Home from "./components/main-components/home";
 import Navbar from "./components/navbar";
 import Sidebar from "./components/sidebar";
-import Dashboard from "./dashboard";
-import "./index.css";
+import "./login/index.css";
 import Login from "./login";
 import { Routes, Route } from "react-router-dom";
 import Projects from "./components/main-components/projects";
 import Events from "./components/main-components/events";
-import { students } from "./apis";
 import Student from "./components/main-components/student";
 import Supervisor from "./components/main-components/supervisor";
 import UserProfile from "./components/main-components/user-profile";
+import Adm_login from "./login/Adm_login";
+import Thr_login from "./login/Thr_login";
+import Std_login from "./login/Std_login";
 
 function handleValidation(params) {}
 function App() {
   // Commit Test
-  const [validation, setValidation] = useState(true);
+  const [validation, setValidation] = useState(false);
   if (validation) {
     return (
       <div className='App'>
@@ -47,17 +48,17 @@ function App() {
             element={<Sidebar name='User Profile' abc={<UserProfile />} />}
           />
         </Routes>
-
-        {/* <Dashboard /> */}
-        {/* <Navbar />
-        <Sidebar abc={<Home />} /> */}
-        {/* <Home /> */}
       </div>
     );
   } else {
     return (
       <div className='App'>
-        <Login />
+        {/* <Login /> */}
+        <Routes>
+          <Route path='/auth/pmo' element={<Adm_login />} />
+          <Route path='/auth/supervisor' element={<Thr_login />} />
+          <Route path='/auth/student' element={<Std_login />} />
+        </Routes>
       </div>
     );
   }
