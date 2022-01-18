@@ -22,43 +22,9 @@ import Events from "./main-components/events";
 import { Link } from "react-router-dom";
 
 export default function Sidebar(props) {
-  const [changePages, setChangePages] = useState(props.abc);
   const [menuChange, setMenuChange] = useState("menu-hide");
   const [dataWidth, setDataWidth] = useState("data-width");
   const [menubarList, setMenubarList] = useState("menubar-list");
-  const [pageName, setPageName] = useState(props.page);
-
-  //   function changePage(e) {
-  //     if (e === "Home") {
-  //       setPageName("Home");
-  //       setChangePages(<Home />);
-  //     }
-  //     if (e === "Projects") {
-  //       setPageName("Projects");
-  //       setChangePages(<Projects />);
-  //     }
-  //     if (e === "Events") {
-  //       setPageName("Events");
-  //       setChangePages(<Events />);
-  //     }
-  //     if (e === "Student") {
-  //       setPageName("Students");
-  //       setChangePages(<Student />);
-  //     }
-  //     if (e === "Supervisor") {
-  //       setPageName("Supervisors");
-  //       setChangePages(<Supervisor />);
-  //     }
-  //     if (e === "UserProfile") {
-  //       setPageName("User Profile");
-  //       setChangePages(<UserProfile />);
-  //     }
-  //     if (e === "Logout") {
-  //       setPageName("Logout");
-  //       setChangePages(<Logout />);
-  //     }
-  //     menuToggle("sidebar");
-  //   }
 
   function menuToggle(e) {
     if (menuChange === "menu-show" && dataWidth === null) {
@@ -130,31 +96,6 @@ export default function Sidebar(props) {
                   <span>Logout</span>
                 </li>
               </Link>
-
-              {/* <li onClick={() => changePage("Projects")}>
-                <AiOutlineProject />
-                <span>Manage Projects</span>
-              </li>
-              <li onClick={() => changePage("Events")}>
-                <MdOutlineEmojiEvents />
-                <span>Mange Events</span>
-              </li>
-              <li onClick={() => changePage("Student")}>
-                <AiOutlineBook />
-                <span>Students</span>
-              </li>
-              <li onClick={() => changePage("Supervisor")}>
-                <MdOutlineSupervisedUserCircle />
-                <span>Supervisors</span>
-              </li>
-              <li onClick={() => changePage("UserProfile")}>
-                <AiOutlineProfile />
-                <span>User Profile</span>
-              </li>
-              <li onClick={() => changePage("Logout")}>
-                <MdLogout />
-                <span> Logout</span>
-              </li> */}
             </ul>
           </IconContext.Provider>
         </div>
