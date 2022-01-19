@@ -17,6 +17,7 @@ const login = async (req, res) => {
 
   const pmo = await PMO.findOne({ email });
   if (!pmo) {
+    console.log(req.body);
     throw new UnauthenticatedError("Invalid Credentials");
   }
   const isPasswordCorrect = await pmo.comparePassword(password);
