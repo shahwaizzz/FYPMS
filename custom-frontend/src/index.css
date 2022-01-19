@@ -363,10 +363,24 @@ select:focus {
 .form-modal .close-data {
   display: none;
 }
-/* .data-form div select{
-  width: 62%;
-  margin-left: 10px;
-} */
+/* Manage Project */
+.show-projects{
+  font-size: 10px;
+  line-height: 0.2rem;
+  padding: 10px;
+  border-bottom: 5px solid #00a65a;
+  background-color: #ffffff;
+}
+.show-projects:nth-child(even){
+  background-color: #9c9c9c;
+  color: #004d2a;
+}
+.show-projects span{
+  color: rgb(13, 94, 3);
+}
+.show-projects:nth-child(even) span{
+  color: rgb(255, 255, 255);
+}
 /*Footer*/
 footer {
   position: fixed;

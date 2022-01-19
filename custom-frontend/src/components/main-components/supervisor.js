@@ -194,14 +194,14 @@ export default function Supervisor() {
                     <div className='manage-buttons'>
                       <button
                         className='update-user'
-                        title='Edit Student'
+                        title='Edit Supervisor'
                         onClick={() => toggleModel("update", supervisor)}
                       >
                         <FaEdit size='1.5rem' />
                       </button>
                       <button
                         className='delete-user'
-                        title='Delete Student'
+                        title='Delete Supervisor'
                         onClick={() => deleteStudent(supervisor._id)}
                       >
                         <AiFillDelete size='1.5rem' />
