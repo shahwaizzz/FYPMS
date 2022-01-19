@@ -5,7 +5,7 @@ export default function Adm_login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const pmoLogin = async (event) => {
+  const pmoLogin = async (event) => { 
     event.preventDefault();
     //   const data = {
     //     email:"ali@gmail.com",

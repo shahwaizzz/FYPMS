@@ -7,18 +7,19 @@ import {
   AiOutlineProfile,
   AiOutlineProject,
 } from "react-icons/ai";
+import {GrDocument} from 'react-icons/gr';
 import {
   MdOutlineSupervisedUserCircle,
   MdLogout,
   MdOutlineEmojiEvents,
 } from "react-icons/md";
-import Home from "./main-components/home";
-import Student from "./main-components/student";
-import Supervisor from "./main-components/supervisor";
-import UserProfile from "./main-components/user-profile";
-import Logout from "./main-components/logout";
-import Projects from "./main-components/projects";
-import Events from "./main-components/events";
+// import Home from "./main-components/home";
+// import Student from "./main-components/student";
+// import Supervisor from "./main-components/supervisor";
+// import UserProfile from "./main-components/user-profile";
+// import Logout from "./main-components/logout";
+// import Projects from "./main-components/projects";
+// import Events from "./main-components/events";
 import { Link } from "react-router-dom";
 
 export default function Sidebar(props) {
@@ -53,7 +54,6 @@ export default function Sidebar(props) {
               <span className='menubar-title-test'>{props.name}</span>
             </h2>
             <ul className={menubarList}>
-              {/* <li onClick={() => changePage("Home")}> */}
               <Link to='/admin' className='links'>
                 <li>
                   <AiOutlineHome />
@@ -82,6 +82,12 @@ export default function Sidebar(props) {
                 <li>
                   <MdOutlineSupervisedUserCircle />
                   <span>Supervisors</span>
+                </li>
+              </Link>
+              <Link to='/admin/supervisors' className='links'>
+                <li>
+                  <GrDocument />
+                  <span>Upload Templates</span>
                 </li>
               </Link>
               <Link to='/admin/profile' className='links'>

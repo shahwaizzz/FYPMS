@@ -8,6 +8,17 @@
   align-items: center;
 }
 
+.maindiv1{
+  display: flex;
+  min-height: 78vh;
+  justify-content: center;
+  align-items: center;
+}
+.padd{
+  padding: 25px 5px;
+  text-align: center;
+}
+
 .form-container {
   width: 360px;
   background-color: white;
@@ -69,7 +80,11 @@
   color: white;
   cursor: pointer;
 }
-
+.green{
+  background: #00a65a;
+  color: white;
+  cursor: pointer;
+}
 button:disabled {
   cursor: default;
 }
