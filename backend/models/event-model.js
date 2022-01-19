@@ -14,9 +14,35 @@ const eventSchema = new mongoose.Schema({
     default: "GIMS",
   },
   date: {
-    type: Date,
-    required: [true, "Please Provide Date"],
-    default: Date.now(),
+    day: {
+      type: Number,
+      min: 1,
+      max: 31,
+    },
+    month: {
+      type: String,
+      enum: {
+        values: [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ],
+      },
+    },
+    year: {
+      type: Number,
+      maxlength: 4,
+      minlength: 4,
+    },
   },
   details: {
     type: String,

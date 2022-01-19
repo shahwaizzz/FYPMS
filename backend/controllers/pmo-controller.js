@@ -274,9 +274,10 @@ const templateDocuments = async (req, res) => {
     console.error(err);
     return res.status(500).send(err);
   });
-  res
-    .status(StatusCodes.OK)
-    .json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+  res.status(StatusCodes.OK).json({ msg: "File Uploaded Success Fully" });
+  // res
+  //   .status(StatusCodes.OK)
+  //   .json({ fileName: file.name, filePath: `/uploads/${file.name}` });
 };
 
 module.exports = {
