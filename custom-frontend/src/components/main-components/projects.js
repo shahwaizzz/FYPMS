@@ -31,7 +31,6 @@ const [displayData, setDisplayData] = useState(false);
       .get("/")
       .then((res) => {
         setGetData(res.data.projects);
-        var project = res.data.projects;
 
         supervisorApi.get("/").then((res) => {
           setSupervisorData(res.data.supervisor);
@@ -44,19 +43,15 @@ const [displayData, setDisplayData] = useState(false);
         }).catch((err) => {
           alert(err);
         });
-
-        supervisorData && supervisorData.map(e => project.supervisor === e._id &&
-          setDisplayData([{supervisor_name:e.name}])
-        )
-        
       })
       .catch((err) => {
         alert(err);
       });
   }, []);
 
-  function toggleModel(e, supervisor) {
-      editForm ? setEditForm(false) : setEditForm(true);
+  function toggleModel(project) {
+    setDisplayData(project);
+    editForm ? setEditForm(false) : setEditForm(true);
     }
   
   function handleSearch(){}
@@ -106,7 +101,7 @@ const [displayData, setDisplayData] = useState(false);
           <h1>Project ID : <span>{project._id}</span></h1>
           </div>
           <div className="manage-buttons">
-            <button className="update-user" title="Edit Project"><FaEdit size="1.5rem"/></button>
+            <button className="update-user" title="Edit Project" onClick={() => toggleModel(project)}><FaEdit size="1.5rem"/></button>
             <button className="delete-user" title="Delete Project"><AiFillDelete size="1.5rem"/></button>
           </div>
         </div>
@@ -114,7 +109,7 @@ const [displayData, setDisplayData] = useState(false);
          {editForm && displayData && (
         <div className='popup-container'>
           <div className='popup'>
-            <h2>Edit Supervisor</h2>
+            <h2>Edit Project</h2>
             <div className='form-modal'>
               <form
                 className='data-form'
@@ -124,54 +119,58 @@ const [displayData, setDisplayData] = useState(false);
               >
                 <input type='text' name='_id' value={displayData._id} hidden />
                 <div>
-                  <label>Supervisor Name</label>
+                  <label>Project Title</label>
                   <input
                     type='text'
-                    name='name'
-                    value={displayData.name}
+                    name='title'
+                    value={displayData.title}
                     onChange={handleChange}
                   />
                 </div>
-                <div>
-                  <label>Email</label>
+                 <div>
+                  <label>Description</label>
                   <input
-                    type='email'
-                    name='email'
-                    value={displayData.email}
+                    type='text'
+                    name='description'
+                    value={displayData.description}
                     onChange={handleChange}
                   />
                 </div>
                 <div>
-                  <label>Phone Number</label>
+                  <label>Objective</label>
                   <input
-                    type='number'
-                    name='phone'
-                    value={displayData.phone}
+                    type='text'
+                    name='objective'
+                    value={displayData.objectives}
                     onChange={handleChange}
                   />
                 </div>
                 <div>
-                  <label>Department</label>
-                  <select
-                    name='department'
-                    value={displayData.department}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value=''>Select Department</option>
-                    <option value='CS'>Computer Science</option>
-                    <option value='IT'>Information Security</option>
-                    <option value='SE'>Software Engineering</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Password</label>
-                  <input
-                    type='password'
-                    name='password'
+                  <label>Supervisor</label>
+                  {supervisorData && supervisorData.map(e => displayData.supervisor === e._id &&
+                    <input
+                    type='text'
+                    name='supervisor'
+                    value={e.name}
                     onChange={handleChange}
                   />
+                  )}  
                 </div>
+               
+                  {displayData.group.map(group => (
+                  studentData && studentData.map(e=> group === e._id && (
+                    <div>
+                    <label>Group Member</label>
+                    <input
+                    type='text'
+                    name=''
+                    value={e.rollNumber}
+                    onChange={handleChange}
+                  />
+                  </div>
+                  ))))}
+                  
+                 
                 <div>
                   <button type='submit'>Edit Supervisor</button>
                 </div>
