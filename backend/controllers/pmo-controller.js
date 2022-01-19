@@ -265,6 +265,19 @@ const createProject = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ project });
 };
+const templateDocuments = async (req, res) => {
+  if (req.files === null) {
+    return res.status(400).json({ msg: "No file was uploaded" });
+  }
+  const file = req.files.file;
+  file.mv(`${__dirname}/custom-frontend/public/uploads/${file.name}`, (err) => {
+    console.error(err);
+    return res.status(500).send(err);
+  });
+  res
+    .status(StatusCodes.OK)
+    .json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+};
 
 module.exports = {
   createStudent,
