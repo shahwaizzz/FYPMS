@@ -220,7 +220,7 @@ const addMarks = async (req, res) => {
 const Project = require("../models/project-model");
 const getAllProjects = async (req, res) => {
   const projects = await Project.find({}).sort("title");
-  res.status(StatusCodes.OK).json({ count: projects.length, projects });
+  res.status(StatusCodes.OK).json({ count: projects.length, projects, err: { code: 0, message: "No error found" }});
 };
 
 const getSingleProject = async (req, res) => {
@@ -231,7 +231,7 @@ const getSingleProject = async (req, res) => {
   if (!project) {
     throw new NotFoundError("Project does not found");
   }
-  res.status(StatusCodes.OK).json({ project });
+  res.status(StatusCodes.OK).json({ project, err: { code: 0, message: "No error found" }  });
 };
 
 const deleteProject = async (req, res) => {
@@ -242,7 +242,7 @@ const deleteProject = async (req, res) => {
   if (!project) {
     throw new NotFoundError("Project does not found");
   }
-  res.status(StatusCodes.OK).send("Deleted");
+  res.status(StatusCodes.OK).json({msg:"Deleted", err: { code: 0, message: "No error found" } });
 };
 const updateProject = async (req, res) => {
   const { id: projectId } = req.params;
@@ -258,12 +258,12 @@ const updateProject = async (req, res) => {
   if (!project) {
     throw new NotFoundError("Project does not exist");
   }
-  res.status(StatusCodes.OK).json({ project });
+  res.status(StatusCodes.OK).json({ project, err: { code: 0, message: "No error found" }  });
 };
 const createProject = async (req, res) => {
   const project = await Project.create({ ...req.body });
 
-  res.status(StatusCodes.OK).json({ project });
+  res.status(StatusCodes.OK).json({ project, err: { code: 0, message: "No error found" }  });
 };
 const templateDocuments = async (req, res) => {
   if (req.files === null) {

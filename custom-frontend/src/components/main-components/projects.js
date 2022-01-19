@@ -84,6 +84,23 @@ const [refresh, setRefresh] = useState(false);
     var value = e.target.value;
     setDisplayData({ ...displayData, [name]: value });
   }
+  function deleteProject(id) {
+    var check = window.confirm("Are sure you want to delete the project");
+    if (check) {
+      api
+        .delete(`/${id}`)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            setRefresh(!refresh);
+            alert("Project Delete Successfully");
+          }
+        })
+        .catch((res) => {
+          alert(res);
+        });
+    }
+  }
   function handleSubmit(e){
     e.preventDefault();
     var supervisorID;
@@ -123,8 +140,18 @@ const [refresh, setRefresh] = useState(false);
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log(result);
-          setRefresh(!refresh);
+          if (result.err.code === 0) {
+            toggleModel(null);
+            setDisplayData(false);
+            setRefresh(!refresh);
+            alert("Project Update Successfully");
+          } else if (result.err.code === 11000) {
+            alert(
+              `This ${JSON.stringify(result.err.keyValue)} is already in use`
+            );
+          } else if (result.err.message) {
+            alert(result.err.message);
+          }
         },
         (error) => {
           alert(error);
@@ -177,7 +204,7 @@ const [refresh, setRefresh] = useState(false);
           </div>
           <div className="manage-buttons">
             <button className="update-user" title="Edit Project" onClick={() => toggleModel(project)}><FaEdit size="1.5rem"/></button>
-            <button className="delete-user" title="Delete Project"><AiFillDelete size="1.5rem"/></button>
+            <button className="delete-user" title="Delete Project" onClick={() => deleteProject(project._id)}><AiFillDelete size="1.5rem"/></button>
           </div>
         </div>
         )}
