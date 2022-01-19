@@ -34,6 +34,13 @@ body {
   font-weight: 500;
   font-size: 16px;
 }
+.clr-white{
+  color: white;
+}
+.clr-white:hover{
+  color: #00a65a;;
+}
+
 
 .table thead th {
   background-color: #00a65a;
@@ -499,3 +506,4 @@ footer {
     text-align: left;
   }
 }
+

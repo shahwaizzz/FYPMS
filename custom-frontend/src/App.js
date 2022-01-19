@@ -3,7 +3,7 @@ import Home from "./components/main-components/home";
 import Navbar from "./components/navbar";
 import Sidebar from "./components/sidebar";
 import "./login/index.css";
-import Login from "./login";
+// import Login from "./login";
 import { Routes, Route } from "react-router-dom";
 import Projects from "./components/main-components/projects";
 import Events from "./components/main-components/events";
@@ -14,7 +14,8 @@ import Adm_login from "./login/Adm_login";
 import Thr_login from "./login/Thr_login";
 import Std_login from "./login/Std_login";
 import Modal from "./components/modal";
-function handleValidation(params) {}
+import Document from "./components/main-components/Documents";
+// function handleValidation(params) {}
 function App() {
   // Commit Test
   const [validation, setValidation] = useState(true);
@@ -46,6 +47,7 @@ function App() {
             path='/admin/supervisors'
             element={<Sidebar name='Supervisors' abc={<Supervisor />} />}
           />
+          <Route path="/admin/documents" element={<Sidebar name="Document Templates" abc={<Document />} /> } />
           <Route
             path='/admin/profile'
             element={<Sidebar name='User Profile' abc={<UserProfile />} />}

@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import '../../login/index.css';
 export default function UserProfile() {
+    const [currentPassword, setCurrentPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,7 +20,16 @@ export default function UserProfile() {
                         id='email1'
                         class='form-field input1'
                         type='password'
-                        placeholder='password'
+                        placeholder='Current Password'
+                        name='currentpassword'
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                    />
+                    <input
+                        
+                        class='form-field input1'
+                        type='password'
+                        placeholder='New Password'
                         name='password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

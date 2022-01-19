@@ -18,7 +18,13 @@
   padding: 25px 5px;
   text-align: center;
 }
-
+.padd12{
+  padding: 15px 5px;
+  text-align: center;
+}
+/* .margin-top{
+  margin-top: -20px;
+} */
 .form-container {
   width: 360px;
   background-color: white;
@@ -27,6 +33,16 @@
   padding: 10px;
   margin-top: -20px;
 }
+.form-container1 {
+  width: 460px;
+  background-color: white;
+
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  padding: 15px 30px;
+  margin-top: -20px;
+}
+
+
 
 .register-form {
   display: flex;
@@ -107,3 +123,40 @@ button:disabled {
 .clr2{
     background: #4caf50;
 }
+
+
+.iconic{
+  font-size: 25px;
+  /* margin-left: 20px; */
+  /* float: right; */
+}
+
+
+.lists{
+  list-style: none;
+  /* vertical-align: center; */
+  margin-left: -35px;
+
+}
+.btnn{
+  background: transparent;
+  color: #00a65a;
+  float: right;
+  margin-top: -10px;
+  
+}
+.btnn:hover{
+  background: transparent;
+  border: none;
+  color: rgb(138, 32, 32);
+}
+
+
+
+
+
+
+
+
+
+

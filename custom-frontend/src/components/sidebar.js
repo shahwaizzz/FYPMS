@@ -7,7 +7,7 @@ import {
   AiOutlineProfile,
   AiOutlineProject,
 } from "react-icons/ai";
-import {GrDocument} from 'react-icons/gr';
+import {CgFileDocument} from 'react-icons/cg';
 import {
   MdOutlineSupervisedUserCircle,
   MdLogout,
@@ -84,10 +84,11 @@ export default function Sidebar(props) {
                   <span>Supervisors</span>
                 </li>
               </Link>
-              <Link to='/admin/supervisors' className='links'>
-                <li>
-                  <GrDocument />
-                  <span>Upload Templates</span>
+              <Link to='/admin/documents' className='links whiteicon'>
+                <li className="whiteicon">
+                  {/* <GrDocument className="clr-white" /> */}
+                  <CgFileDocument  />                  
+                  <span className="whiteicon">Upload Templates</span>
                 </li>
               </Link>
               <Link to='/admin/profile' className='links'>
