@@ -4,7 +4,7 @@ const ProjectSchema = new mongoose.Schema({
   title: {
     type: String,
     trim: true,
-    minlength: 20,
+    minlength: 10,
     required: [true, "Please Provide Title"],
   },
   description: {

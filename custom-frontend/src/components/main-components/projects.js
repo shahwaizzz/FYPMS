@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { projectUrl, students, supervisorsUrl} from "../../apis";
 import axios from "axios";
 import {AiFillDelete} from "react-icons/ai";
+import Progressbar from "../progressbar";
 import {FaEdit} from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
 
@@ -14,10 +15,10 @@ const [supervisorData, setSupervisorData] = useState(false);
 const [searchSupervisor, setSearchSupervisor] = useState(false);
 const [studentData, setStudentData] = useState(false);
 const [editForm, setEditForm] = useState(false);
+const [addProject, setAddProject] = useState(false);
 const [displayData, setDisplayData] = useState(false);
 const [refresh, setRefresh] = useState(false);
-var std = [];
-var data = [];
+const data = [];
   const api = axios.create({
     baseURL: projectUrl,
   });
@@ -54,7 +55,12 @@ var data = [];
       
   },[refresh]);
 
-  function toggleModel(project) {
+  function toggleModel(action,project) {
+    if(action === "add"){
+      addProject ? setAddProject(false) : setAddProject(true)
+    }else if(action === "update"){
+      editForm ? setEditForm(false) : setEditForm(true);
+    }
     if(project !== null){
         var supervisorName = "";
         supervisorData.map(e => project.supervisor === e._id && (supervisorName = e.name));
@@ -72,7 +78,6 @@ var data = [];
         member_3:project.group[2],
       });
     }
-    editForm ? setEditForm(false) : setEditForm(true);
     }
   
   function handleSearch(e){
@@ -127,14 +132,13 @@ var data = [];
     console.log(supervisorID)
 
     var manageGroup = [displayData.member_1];
-    if(displayData.member_2 !== '' ){
+    if(displayData.member_2 !== '' && displayData.member_2 !== undefined){
       manageGroup = [...manageGroup,displayData.member_2]
     }
-    if(displayData.member_3 !== '' ){
+    if(displayData.member_3 !== '' && displayData.member_3 !== undefined){
       manageGroup = [...manageGroup,displayData.member_3]
     }
-    const putProject = {
-      _id:displayData._id,
+    var putProject = {
       title:displayData.title,
       status:displayData.status,
       description:displayData.description,
@@ -143,21 +147,52 @@ var data = [];
       supervisor:supervisorID,
       group:manageGroup,
     } 
-    console.log(putProject);
-    const options = {
-      method: "put",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(putProject),
-    };
-    fetch(`${projectUrl}/${putProject._id}`, options)
+    if(editForm){
+      putProject = {...putProject,_id:displayData._id}
+      console.log(putProject);
+      const options = {
+        method: "put",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(putProject),
+      };
+      fetch(`${projectUrl}/${putProject._id}`, options)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            if (result.err.code === 0) {
+              setRefresh(!refresh);
+              toggleModel("update",null);
+              setDisplayData(false);
+              alert("Project Update Successfully");
+            } else if (result.err.code === 11000) {
+              alert(
+                `This ${JSON.stringify(result.err.keyValue)} is already in use`
+              );
+            } else if (result.err.message) {
+              alert(result.err.message);
+            }
+          },
+          (error) => {
+            alert(error);
+          }
+        );
+    }
+    if(addProject){
+      console.log(putProject);
+      const options = {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(putProject),
+      };
+      fetch(`${projectUrl}`, options)
       .then((res) => res.json())
       .then(
         (result) => {
           if (result.err.code === 0) {
             setRefresh(!refresh);
-            toggleModel(null);
+            toggleModel("add",null);
             setDisplayData(false);
-            alert("Project Update Successfully");
+            alert("Project Add Successfully");
           } else if (result.err.code === 11000) {
             alert(
               `This ${JSON.stringify(result.err.keyValue)} is already in use`
@@ -170,8 +205,8 @@ var data = [];
           alert(error);
         }
       );
+    } 
   }
- 
   return (
     <div className='data-container'>
       <div className='data-container-top'>
@@ -190,8 +225,16 @@ var data = [];
           <option value='Supervisor'>Supervisor</option>
           <option value='Group Member'>Group Member</option>
         </select>
+        <button className='add-data-btn' onClick={() => toggleModel("add",null)}>
+          Create A New Project
+        </button>
       </div>
-      {searchSupervisor ? ( searchSupervisor.filter((project) =>(project[searchValue].toString().indexOf(searchData) > -1)
+      {!getData ? (
+        <div>
+          <Progressbar visibility={true} />
+        </div>
+      ) :(
+        searchSupervisor ? ( searchSupervisor.filter((project) =>(project[searchValue].toString().indexOf(searchData) > -1)
         ).map(project => 
         <div className="show-projects">
           <div>
@@ -216,7 +259,7 @@ var data = [];
           <h1>Project ID : <span>{project._id}</span></h1>
           </div>
           <div className="manage-buttons">
-            <button className="update-user" title="Edit Project" onClick={() => toggleModel(project)}><FaEdit size="1.5rem"/></button>
+            <button className="update-user" title="Edit Project" onClick={() => toggleModel("update",project)}><FaEdit size="1.5rem"/></button>
             <button className="delete-user" title="Delete Project" onClick={() => deleteProject(project._id)}><AiFillDelete size="1.5rem"/></button>
           </div>
         </div>)):(
@@ -249,12 +292,151 @@ var data = [];
           <h1>Project ID : <span>{project._id}</span></h1>
           </div>
           <div className="manage-buttons">
-            <button className="update-user" title="Edit Project" onClick={() => toggleModel(project)}><FaEdit size="1.5rem"/></button>
+            <button className="update-user" title="Edit Project" onClick={() => toggleModel("update",project)}><FaEdit size="1.5rem"/></button>
             <button className="delete-user" title="Delete Project" onClick={() => deleteProject(project._id)}><AiFillDelete size="1.5rem"/></button>
           </div>
         </div>
         )
+      )
       )}
+       {addProject && 
+        <div className='popup-container'>
+          <div className='popup'>
+            <h2>Crate A New Project</h2>
+            <div className='form-modal'>
+              <form
+                className='data-form'
+                onSubmit={handleSubmit}
+                autoComplete='off'
+                id='student-form'
+              >
+                <input type='text' name='_id' value={displayData._id} hidden />
+                <div>
+                  <label>Project Title</label>
+                  <input
+                    type='text'
+                    name='title'
+                    value={displayData.title}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <label>Status</label>
+                  <select 
+                    name="status" 
+                    value={displayData.status} 
+                    onChange={handleChange}
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Working">Working</option>
+                    <option value="Completed">Complete</option>
+                  </select>
+                </div>
+                 <div>
+                  <label>Description</label>
+                  <input
+                    type='text'
+                    name='description'
+                    value={displayData.description}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <label>Objective</label>
+                  <input
+                    type='text'
+                    name='objectives'
+                    value={displayData.objectives}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <label>Batch</label>
+                  <input
+                    type='number'
+                    name='batch'
+                    value={displayData.batch}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <label>Supervisor</label>
+                    <input
+                    type='text'
+                    name='supervisor'
+                    value={displayData.supervisor}
+                    list = "supervisor-list"
+                    onChange={handleChange}
+                  />
+                  <datalist id="supervisor-list">
+                    {supervisorData.map(e =>
+                      <option>{e.name}</option>
+                    )}
+                  </datalist>
+                </div>
+                  <div>
+                  <label>Group Leader</label>
+                  <input
+                  type='text'
+                  name='member_1'
+                  value={displayData.member_1}
+                  onChange={handleChange}
+                  list="student-list"
+                  placeholder="None"
+                  required
+                />
+                </div>
+                <div>
+                  <label>Group Member</label>
+                  <input
+                  type='text'
+                  name='member_2'
+                  value={displayData.member_2}
+                  onChange={handleChange}
+                  list="student-list"
+                  placeholder="None"
+                />
+                </div>
+                <div>
+                  <label>Group Member</label>
+                  <input
+                  type='text'
+                  name='member_3'
+                  value={displayData.member_3}
+                  onChange={handleChange}
+                  list="student-list"
+                  placeholder="None"
+                />
+                </div>
+                <datalist id="student-list">
+                    {studentData.map(e =>
+                      <option>{e.rollNumber}</option>
+                    )}
+                  </datalist>
+                
+                <div>
+                  <button type='submit'>Add Project</button>
+                </div>
+              </form>
+              <span>
+                <AiFillCloseCircle
+                  size='1.7rem'
+                  onClick={() => toggleModel("add",null)}
+                />
+              </span>
+              <button
+                className='close-data'
+                onClick={() => toggleModel("add",null)}
+              >
+                Close
+              </button>
+              <form />
+            </div>
+          </div>
+        </div>
+      }
          {editForm && displayData && (
         <div className='popup-container'>
           <div className='popup'>
@@ -287,7 +469,7 @@ var data = [];
                     <option value="Rejected">Rejected</option>
                     <option value="Approved">Approved</option>
                     <option value="Working">Working</option>
-                    <option value="Complete">Complete</option>
+                    <option value="Completed">Complete</option>
                   </select>
                 </div>
                  <div>
@@ -379,12 +561,12 @@ var data = [];
               <span>
                 <AiFillCloseCircle
                   size='1.7rem'
-                  onClick={() => toggleModel(null)}
+                  onClick={() => toggleModel("update",null)}
                 />
               </span>
               <button
                 className='close-data'
-                onClick={() => toggleModel(null)}
+                onClick={() => toggleModel("update",null)}
               >
                 Close
               </button>
