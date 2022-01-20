@@ -9,8 +9,9 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import Progressbar from "../progressbar";
 
 export default function Events() {
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [eventsList, setEventList] = useState([]);
+  const [displayData, setDisplayData] = useState(false);
   const api = axios.create({
     baseURL: `/api/v1/pmo/events`,
   });
@@ -30,12 +31,28 @@ export default function Events() {
   function handleChange(e) {
     const name = e.target.name;
     let value = e.target.value;
-    // setDisplayData({ ...displayData, [name]: value });
+    setDisplayData({ ...displayData, [name]: value });
   }
 
   return (
     <>
       <div className='data-container'>
+        <div className='data-container-top'>
+          <input type='search' placeholder={"Search Student By "} />
+
+          <select>
+            <option value='Roll Number'>Roll Number</option>
+            <option value='Name'>Name</option>
+            <option value='Batch'>Batch</option>
+            <option value='Section'>Section</option>
+            <option value='Department'>Department</option>
+            <option value='Email'>Email</option>
+            <option value='Phone'>Phone</option>
+          </select>
+          <button className='add-data-btn' onClick={() => setShowModal(true)}>
+            Add Student
+          </button>
+        </div>
         {!eventsList ? (
           <div>
             <Progressbar visibility={true} />
@@ -70,18 +87,10 @@ export default function Events() {
                     <td scope='col'>{event.details}</td>
                     <td>
                       <div className='manage-buttons'>
-                        <button
-                          className='update-user'
-                          title='Edit Student'
-                          onClick={() => toggleModel("update", student)}
-                        >
+                        <button className='update-user' title='Edit Student'>
                           <FaEdit size='1.5rem' />
                         </button>
-                        <button
-                          className='delete-user'
-                          title='Delete Student'
-                          onClick={() => deleteStudent(student._id)}
-                        >
+                        <button className='delete-user' title='Delete Student'>
                           <AiFillDelete size='1.5rem' />
                         </button>
                       </div>
@@ -92,7 +101,7 @@ export default function Events() {
             </tbody>
           </table>
         )}
-        {/* {showModal && (
+        {showModal && (
           <div className='popup-container'>
             <div className='popup'>
               <h2>New Event</h2>
@@ -148,14 +157,17 @@ export default function Events() {
                   </div>
                 </form>
                 <span>
-                  <AiFillCloseCircle size='1.7rem' />
+                  <AiFillCloseCircle
+                    size='1.7rem'
+                    onClick={() => setShowModal(false)}
+                  />
                 </span>
                 <button className='close-data'>Close</button>
                 <form />
               </div>
             </div>
           </div>
-        )} */}
+        )}
       </div>
     </>
   );
