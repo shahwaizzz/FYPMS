@@ -5,7 +5,7 @@ export default function Thr_login() {
   return (
     <div className='body-div'>
       <div class='form-container'>
-        <img src={logo} className='logo1' width='60px' />
+        <img src={logo} className='logo1' alt='logo' width='60px' />
         <h1 className='heading1'>
           <b>PAS | Teacher </b>Login
         </h1>

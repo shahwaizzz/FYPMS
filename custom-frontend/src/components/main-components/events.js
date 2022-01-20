@@ -12,6 +12,9 @@ export default function Events() {
   const [showModal, setShowModal] = useState(false);
   const [eventsList, setEventList] = useState([]);
   const [displayData, setDisplayData] = useState(false);
+  const deleteEvent = async () => {
+    const response = api.delete();
+  };
   const api = axios.create({
     baseURL: `/api/v1/pmo/events`,
   });
@@ -79,12 +82,12 @@ export default function Events() {
                 const myYear = eventDate.getFullYear();
                 return (
                   <tr key={event._id}>
-                    <td scope='col'>{event.name}</td>
-                    <td scope='col'>{`${event.date.day}-${event.date.month}-${event.date.year}`}</td>
-                    <td scope='col'>{event.venue}</td>
-                    <td scope='col'>{myYear}</td>
-                    <td scope='col'>{event.semester}</td>
-                    <td scope='col'>{event.details}</td>
+                    <td>{event.name}</td>
+                    <td>{`${event.date.day}-${event.date.month}-${event.date.year}`}</td>
+                    <td>{event.venue}</td>
+                    <td>{myYear}</td>
+                    <td>{event.semester}</td>
+                    <td>{event.details}</td>
                     <td>
                       <div className='manage-buttons'>
                         <button className='update-user' title='Edit Student'>

@@ -5,24 +5,8 @@ export default function Adm_login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const pmoLogin = async (event) => { 
+  const pmoLogin = async (event) => {
     event.preventDefault();
-    //   const data = {
-    //     email:"ali@gmail.com",
-    //     password:"password",
-    //   }
-    //   const options = {
-    //     method: 'post',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(data)
-    // };
-    // fetch("/api/v1/auth/pmo/login", options)
-    // .then(res => res.json())
-    //     .then((result) => {
-    //       console.log(result);
-    //     },(error) => {
-    //         console.log(error);
-    // });
     const response = await fetch("/api/v1/auth/pmo/login", {
       method: "POST",
       headers: {
@@ -35,27 +19,20 @@ export default function Adm_login() {
     });
     const data = await response.json();
     if (data.token) {
-      alert("login successfully");
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.pmo.name));
+      alert(`Hello ${data.pmo.name}`);
       window.location.href = "../../admin";
     } else {
-      alert("Invalid email or passwords");
+      alert(data.msg);
     }
-    console.log(data);
-
-    // if(data.user){
-    //   alert('login successflly')
-    //   window.location.href='/dashboard'
-    // }
-    // else{
-    //   alert('Invalid Username or Password !')
-    // }
     console.log(data);
   };
 
   return (
     <div className='body-div'>
       <div class='form-container'>
-        <img src={logo} className='logo1' width='60px' />
+        <img src={logo} className='logo1' alt='logo' width='60px' />
         <h1 className='heading1'>
           <b>PAS | Admin </b>Login
         </h1>

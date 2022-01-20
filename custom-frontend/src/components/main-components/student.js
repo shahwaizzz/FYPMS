@@ -21,8 +21,8 @@ export default function Student() {
   });
 
   useEffect(() => {
-    api
-      .get("/")
+    axios
+      .get(students)
       .then((res) => {
         setGetData(res.data);
       })
