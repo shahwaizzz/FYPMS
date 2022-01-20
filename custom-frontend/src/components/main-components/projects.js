@@ -205,11 +205,7 @@ var data = [];
           <br/>
           <h1>Batch : <span>{project.batch}</span></h1>
           <br/>
-          <h1>Supervisor : 
-          {supervisorData && supervisorData.map(e => project.supervisor === e._id &&
-            <span> {e.name}</span>
-          )}
-          </h1>
+          <h1>Supervisor : <span> {project.supervisorName}</span></h1>
           <br/>
           <h1 className="project-group">Group Members : 
           {project.group.map(group => (
