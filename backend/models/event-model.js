@@ -53,7 +53,9 @@ const eventSchema = new mongoose.Schema({
     default: "sdfsdf",
   },
   year: {
-    type: String,
+    type: Number,
+    maxlength: 4,
+    minlength: 4,
     required: [true, "Please Choose Event Batch "],
   },
   semester: {
