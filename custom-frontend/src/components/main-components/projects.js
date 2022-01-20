@@ -15,7 +15,8 @@ const [studentData, setStudentData] = useState(false);
 const [editForm, setEditForm] = useState(false);
 const [displayData, setDisplayData] = useState(false);
 const [refresh, setRefresh] = useState(false);
-
+var std = [];
+var data = [];
   const api = axios.create({
     baseURL: projectUrl,
   });
@@ -31,7 +32,7 @@ const [refresh, setRefresh] = useState(false);
        api
       .get("/")
       .then((res) => {
-        setGetData(res.data.projects);
+       setGetData(res.data.projects);
 
         supervisorApi.get("/").then((res) => {
           setSupervisorData(res.data.supervisor);
@@ -44,10 +45,12 @@ const [refresh, setRefresh] = useState(false);
         }).catch((err) => {
           alert(err);
         });
+       
       })
       .catch((err) => {
         alert(err);
       });
+      
   },[refresh]);
 
   function toggleModel(project) {
@@ -78,7 +81,22 @@ const [refresh, setRefresh] = useState(false);
     editForm ? setEditForm(false) : setEditForm(true);
     }
   
-  function handleSearch(){}
+  function handleSearch(e){
+    setRefresh(!refresh)
+    var getValue = e.target.value;
+    if (getValue === "Title") {
+      setSearchValue("title");
+    } else if (getValue === "Project ID") {
+      setSearchValue("_id");
+    } else if (getValue === "Supervisor") {
+      setSearchValue("supervisor");
+    } else if (getValue === "Status") {
+      setSearchValue("status");
+    } else if (getValue === "Group Member") {
+      setSearchValue("group");
+    }
+    setSearchBy(e.target.value);
+  }
   function handleChange(e){
     const name = e.target.name;
     var value = e.target.value;
@@ -116,11 +134,11 @@ const [refresh, setRefresh] = useState(false);
     }
     console.log(manageGroup);
 
-    var putMemberID = [];
-    manageGroup.map(rollNumber => (
-      studentData.map(std => rollNumber === std.rollNumber && ( putMemberID = [...putMemberID, std._id] ))
-    ))
-    console.log(putMemberID);
+    // var putMemberID = [];
+    // manageGroup.map(rollNumber => (
+    //   studentData.map(std => rollNumber === std.rollNumber && ( putMemberID = [...putMemberID, std._id] ))
+    // ))
+    //console.log(putMemberID);
     const putProject = {
       _id:displayData._id,
       title:displayData.title,
@@ -128,7 +146,7 @@ const [refresh, setRefresh] = useState(false);
       description:displayData.description,
       objectives:displayData.objectives,
       supervisor:supervisorID,
-      group:putMemberID,
+      group:manageGroup,
     } 
     console.log(putProject);
     const options = {
@@ -158,6 +176,7 @@ const [refresh, setRefresh] = useState(false);
         }
       );
   }
+ 
   return (
     <div className='data-container'>
       <div className='data-container-top'>
@@ -165,18 +184,20 @@ const [refresh, setRefresh] = useState(false);
           type='search'
           value={searchData}
           onChange={(e) => setSearchData(e.target.value)}
-          placeholder={"Search Supervisor By " + searchBy}
+          placeholder={"Search Project By " + searchBy}
         />
 
         <select onChange={handleSearch}>
           <option value='Title'>Title</option>
-          <option value='ID'>ID</option>
+          <option value='Project ID'>Project ID</option>
           <option value='Status'>Status</option>
-          <option value='Email'>Email</option>
-          <option value='Phone'>Phone</option>
+          <option value='Group Member'>Group Member</option>
+          <option value='Supervisor'>Supervisor</option>
         </select>
       </div>
-        {getData && getData.map(project => 
+      
+      {getData && getData.filter((project) =>(project[searchValue].toString().indexOf(searchData) > -1)
+        ).map(project => 
         <div className="show-projects">
           <div>
           <h1 className="project-title">Project Title : <span>{project.title}</span></h1>
@@ -195,9 +216,8 @@ const [refresh, setRefresh] = useState(false);
           <br/>
           <h1 className="project-group">Group Members : 
           {project.group.map(group => (
-            studentData && studentData.map(e=> group === e._id && (
-              <span> {e.rollNumber} , </span>
-            ))))}
+              <span> {group} , </span>
+            ))}
           </h1>
           <br/>
           <h1>Project ID : <span>{project._id}</span></h1>
@@ -231,7 +251,11 @@ const [refresh, setRefresh] = useState(false);
                 </div>
                 <div>
                   <label>Status</label>
-                  <select name="status" value={displayData.status} onChange={handleChange}>
+                  <select 
+                    name="status" 
+                    value={displayData.status} 
+                    onChange={handleChange}
+                  >
                     <option value="Pending">Pending</option>
                     <option value="Rejected">Rejected</option>
                     <option value="Approved">Approved</option>
@@ -336,3 +360,10 @@ const [refresh, setRefresh] = useState(false);
     </div>
   );
 }
+// {getData && getData.filter((project) => 
+//   (project[searchValue].toString().indexOf(searchData) > -1)
+//     ||
+//   (studentData.map(std=> (std._id.toString().indexOf(searchData) > -1) == (project[searchValue].toString().indexOf(searchData) > -1)))
+//   ).map(project => 
+//   <div className="show-projects">
+//     <div>

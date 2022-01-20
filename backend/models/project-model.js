@@ -15,14 +15,17 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
   },
   group: [{
-    type: [mongoose.Types.ObjectId],
+    type: String,
     ref: "students",
     required: [true, "Please Provide Group members"],
     maxlength: 3,
+    unique: true,
   }],
-  // group: [{
-
-  // }],
+   batch: [{
+      type:Number,
+      maxlength: 4,
+      required: [true, "Please Provide Batch"],
+   }],
   supervisor: {
     type: mongoose.Types.ObjectId,
     ref: "supervisors",
