@@ -55,14 +55,6 @@ var data = [];
 
   function toggleModel(project) {
     if(project !== null){
-      var groupMembers = [];
-
-      project.group.map(member =>
-        (studentData.map(std=> member === std._id && (
-          groupMembers = [...groupMembers,std.rollNumber]
-        )))
-        )
-  
         var supervisorName = "";
         supervisorData.map(e => project.supervisor === e._id && (supervisorName = e.name));
   
@@ -72,10 +64,11 @@ var data = [];
         status:project.status,
         description:project.description,
         objectives:project.objectives,
+        batch:project.batch,
         supervisor:supervisorName,
-        member_1:groupMembers[0],
-        member_2:groupMembers[1],
-        member_3:groupMembers[2],
+        member_1:project.group[0],
+        member_2:project.group[1],
+        member_3:project.group[2],
       });
     }
     editForm ? setEditForm(false) : setEditForm(true);
@@ -88,8 +81,8 @@ var data = [];
       setSearchValue("title");
     } else if (getValue === "Project ID") {
       setSearchValue("_id");
-    } else if (getValue === "Supervisor") {
-      setSearchValue("supervisor");
+    }else if (getValue === "Batch") {
+      setSearchValue("batch");
     } else if (getValue === "Status") {
       setSearchValue("status");
     } else if (getValue === "Group Member") {
@@ -126,25 +119,19 @@ var data = [];
     console.log(supervisorID)
 
     var manageGroup = [displayData.member_1];
-    if(displayData.member_2 !== undefined ){
+    if(displayData.member_2 !== '' ){
       manageGroup = [...manageGroup,displayData.member_2]
     }
-    if(displayData.member_3 !== undefined ){
+    if(displayData.member_3 !== '' ){
       manageGroup = [...manageGroup,displayData.member_3]
     }
-    console.log(manageGroup);
-
-    // var putMemberID = [];
-    // manageGroup.map(rollNumber => (
-    //   studentData.map(std => rollNumber === std.rollNumber && ( putMemberID = [...putMemberID, std._id] ))
-    // ))
-    //console.log(putMemberID);
     const putProject = {
       _id:displayData._id,
       title:displayData.title,
       status:displayData.status,
       description:displayData.description,
       objectives:displayData.objectives,
+      batch:displayData.batch,
       supervisor:supervisorID,
       group:manageGroup,
     } 
@@ -159,9 +146,9 @@ var data = [];
       .then(
         (result) => {
           if (result.err.code === 0) {
+            setRefresh(!refresh);
             toggleModel(null);
             setDisplayData(false);
-            setRefresh(!refresh);
             alert("Project Update Successfully");
           } else if (result.err.code === 11000) {
             alert(
@@ -190,9 +177,9 @@ var data = [];
         <select onChange={handleSearch}>
           <option value='Title'>Title</option>
           <option value='Project ID'>Project ID</option>
+          <option value="Batch">Batch</option>
           <option value='Status'>Status</option>
           <option value='Group Member'>Group Member</option>
-          <option value='Supervisor'>Supervisor</option>
         </select>
       </div>
       
@@ -207,6 +194,8 @@ var data = [];
           <h1>Description : <span>{project.description}</span></h1>
           <br/>
           <h1>Objectives : <span>{project.objectives}</span></h1>
+          <br/>
+          <h1>Batch : <span>{project.batch}</span></h1>
           <br/>
           <h1>Supervisor : 
           {supervisorData && supervisorData.map(e => project.supervisor === e._id &&
@@ -278,6 +267,15 @@ var data = [];
                     type='text'
                     name='objectives'
                     value={displayData.objectives}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <label>Batch</label>
+                  <input
+                    type='number'
+                    name='batch'
+                    value={displayData.batch}
                     onChange={handleChange}
                   />
                 </div>
@@ -360,10 +358,3 @@ var data = [];
     </div>
   );
 }
-// {getData && getData.filter((project) => 
-//   (project[searchValue].toString().indexOf(searchData) > -1)
-//     ||
-//   (studentData.map(std=> (std._id.toString().indexOf(searchData) > -1) == (project[searchValue].toString().indexOf(searchData) > -1)))
-//   ).map(project => 
-//   <div className="show-projects">
-//     <div>

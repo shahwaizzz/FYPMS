@@ -18,14 +18,13 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     ref: "students",
     required: [true, "Please Provide Group members"],
-    maxlength: 3,
-    unique: true,
+    // maxlength: 3,
   }],
-   batch: [{
-      type:Number,
-      maxlength: 4,
-      required: [true, "Please Provide Batch"],
-   }],
+  batch: [{
+    type:Number,
+    maxlength: 4,
+    required: [true, "Please Provide Batch"],
+ }],
   supervisor: {
     type: mongoose.Types.ObjectId,
     ref: "supervisors",
