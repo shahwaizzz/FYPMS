@@ -37,7 +37,6 @@ export default function Student() {
       api
         .delete(`/${id}`)
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             setRefresh(!refresh);
             alert("Student Delete Successfully");

@@ -14,12 +14,14 @@ const {
   deleteSupervisor,
   viewEvents,
   createEvent,
+  deleteEvent,
   addMarks,
   getAllProjects,
   getSingleProject,
   deleteProject,
   updateProject,
   createProject,
+  uploadTemplateDocuments,
 } = require("../controllers/pmo-controller");
 
 //Student Routes
@@ -40,7 +42,11 @@ router
   .delete(deleteSupervisor)
   .put(editSupervisor);
 
+//events routes
 router.route("/events").get(viewEvents).post(createEvent);
+router.route("/events/:id").delete(deleteEvent);
+
+//marks
 router.route("/:id/marks").patch(addMarks);
 
 // Manage Projects routes
@@ -50,4 +56,6 @@ router
   .get(getSingleProject)
   .delete(deleteProject)
   .put(updateProject);
+
+router.route("/templates/upload").post(uploadTemplateDocuments);
 module.exports = router;

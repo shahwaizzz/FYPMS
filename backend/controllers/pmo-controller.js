@@ -1,5 +1,6 @@
 const PMO = require("../models/pmo-model");
 const Supervisor = require("../models/supervisor-model");
+const path = require("path");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
@@ -7,6 +8,8 @@ const Student = require("../models/student-model");
 
 // Create And Manage Students
 const createStudent = async (req, res) => {
+  const uploadPath = path.join(__dirname, "../../");
+  console.log(uploadPath);
   const student = await Student.create({ ...req.body });
   res
     .status(StatusCodes.OK)
@@ -163,6 +166,18 @@ const viewEvents = async (req, res) => {
   const events = await Event.find({});
   res.status(StatusCodes.OK).json({ events });
 };
+const deleteEvent = async (req, res) => {
+  const { id: eventId } = req.params;
+  const event = await Event.findOneAndRemove({ _id: eventId });
+
+  if (!event) {
+    throw new NotFoundError("Event does not exist");
+  }
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Deleted", err: { code: 0, message: "No error found" } });
+};
 // adding student marks
 const addMarks = async (req, res) => {
   const { id: studentId } = req.params;
@@ -220,7 +235,11 @@ const addMarks = async (req, res) => {
 const Project = require("../models/project-model");
 const getAllProjects = async (req, res) => {
   const projects = await Project.find({}).sort("title");
-  res.status(StatusCodes.OK).json({ count: projects.length, projects, err: { code: 0, message: "No error found" }});
+  res.status(StatusCodes.OK).json({
+    count: projects.length,
+    projects,
+    err: { code: 0, message: "No error found" },
+  });
 };
 
 const getSingleProject = async (req, res) => {
@@ -231,7 +250,9 @@ const getSingleProject = async (req, res) => {
   if (!project) {
     throw new NotFoundError("Project does not found");
   }
-  res.status(StatusCodes.OK).json({ project, err: { code: 0, message: "No error found" }  });
+  res
+    .status(StatusCodes.OK)
+    .json({ project, err: { code: 0, message: "No error found" } });
 };
 
 const deleteProject = async (req, res) => {
@@ -242,7 +263,9 @@ const deleteProject = async (req, res) => {
   if (!project) {
     throw new NotFoundError("Project does not found");
   }
-  res.status(StatusCodes.OK).json({msg:"Deleted", err: { code: 0, message: "No error found" } });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Deleted", err: { code: 0, message: "No error found" } });
 };
 const updateProject = async (req, res) => {
   const { id: projectId } = req.params;
@@ -258,23 +281,29 @@ const updateProject = async (req, res) => {
   if (!project) {
     throw new NotFoundError("Project does not exist");
   }
-  res.status(StatusCodes.OK).json({ project, err: { code: 0, message: "No error found" }  });
+  res
+    .status(StatusCodes.OK)
+    .json({ project, err: { code: 0, message: "No error found" } });
 };
 const createProject = async (req, res) => {
   const project = await Project.create({ ...req.body });
 
-  res.status(StatusCodes.OK).json({ project, err: { code: 0, message: "No error found" }  });
+  res
+    .status(StatusCodes.OK)
+    .json({ project, err: { code: 0, message: "No error found" } });
 };
-const templateDocuments = async (req, res) => {
+const uploadTemplateDocuments = async (req, res) => {
   if (req.files === null) {
-    return res.status(400).json({ msg: "No file was uploaded" });
+    throw new BadRequestError("No file was uploaded");
   }
   const file = req.files.file;
-  file.mv(`${__dirname}/custom-frontend/public/uploads/${file.name}`, (err) => {
+  const uploadPath = path.join(__dirname, "../../");
+  console.log(uploadPath);
+  file.mv(`../../custom-frontend/public/uploads/${file.name}`, (err) => {
     console.error(err);
     return res.status(500).send(err);
   });
-  res.status(StatusCodes.OK).json({ msg: "File Uploaded Success Fully" });
+  res.status(StatusCodes.OK).json({ msg: "File Uploaded Successfully" });
   // res
   //   .status(StatusCodes.OK)
   //   .json({ fileName: file.name, filePath: `/uploads/${file.name}` });
@@ -292,6 +321,7 @@ module.exports = {
   editSupervisor,
   deleteSupervisor,
   createEvent,
+  deleteEvent,
   viewEvents,
   addMarks,
   getAllProjects,
@@ -299,4 +329,5 @@ module.exports = {
   deleteProject,
   updateProject,
   createProject,
+  uploadTemplateDocuments,
 };
