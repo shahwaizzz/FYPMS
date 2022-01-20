@@ -11,6 +11,7 @@ const [searchData, setSearchData] = useState("");
 const [searchBy, setSearchBy] = useState("Title");
 const [searchValue, setSearchValue] = useState("title");
 const [supervisorData, setSupervisorData] = useState(false);
+const [searchSupervisor, setSearchSupervisor] = useState(false);
 const [studentData, setStudentData] = useState(false);
 const [editForm, setEditForm] = useState(false);
 const [displayData, setDisplayData] = useState(false);
@@ -83,7 +84,14 @@ var data = [];
       setSearchValue("_id");
     }else if (getValue === "Batch") {
       setSearchValue("batch");
-    } else if (getValue === "Status") {
+    } else if (getValue === "Supervisor") {
+      var data = [];
+      getData && getData.map(project =>
+        supervisorData.map(sp=> (project.supervisor === sp._id) &&(data = [...data,{...project,supervisorName:sp.name}])
+      ))
+        setSearchSupervisor(data);
+        setSearchValue("supervisorName");
+    }else if (getValue === "Status") {
       setSearchValue("status");
     } else if (getValue === "Group Member") {
       setSearchValue("group");
@@ -179,11 +187,44 @@ var data = [];
           <option value='Project ID'>Project ID</option>
           <option value="Batch">Batch</option>
           <option value='Status'>Status</option>
+          <option value='Supervisor'>Supervisor</option>
           <option value='Group Member'>Group Member</option>
         </select>
       </div>
-      
-      {getData && getData.filter((project) =>(project[searchValue].toString().indexOf(searchData) > -1)
+      {searchSupervisor ? ( searchSupervisor.filter((project) =>(project[searchValue].toString().indexOf(searchData) > -1)
+        ).map(project => 
+        <div className="show-projects">
+          <div>
+          <h1 className="project-title">Project Title : <span>{project.title}</span></h1>
+          <br/>
+          <h1>Status : <span>{project.status}</span></h1>
+          <br/>
+          <h1>Description : <span>{project.description}</span></h1>
+          <br/>
+          <h1>Objectives : <span>{project.objectives}</span></h1>
+          <br/>
+          <h1>Batch : <span>{project.batch}</span></h1>
+          <br/>
+          <h1>Supervisor : 
+          {supervisorData && supervisorData.map(e => project.supervisor === e._id &&
+            <span> {e.name}</span>
+          )}
+          </h1>
+          <br/>
+          <h1 className="project-group">Group Members : 
+          {project.group.map(group => (
+              <span> {group} , </span>
+            ))}
+          </h1>
+          <br/>
+          <h1>Project ID : <span>{project._id}</span></h1>
+          </div>
+          <div className="manage-buttons">
+            <button className="update-user" title="Edit Project" onClick={() => toggleModel(project)}><FaEdit size="1.5rem"/></button>
+            <button className="delete-user" title="Delete Project" onClick={() => deleteProject(project._id)}><AiFillDelete size="1.5rem"/></button>
+          </div>
+        </div>)):(
+      getData && getData.filter((project) =>(project[searchValue].toString().indexOf(searchData) > -1)
         ).map(project => 
         <div className="show-projects">
           <div>
@@ -216,7 +257,8 @@ var data = [];
             <button className="delete-user" title="Delete Project" onClick={() => deleteProject(project._id)}><AiFillDelete size="1.5rem"/></button>
           </div>
         </div>
-        )}
+        )
+      )}
          {editForm && displayData && (
         <div className='popup-container'>
           <div className='popup'>
