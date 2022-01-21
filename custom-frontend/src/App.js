@@ -18,6 +18,7 @@ import Document from "./components/main-components/Documents";
 import SSidebar from "./supervisor/sidebar";
 import { MdGroup } from "react-icons/md";
 import Groups from './supervisor/group';
+import ManageProjects from './supervisor/ManageProjects';
 // function handleValidation(params) {}
 function App() {
   // Commit Test
@@ -57,7 +58,8 @@ function App() {
           />
           <Route path="/supervisor" element={<SSidebar />} />
           <Route path="/supervisor/updatepassword" element={<SSidebar name="Update Password" abc={<UserProfile />} />} />
-          <Route path="/supervisor/project" element={<SSidebar name="Crreate Project" abc={<Groups />} />} />
+          <Route path="/supervisor/createproject" element={<SSidebar name="Crreate Project" abc={<Groups />} />} />
+          <Route path="/supervisor/manageprojects" element={<SSidebar name="Manage Projects" abc={<ManageProjects />} />} />
         </Routes>
       </div>
     );

@@ -60,7 +60,13 @@ export default function SSidebar(props) {
                   <span>Home</span>
                 </li>
               </Link>
-              <Link to='/supervisor/projects' className='links'>
+              <Link to='/supervisor/createproject' className='links'>
+                <li>
+                  <AiOutlineProject />
+                  <span>Create Projects</span>
+                </li>
+              </Link>
+              <Link to='/supervisor/manageprojects' className='links'>
                 <li>
                   <AiOutlineProject />
                   <span>Manage Projects</span>
