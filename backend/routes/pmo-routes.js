@@ -14,6 +14,7 @@ const {
   deleteSupervisor,
   viewEvents,
   createEvent,
+  editEvent,
   deleteEvent,
   addMarks,
   getAllProjects,
@@ -44,7 +45,7 @@ router
 
 //events routes
 router.route("/events").get(viewEvents).post(createEvent);
-router.route("/events/:id").delete(deleteEvent);
+router.route("/events/:id").delete(deleteEvent).put(editEvent);
 
 //marks
 router.route("/:id/marks").patch(addMarks);

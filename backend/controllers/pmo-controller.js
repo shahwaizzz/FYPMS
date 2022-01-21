@@ -160,11 +160,39 @@ const Event = require("../models/event-model");
 //create event
 const createEvent = async (req, res) => {
   const event = await Event.create({ ...req.body });
-  res.status(StatusCodes.OK).json({ event , err: { code: 0, message: "No error found" }});
+  res
+    .status(StatusCodes.OK)
+    .json({ event, err: { code: 0, message: "No error found" } });
+};
+const editEvent = async (req, res) => {
+  const { id: eventId } = req.params;
+  const { name, venue, date, details, year, semester } = req.body;
+  if (
+    name === "" ||
+    venue === "" ||
+    date === "" ||
+    details === "" ||
+    year === "" ||
+    semester === ""
+  ) {
+    throw new BadRequestError("Values cannot be empty");
+  }
+  const event = await Event.findByIdAndUpdate({ _id: eventId }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!event) {
+    throw new NotFoundError("Student does not exist");
+  }
+  res
+    .status(StatusCodes.OK)
+    .json({ event, err: { code: 0, message: "No error found" } });
 };
 const viewEvents = async (req, res) => {
   const events = await Event.find({});
-  res.status(StatusCodes.OK).json({ events, err: { code: 0, message: "No error found" }});
+  res
+    .status(StatusCodes.OK)
+    .json({ events, err: { code: 0, message: "No error found" } });
 };
 const deleteEvent = async (req, res) => {
   const { id: eventId } = req.params;
@@ -321,6 +349,7 @@ module.exports = {
   editSupervisor,
   deleteSupervisor,
   createEvent,
+  editEvent,
   deleteEvent,
   viewEvents,
   addMarks,
