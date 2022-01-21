@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./login/index.css";
-// import Login from "./login";
 import { useSelector } from "react-redux";
 import Dashoard_Pmo from "./dashboard_pmo/Dashboard_Pmo";
 import Dashoard_std from "./dashboard_student/Dashboard_std";
@@ -9,11 +8,13 @@ import Adm_login from "./login/Adm_login";
 // function handleValidation(params) {}
 function App() {
   // Commit Test
-  const { pmo, student, supervisor } = useSelector((state) => state.AuthReducer)
-  if (student) {
-    <div className="App">
-        <Dashoard_supervisor />
-      </div>
+  const { pmo, student, supervisor } = useSelector(
+    (state) => state.AuthReducer
+  );
+  if (supervisor) {
+    <div className='App'>
+      <Dashoard_supervisor />
+    </div>;
   }
   if (pmo) {
     return (
@@ -21,18 +22,19 @@ function App() {
         <Dashoard_Pmo />
       </div>
     );
-  } if (supervisor) {
+  }
+  if (student) {
     return (
-      <div className="App">
+      <div className='App'>
         <Dashoard_std />
       </div>
-    )
+    );
   } else {
     return (
-      <div className="App">
+      <div className='App'>
         <Adm_login />
       </div>
-    )
+    );
   }
 }
 
