@@ -8,34 +8,31 @@ import Adm_login from "./login/Adm_login";
 // function handleValidation(params) {}
 function App() {
   // Commit Test
-  const { pmo, student, supervisor } = useSelector(
-    (state) => state.AuthReducer
-  );
-  if (supervisor) {
+  // const { pmo, student, supervisor } = useSelector((state) => state.AuthReducer)
+  // if (student) {
+  //   <div className="App">
+  //       <Dashoard_supervisor />
+  //     </div>
+  // }
+  // if (pmo) {
+  return (
     <div className='App'>
-      <Dashoard_supervisor />
-    </div>;
-  }
-  if (pmo) {
-    return (
-      <div className='App'>
-        <Dashoard_Pmo />
-      </div>
-    );
-  }
-  if (student) {
-    return (
-      <div className='App'>
-        <Dashoard_std />
-      </div>
-    );
-  } else {
-    return (
-      <div className='App'>
-        <Adm_login />
-      </div>
-    );
-  }
+      <Dashoard_Pmo />
+    </div>
+  );
+  // } if (supervisor) {
+  //   return (
+  //     <div className="App">
+  //       <Dashoard_std />
+  //     </div>
+  //   )
+  // } else {
+  //   return (
+  //     <div className="App">
+  //       <Adm_login />
+  //     </div>
+  //   )
+  // }
 }
 
 export default App;

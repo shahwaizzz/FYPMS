@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
-import Progressbar from "../progressbar";
 import axios from "axios";
-import { eventUrl } from "../../apis";
+import Progressbar from "../components/progressbar";
+import { eventUrl } from "../apis";
 
 export default function Events() {
   const [getData, setGetData] = useState(false);
@@ -58,9 +58,36 @@ function handleChange(e){
   setDisplayData({ ...displayData, [name]: value });
 }
 
-function handleSubmit(){
-  
+function handleSubmit(e){
+  e.preventDefault();
+  const options = {
+    method: "put",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(displayData),
+  };
+  fetch(`${eventUrl}/${displayData._id}`, options)
+    .then((res) => res.json())
+    .then(
+      (result) => {
+        console.log(result)
+        if (result.err.code === 0) {
+          setRefresh(!refresh);
+          toggleModel("update",false);
+          alert("Project Update Successfully");
+        } else if (result.err.code === 11000) {
+          alert(
+            `This ${JSON.stringify(result.err.keyValue)} is already in use`
+          );
+        } else if (result.err.message) {
+          alert(result.err.message);
+        }
+      },
+      (error) => {
+        alert(error);
+      }
+    );
 }
+
   return (
     <>
       <div className='data-container'>

@@ -160,11 +160,11 @@ const Event = require("../models/event-model");
 //create event
 const createEvent = async (req, res) => {
   const event = await Event.create({ ...req.body });
-  res.status(StatusCodes.OK).json({ event });
+  res.status(StatusCodes.OK).json({ event , err: { code: 0, message: "No error found" }});
 };
 const viewEvents = async (req, res) => {
   const events = await Event.find({});
-  res.status(StatusCodes.OK).json({ events });
+  res.status(StatusCodes.OK).json({ events, err: { code: 0, message: "No error found" }});
 };
 const deleteEvent = async (req, res) => {
   const { id: eventId } = req.params;

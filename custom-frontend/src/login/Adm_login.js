@@ -4,11 +4,13 @@ import logo from "./logo.png";
 import axios from 'axios';
 import {SET_TOKON_PMO} from '../store/reducers/AuthReducer';
 import { useDispatch } from "react-redux";
+import  { Navigate } from 'react-router-dom'
 
 export default function Adm_login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+
   const pmoLogin = async (event) => {
     event.preventDefault();
     const config = {
@@ -21,8 +23,8 @@ export default function Adm_login() {
       const {pmo, token} = response.data;
       localStorage.setItem("myToken");
       dispatch({type: SET_TOKON_PMO , paylood: token });
-      //history.push("/admin")
-      //<Redirect to={Dashboard_supervisor} />
+      <Navigate to="/Dashoard_Pmo" />
+      console.log(response)
     } catch (error) {
       console.log(error.response);
     }
