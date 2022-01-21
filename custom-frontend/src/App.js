@@ -15,6 +15,9 @@ import Thr_login from "./login/Thr_login";
 import Std_login from "./login/Std_login";
 import Modal from "./components/modal";
 import Document from "./components/main-components/Documents";
+import SSidebar from "./supervisor/sidebar";
+import { MdGroup } from "react-icons/md";
+import Groups from './supervisor/group';
 // function handleValidation(params) {}
 function App() {
   // Commit Test
@@ -52,6 +55,9 @@ function App() {
             path='/admin/profile'
             element={<Sidebar name='User Profile' abc={<UserProfile />} />}
           />
+          <Route path="/supervisor" element={<SSidebar />} />
+          <Route path="/supervisor/updatepassword" element={<SSidebar name="Update Password" abc={<UserProfile />} />} />
+          <Route path="/supervisor/project" element={<SSidebar name="Crreate Project" abc={<Groups />} />} />
         </Routes>
       </div>
     );
