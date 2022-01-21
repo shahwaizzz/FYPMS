@@ -1,33 +1,32 @@
 import React, { useState } from "react";
 import "./index.css";
 import logo from "./logo.png";
+import axios from 'axios';
+import {SET_TOKON_PMO} from '../store/reducers/AuthReducer';
+import { useDispatch } from "react-redux";
+
 export default function Adm_login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const dispatch = useDispatch();
   const pmoLogin = async (event) => {
     event.preventDefault();
-    const response = await fetch("/api/v1/auth/pmo/login", {
-      method: "POST",
+    const config = {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-    const data = await response.json();
-    if (data.token) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.pmo.name));
-      alert(`Hello ${data.pmo.name}`);
-      window.location.href = "../../admin";
-    } else {
-      alert(data.msg);
     }
-    console.log(data);
-  };
+    try {
+      const response = await axios.post("/api/v1/auth/pmo/login", {email, password},config);
+      const {pmo, token} = response.data;
+      localStorage.setItem("myToken");
+      dispatch({type: SET_TOKON_PMO , paylood: token });
+      //history.push("/admin")
+      //<Redirect to={Dashboard_supervisor} />
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
 
   return (
     <div className='body-div'>
