@@ -1,7 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { eventUrl } from "../../apis";
-// import axios from "axios";
-
 import React, { useState, useEffect } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
@@ -10,34 +6,7 @@ import Progressbar from "../progressbar";
 import { students } from "../../apis";
 import axios from "axios";
 
-// venu groups name date details
-
-
-
-export default function Events() {
-  // const [getData, setGetData] = useState(false);
-  // const api = axios.create({
-  //   baseURL: `http://localhost:3000/api/v1/pmo/events`,
-  // });
-
-  // useEffect(() => {
-  //   api
-  //     .get("/")
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setGetData(res.data.events);
-  //     })
-  //     .catch((res) => {
-  //       alert(res);
-  //     });
-  // }, []);
-
-
-
-
-
-
-
+export default function Student() {
   const [addStudent, setAddStudent] = useState(false);
   const [editForm, setEditForm] = useState(false);
   const [searchData, setSearchData] = useState("");
@@ -52,8 +21,8 @@ export default function Events() {
   });
 
   useEffect(() => {
-    api
-      .get("/")
+    axios
+      .get(students)
       .then((res) => {
         setGetData(res.data);
       })
@@ -62,25 +31,12 @@ export default function Events() {
       });
   }, [refresh]);
 
-  // useEffect(() => {
-  //   api
-  //     .get("/")
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setGetData(res.data.events);
-  //     })
-  //     .catch((res) => {
-  //       alert(res);
-  //     });
-  // }, []);
-
   function deleteStudent(id) {
-    var check = window.confirm("Are you sure, you want to delete the student");
+    var check = window.confirm("Are sure you want to delete the student");
     if (check) {
       api
         .delete(`/${id}`)
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             setRefresh(!refresh);
             alert("Student Delete Successfully");
@@ -184,22 +140,7 @@ export default function Events() {
         }
       );
   }
-
-
-
-
-
-
-
-
-
-
-
   return (
-    // <div>
-    //   <h1>Events</h1>
-    //   {getData && getData.map((e) => <h1>{e.name}</h1>)}
-    // </div>
     <div className='data-container'>
       <div className='data-container-top'>
         <input
@@ -219,7 +160,7 @@ export default function Events() {
           <option value='Phone'>Phone</option>
         </select>
         <button className='add-data-btn' onClick={() => toggleModel("add")}>
-          Create Event
+          Add Student
         </button>
       </div>
       {!getData ? (
@@ -230,7 +171,7 @@ export default function Events() {
         <table className='table'>
           <thead>
             <tr>
-              {/* <th scope='col'>#Roll-No</th>
+              <th scope='col'>#Roll-No</th>
               <th scope='col'>Name</th>
               <th scope='col'>Department</th>
               <th scope='col'>Section</th>
@@ -239,21 +180,11 @@ export default function Events() {
               <th scope='col'>Phone</th>
               <th colSpan='2' scope='col'>
                 Options
-              </th> */}
-              <th scope='col'>#ID</th>
-              <th scope='col'>Title</th>
-              <th scope='col'>Department</th>
-              <th scope='col'>Batch</th>
-              <th scope='col'>Date</th>
-              <th scope='col'>Venu</th>
-              <th scope='col'>Details</th>
-              <th colSpan='2' scope='col'>
-                Options
               </th>
             </tr>
           </thead>
           <tbody>
-            {/* {getData
+            {getData
               .filter(
                 (student) =>
                   student[searchValue].toString().indexOf(searchData) > -1
@@ -267,40 +198,6 @@ export default function Events() {
                   <td data-label='Batch'>{student.batch}</td>
                   <td data-label='Email'>{student.email}</td>
                   <td data-label='Phone'>{student.phone}</td>
-                  <td data-label='Options'>
-                    <div className='manage-buttons'>
-                      <button
-                        className='update-user'
-                        title='Edit Student'
-                        onClick={() => toggleModel("update", student)}
-                      >
-                        <FaEdit size='1.5rem' />
-                      </button>
-                      <button
-                        className='delete-user'
-                        title='Delete Student'
-                        onClick={() => deleteStudent(student._id)}
-                      >
-                        <AiFillDelete size='1.5rem' />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))} */}
-              {getData
-              .filter(
-                (student) =>
-                  student[searchValue].toString().indexOf(searchData) > -1
-              )
-              .map((student) => (
-                <tr key={student._id}>
-                  <td data-label='#ID'>{student.rollNumber}</td>
-                  <td data-label='Title'>{student.name}</td>
-                  <td data-label='Department'>{student.department}</td>
-                  <td data-label='Batch'>{student.section}</td>
-                  <td data-label='Date'>{student.batch}</td>
-                  <td data-label='Venu'>{student.email}</td>
-                  <td data-label='Explaination'>{student.phone}</td>            
                   <td data-label='Options'>
                     <div className='manage-buttons'>
                       <button

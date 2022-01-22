@@ -15,16 +15,47 @@ const eventSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    required: [true, "Please Provide Date"],
-    default: Date.now(),
   },
+  // date: {
+  //   day: {
+  //     type: Number,
+  //     min: 1,
+  //     max: 31,
+  //   },
+  //   month: {
+  //     type: String,
+  //     enum: {
+  //       values: [
+  //         "January",
+  //         "February",
+  //         "March",
+  //         "April",
+  //         "May",
+  //         "June",
+  //         "July",
+  //         "August",
+  //         "September",
+  //         "October",
+  //         "November",
+  //         "December",
+  //       ],
+  //     },
+  //   },
+  //   year: {
+  //     type: Number,
+  //     maxlength: 4,
+  //     minlength: 4,
+  //   },
+  // },
   details: {
     type: String,
     required: [true, "Please Enter Event Details"],
     default: "sdfsdf",
   },
   year: {
-    type: Date,
+    type: Number,
+    maxlength: 4,
+    minlength: 4,
     required: [true, "Please Choose Event Batch "],
   },
   semester: {
@@ -32,6 +63,7 @@ const eventSchema = new mongoose.Schema({
     enum: {
       values: ["Fall", "Spring"],
     },
+    default: "Fall",
     required: [true, "Please Provide Semester"],
   },
 });

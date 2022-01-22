@@ -1,16 +1,11 @@
 import React, { useState } from "react";
-import Home from "./components/main-components/home";
-import Navbar from "./components/navbar";
-import Sidebar from "./components/sidebar";
 import "./login/index.css";
-// import Login from "./login";
-import { Routes, Route } from "react-router-dom";
-import Projects from "./components/main-components/projects";
-import Events from "./components/main-components/events";
-import Student from "./components/main-components/student";
-import Supervisor from "./components/main-components/supervisor";
-import UserProfile from "./components/main-components/user-profile";
+import { useSelector } from "react-redux";
+import Dashoard_Pmo from "./dashboard_pmo/Dashboard_Pmo";
+import Dashoard_std from "./dashboard_student/Dashboard_std";
+import Dashoard_supervisor from "./dashboard_supervisor/Dashboard_supervisor";
 import Adm_login from "./login/Adm_login";
+<<<<<<< HEAD
 import Thr_login from "./login/Thr_login";
 import Std_login from "./login/Std_login";
 import Modal from "./components/modal";
@@ -86,6 +81,36 @@ function App() {
       </div>
     );
   }
+=======
+// function handleValidation(params) {}
+function App() {
+  // Commit Test
+  // const { pmo, student, supervisor } = useSelector((state) => state.AuthReducer)
+  // if (student) {
+  //   <div className="App">
+  //       <Dashoard_supervisor />
+  //     </div>
+  // }
+  // if (pmo) {
+  return (
+    <div className='App'>
+      <Dashoard_Pmo />
+    </div>
+  );
+  // } if (supervisor) {
+  //   return (
+  //     <div className="App">
+  //       <Dashoard_std />
+  //     </div>
+  //   )
+  // } else {
+  //   return (
+  //     <div className="App">
+  //       <Adm_login />
+  //     </div>
+  //   )
+  // }
+>>>>>>> d63005ffd9cb9c9879e56346f467083d89e14e78
 }
 
 export default App;
