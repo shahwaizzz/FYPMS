@@ -27,7 +27,8 @@ export default function Adm_login() {
       const { pmo, token } = response.data;
       localStorage.setItem("myToken", token);
       dispatch({ type: SET_TOKON_PMO, paylood: token });
-      <Navigate to='/Dashoard_Pmo' />;
+      <Navigate to='/pmo' />;
+      // window.location.href = "/pmo";
       console.log(response);
     } catch (error) {
       console.log(error);

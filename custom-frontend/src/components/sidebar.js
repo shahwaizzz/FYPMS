@@ -54,7 +54,7 @@ export default function Sidebar(props) {
               <span className='menubar-title-test'>{props.name}</span>
             </h2>
             <ul className={menubarList}>
-              <Link to='/pmo' className='links'>
+              <Link to='/' className='links'>
                 <li>
                   <AiOutlineHome />
                   <span>Home</span>

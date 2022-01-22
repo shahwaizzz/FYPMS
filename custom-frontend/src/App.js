@@ -17,7 +17,10 @@ import Student from "./components/dashboard_pmo/student";
 import Supervisor from "./components/dashboard_pmo/supervisor";
 import UserProfile from "./components/dashboard_pmo/user-profile";
 import UploadDocs from "./components/dashboard_pmo/Documents";
-
+import SSidebar from "./components/dashboard_supervisor/sidebar";
+import Groups from "./components/dashboard_supervisor/Projects";
+import ManageProjects from "./components/dashboard_supervisor/ManageProjects";
+import ProjetProgress from "./components/dashboard_supervisor/ProjectProgress";
 
 // function handleValidation(params) {}
 function App() {
@@ -35,33 +38,33 @@ function App() {
       <div className='App'>
         {/* <Dashoard_Pmo /> */}
         <Navbar />
-      <Routes>
-        <Route path='/pmo' element={<Sidebar name='Home' abc={<Home />} />} />
-        <Route
-          path='/pmo/events'
-          element={<Sidebar name='Events' abc={<Events />} />}
-        />
-        <Route
-          path='/pmo/projects'
-          element={<Sidebar name='Projects' abc={<Projects />} />}
-        />
-        <Route
-          path='/pmo/students'
-          element={<Sidebar name='Students' abc={<Student />} />}
-        />
-        <Route
-          path='/pmo/supervisors'
-          element={<Sidebar name='Supervisors' abc={<Supervisor />} />}
-        />
-        <Route
-          path='/pmo/change-password'
-          element={<Sidebar name='Change Password' abc={<UserProfile />} />}
-        />
-        <Route
-          path='/pmo/upload-templates'
-          element={<Sidebar name='Change Password' abc={<UploadDocs />} />}
-        />
-      </Routes>
+        <Routes>
+          <Route path='/' element={<Sidebar name='Home' abc={<Home />} />} />
+          <Route
+            path='/pmo/events'
+            element={<Sidebar name='Events' abc={<Events />} />}
+          />
+          <Route
+            path='/pmo/projects'
+            element={<Sidebar name='Projects' abc={<Projects />} />}
+          />
+          <Route
+            path='/pmo/students'
+            element={<Sidebar name='Students' abc={<Student />} />}
+          />
+          <Route
+            path='/pmo/supervisors'
+            element={<Sidebar name='Supervisors' abc={<Supervisor />} />}
+          />
+          <Route
+            path='/pmo/change-password'
+            element={<Sidebar name='Change Password' abc={<UserProfile />} />}
+          />
+          <Route
+            path='/pmo/documents'
+            element={<Sidebar name='Change Password' abc={<UploadDocs />} />}
+          />
+        </Routes>
       </div>
     );
   }
@@ -74,15 +77,43 @@ function App() {
   } else {
     return (
       <div className='App'>
+        <Navbar />
         <Routes>
-          <Route path="/" element={<Adm_login />}  />
-          <Route path="/auth/supervisor" element={<Thr_login />}  />
-          <Route path="/auth/student" element={<Std_login />}  />
+          <Route path='/' element={<Adm_login />} />
+          <Route path='/auth/supervisor' element={<Thr_login />} />
+          <Route path='/auth/student' element={<Std_login />} />
+          <Route path='/auth/pmo' element={<Adm_login />} />
+          <Route path='/' element={<Sidebar name='Home' abc={<Home />} />} />
+          <Route
+            path='/home'
+            element={<SSidebar name='Home' abc={<Home />} />}
+          />
+          <Route
+            path='/supervisor/createproject'
+            element={<SSidebar name='Project' abc={<Groups />} />}
+          />
+          <Route
+            path='/supervisor/manageprojects'
+            element={
+              <SSidebar name='Manage Projects' abc={<ManageProjects />} />
+            }
+          />
+          <Route
+            path='/supervisor/progress/:id'
+            element={<SSidebar name='Supervisors' abc={<ProjetProgress />} />}
+          />
+          <Route
+            path='/pmo/change-password'
+            element={<Sidebar name='Change Password' abc={<UserProfile />} />}
+          />
+          <Route
+            path='/pmo/documents'
+            element={<Sidebar name='Change Password' abc={<UploadDocs />} />}
+          />
         </Routes>
       </div>
     );
   }
-  
 }
 
 export default App;

@@ -7,7 +7,7 @@ export default function Thr_login() {
       <div class='form-container'>
         <img src={logo} className='logo1' alt='logo' width='60px' />
         <h1 className='heading1'>
-          <b>PAS | Teacher </b>Login
+          <b>PAS | Supervisor </b>Login
         </h1>
         <form class='register-form'>
           {/* Uncomment the next line to show the success message */}
@@ -32,7 +32,7 @@ export default function Thr_login() {
           {/* Uncomment the next line to show the error message */}
           {/* <span id="last-name-error">Please enter a last name</span> */}
           <button class='form-field clr2 button1' type='submit'>
-            Sign in as Teacher
+            Sign in as Supervisor
           </button>
           <p className='t-center'>-OR-</p>
           <a href='/auth/student' className='form-link form-field clr'>

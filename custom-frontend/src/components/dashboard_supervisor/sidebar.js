@@ -7,7 +7,7 @@ import {
   AiOutlineProfile,
   AiOutlineProject,
 } from "react-icons/ai";
-import {CgFileDocument} from 'react-icons/cg';
+import { CgFileDocument } from "react-icons/cg";
 import {
   MdOutlineSupervisedUserCircle,
   MdLogout,
@@ -54,7 +54,7 @@ export default function SSidebar(props) {
               <span className='menubar-title-test'>{props.name}</span>
             </h2>
             <ul className={menubarList}>
-              <Link to='/admin' className='links'>
+              <Link to='/home' className='links'>
                 <li>
                   <AiOutlineHome />
                   <span>Home</span>
@@ -91,10 +91,10 @@ export default function SSidebar(props) {
                 </li>
               </Link>
               <Link to='/admin/documents' className='links whiteicon'>
-                <li className="whiteicon">
+                <li className='whiteicon'>
                   {/* <GrDocument className="clr-white" /> */}
-                  <CgFileDocument  />                  
-                  <span className="whiteicon">Upload Templates</span>
+                  <CgFileDocument />
+                  <span className='whiteicon'>Upload Templates</span>
                 </li>
               </Link>
               <Link to='/supervisor/updatepassword' className='links'>
