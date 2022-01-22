@@ -208,6 +208,40 @@ Link{
   padding: 11px 17px;
   margin-left: calc(28% - 1px);
 }
+.chartpage{
+  width: 66%;
+  background-color: white;
+  margin-left: 17%;
+  height: 89vh;
+  margin-top: -57px;
+  /* overflow: auto; */
+}
+.group-name{
+  position: fixed;
+  text-align: center;
+  background-color: whitesmoke;
+  width: 63.5%;
+  margin-top: 7px;
+  padding: 13px 0px;
+}
+.chatdiv{
+  height: 76vh;
+  overflow: auto;
+}
+.messagediv{
+  /* position: fixed; */
+  height: 10vh;
+  background-color: antiquewhite;
+}
+.msg-right{
+  width: 55%;
+  background-color:antiquewhite;
+}
+
+
+
+
+
 
 
 

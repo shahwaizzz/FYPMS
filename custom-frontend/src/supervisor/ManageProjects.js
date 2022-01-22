@@ -23,7 +23,7 @@ const Card = () =>{
                     <h4 className='card-shd-dat'>18-ARID-37 | Safiullah Maaz</h4>
                     <h4 className='card-shd-dat'>18-ARID-37 | Safiullah Maaz</h4>
                     <h4 className='card-shd-dat'>18-ARID-37 | Safiullah Maaz</h4>
-                    <Link to="/supervisor/progress" className=' link green btn-center' >View Progress</Link>   
+                    <Link to="/supervisor/progress/:id" className=' link green btn-center' >View Progress</Link>   
                 </div>
             </div>
     )
