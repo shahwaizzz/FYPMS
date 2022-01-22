@@ -1,6 +1,5 @@
 const PMO = require("../models/pmo-model");
 const Supervisor = require("../models/supervisor-model");
-const path = require("path");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
@@ -8,8 +7,6 @@ const Student = require("../models/student-model");
 
 // Create And Manage Students
 const createStudent = async (req, res) => {
-  const uploadPath = path.join(__dirname, "../../");
-  console.log(uploadPath);
   const student = await Student.create({ ...req.body });
   res
     .status(StatusCodes.OK)
@@ -325,9 +322,7 @@ const uploadTemplateDocuments = async (req, res) => {
     throw new BadRequestError("No file was uploaded");
   }
   const file = req.files.file;
-  const uploadPath = path.join(__dirname, "../../");
-  console.log(uploadPath);
-  file.mv(`../../custom-frontend/public/uploads/${file.name}`, (err) => {
+  file.mv(`../custom-frontend/public/uploads/${file.name}`, (err) => {
     console.error(err);
     return res.status(500).send(err);
   });

@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const connectDB = require("./db/connect");
 const authenticateUser = require("./middleware/authentication");
+const fileUpload = require("express-fileupload");
 const morgan = require("morgan");
 
 const pmoAuthRoutes = require("./routes/pmo-auth-routes");
@@ -17,6 +18,7 @@ const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 
 app.use(morgan("dev"));
+app.use(fileUpload());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use((req, res, next) => {
