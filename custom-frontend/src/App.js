@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import "./login/index.css";
+import "./components/login/index.css";
 import { useSelector } from "react-redux";
-import Dashoard_Pmo from "./dashboard_pmo/Dashboard_Pmo";
-import Dashoard_std from "./dashboard_student/Dashboard_std";
-import Dashoard_supervisor from "./dashboard_supervisor/Dashboard_supervisor";
-import Adm_login from "./login/Adm_login";
+import Dashoard_Pmo from "./components/dashboard_pmo/Dashboard_Pmo";
+import Dashoard_std from "./components/dashboard_student/Dashboard_std";
+import Dashoard_supervisor from "./components/dashboard_supervisor/Dashboard_supervisor";
+import Adm_login from "./components/login/Adm_login";
 // function handleValidation(params) {}
 function App() {
   // Commit Test

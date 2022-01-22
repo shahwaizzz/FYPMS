@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../login/index.css";
+import "../login/index.css";
 import { AiFillDelete } from "react-icons/ai";
 import { HiDownload } from "react-icons/hi";
 import axios from "axios";

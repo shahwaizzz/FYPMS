@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./index.css";
 import logo from "./logo.png";
-import axios from 'axios';
-import {SET_TOKON_PMO} from '../store/reducers/AuthReducer';
+import axios from "axios";
+import { SET_TOKON_PMO } from "../../store/reducers/AuthReducer";
 import { useDispatch } from "react-redux";
-import  { Navigate } from 'react-router-dom'
+import { Navigate } from "react-router-dom";
 
 export default function Adm_login() {
   const [email, setEmail] = useState("");
@@ -15,20 +15,24 @@ export default function Adm_login() {
     event.preventDefault();
     const config = {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-    }
+    };
     try {
-      const response = await axios.post("/api/v1/auth/pmo/login", {email, password},config);
-      const {pmo, token} = response.data;
-      localStorage.setItem("myToken");
-      dispatch({type: SET_TOKON_PMO , paylood: token });
-      <Navigate to="/Dashoard_Pmo" />
-      console.log(response)
+      const response = await axios.post(
+        "/api/v1/auth/pmo/login",
+        { email, password },
+        config
+      );
+      const { pmo, token } = response.data;
+      localStorage.setItem("myToken", token);
+      dispatch({ type: SET_TOKON_PMO, paylood: token });
+      <Navigate to='/Dashoard_Pmo' />;
+      console.log(response);
     } catch (error) {
-      console.log(error.response);
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className='body-div'>
