@@ -91,7 +91,7 @@ export default function Sidebar(props) {
                   <span className='whiteicon'>Upload Templates</span>
                 </li>
               </Link>
-              <Link to='/pmo/profile' className='links'>
+              <Link to='/pmo/change-password' className='links'>
                 <li>
                   <AiOutlineProfile />
                   <span>User Profile</span>
