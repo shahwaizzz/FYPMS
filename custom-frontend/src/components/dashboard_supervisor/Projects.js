@@ -20,7 +20,7 @@ export default function Projects() {
   const [refresh, setRefresh] = useState(false);
   const data = [];
   const api = axios.create({
-    baseURL: "/api/v1/supervisors/projects",
+    baseURL: "/api/v1/supervisor/projects",
   });
 
   const studentApi = axios.create({
