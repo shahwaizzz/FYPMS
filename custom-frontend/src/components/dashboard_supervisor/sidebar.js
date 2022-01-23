@@ -78,10 +78,10 @@ export default function SSidebar(props) {
                   <span>Events</span>
                 </li>
               </Link>
-              <Link to='/admin/students' className='links'>
+              <Link to='/supervisor/meeting' className='links'>
                 <li>
                   <AiOutlineBook />
-                  <span>Students</span>
+                  <span>Meeting</span>
                 </li>
               </Link>
               <Link to='/admin/supervisors' className='links'>
