@@ -21,6 +21,7 @@ import SSidebar from "./components/dashboard_supervisor/sidebar";
 import Groups from "./components/dashboard_supervisor/Projects";
 import ManageProjects from "./components/dashboard_supervisor/ManageProjects";
 import ProjetProgress from "./components/dashboard_supervisor/ProjectProgress";
+import Meetings from "./components/dashboard_supervisor/Meetings";
 
 // function handleValidation(params) {}
 function App() {
@@ -37,7 +38,7 @@ function App() {
     return (
       <div className='App'>
         {/* <Dashoard_Pmo /> */}
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
           <Route path='/' element={<Sidebar name='Home' abc={<Home />} />} />
           <Route
@@ -71,7 +72,45 @@ function App() {
   if (supervisor) {
     return (
       <div className='App'>
-        <Dashoard_std />
+        {/* <Dashoard_std /> */}
+        <Navbar />
+        <Routes>
+          {/* <Route path='/auth/supervisor' element={<SSidebar name='Home' abc={<Home />} />} /> */}
+          <Route
+            path='/supervisor'
+            element={<SSidebar name='Home' abc={<Home />} />}
+          />
+          <Route
+            path='/supervisor/createproject'
+            element={<SSidebar name='Project' abc={<Groups />} />}
+          />
+          <Route
+            path='/supervisor/manageprojects'
+            element={
+              <SSidebar name='Manage Projects' abc={<ManageProjects />} />
+            }
+          />
+          <Route
+            path='/supervisor/progress/:id'
+            element={<SSidebar name='Supervisors' abc={<ProjetProgress />} />}
+          />
+          <Route
+            path='/Supervisor/change-password'
+            element={<Sidebar name='Change Password' abc={<UserProfile />} />}
+          />
+          <Route
+            path='/pmo/documents'
+            element={<Sidebar name='Change Password' abc={<UploadDocs />} />}
+          />
+          <Route
+            path='/supervisor/meeting'
+            element={<Sidebar name='Meetings' abc={<Meetings />} />}
+          />
+          <Route
+            path='/pmo/documents'
+            element={<Sidebar name='Change Password' abc={<UploadDocs />} />}
+          />
+        </Routes>
       </div>
     );
   } else {
@@ -84,8 +123,8 @@ function App() {
           <Route path='/auth/student' element={<Std_login />} />
           <Route path='/auth/pmo' element={<Adm_login />} />
           <Route path='/' element={<Sidebar name='Home' abc={<Home />} />} />
-          <Route
-            path='/home'
+          {/* <Route
+            path='/home1'
             element={<SSidebar name='Home' abc={<Home />} />}
           />
           <Route
@@ -110,6 +149,14 @@ function App() {
             path='/pmo/documents'
             element={<Sidebar name='Change Password' abc={<UploadDocs />} />}
           />
+          <Route
+            path='/supervisor/meeting'
+            element={<Sidebar name='Meetings' abc={<Meetings />} />}
+          />
+          <Route
+            path='/pmo/documents'
+            element={<Sidebar name='Change Password' abc={<UploadDocs />} />}
+          /> */}
         </Routes>
       </div>
     );

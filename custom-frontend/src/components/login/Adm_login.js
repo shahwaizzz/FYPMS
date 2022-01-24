@@ -11,7 +11,7 @@ export default function Adm_login() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  const pmoLogin = async (event) => {
+  const pmoLogin = async (event) => {                          
     event.preventDefault();
     const config = {
       headers: {
