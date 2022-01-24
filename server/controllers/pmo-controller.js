@@ -326,7 +326,7 @@ const uploadTemplateDocuments = async (req, res) => {
     throw new BadRequestError("No file was uploaded");
   }
   const file = req.files.file;
-  file.mv(`../custom-frontend/public/uploads/${file.name}`, (err) => {
+  file.mv(`../client/public/uploads/${file.name}`, (err) => {
     console.error(err);
     return res.status(500).send(err);
   });
