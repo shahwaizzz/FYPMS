@@ -9,6 +9,7 @@ const {
   updateProject,
   viewEvents,
   createMeeting,
+  viewMeetings,
   addMarks,
 } = require("../controllers/supervisor-controller");
 
@@ -20,6 +21,6 @@ router
   .delete(deleteProject)
   .patch(updateProject);
 router.route("/events").get(viewEvents);
-router.route("/create-meeting").post(createMeeting);
+router.route("/create-meeting").post(createMeeting).get(viewMeetings);
 router.route("/marks").patch(addMarks);
 module.exports = router;

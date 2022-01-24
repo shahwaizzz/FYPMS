@@ -1,7 +1,11 @@
 const PMO = require("../models/pmo-model");
 const Supervisor = require("../models/supervisor-model");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, NotFoundError } = require("../errors");
+const {
+  BadRequestError,
+  NotFoundError,
+  UnauthenticatedError,
+} = require("../errors");
 
 const Student = require("../models/student-model");
 
@@ -331,6 +335,30 @@ const uploadTemplateDocuments = async (req, res) => {
   //   .status(StatusCodes.OK)
   //   .json({ fileName: file.name, filePath: `/uploads/${file.name}` });
 };
+const changePassword = async (req, res) => {
+  const pmoId = req.user.userId;
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+  if ((!currentPassword, !newPassword, !confirmPassword)) {
+    throw new BadRequestError("Values cannot be empty");
+  }
+  if (newPassword !== confirmPassword) {
+    throw new BadRequestError("New Password and Confirm Password are not same");
+  }
+  const pmo = await PMO.find({ _id: pmoId });
+  if (!pmo) {
+    throw new UnauthenticatedError("Invalid User");
+  }
+  const isPasswordCorrect = await pmo.comparePassword(currentPassword);
+  if (!isPasswordCorrect) {
+    throw new UnauthenticatedError("Current Password is not correct");
+  }
+  const updatedPMO = await PMO.findByIdAndUpdate(
+    { _id: pmoId },
+    { password: newPassword },
+    { new: true, runValidators: true }
+  );
+  res.status(StatusCodes.OK).json({ msg: "Password Updated" });
+};
 
 module.exports = {
   createStudent,
@@ -354,4 +382,5 @@ module.exports = {
   updateProject,
   createProject,
   uploadTemplateDocuments,
+  changePassword,
 };

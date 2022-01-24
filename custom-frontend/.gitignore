@@ -24,5 +24,6 @@ yarn-error.log*
 
 
 .eslintcache
+/custom-frontend/.eslintcache
 
 /public/uploads

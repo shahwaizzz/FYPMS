@@ -75,6 +75,13 @@ const createMeeting = async (req, res) => {
   const meeting = await Meeting.create({ ...req.body });
   res.status(StatusCodes.OK).json({ meeting, msg: "Meeting Created" });
 };
+const viewMeetings = async (req, res) => {
+  const meetings = await Meeting.find({ supervisor: req.user.userId });
+  if (!meetings) {
+    res.status(200).json({ msg: "No meetings yet" });
+  }
+  res.status(StatusCodes.OK).json({ meetings });
+};
 const addMarks = async (req, res) => {
   const { marks, studentId } = req.body;
 
@@ -104,5 +111,6 @@ module.exports = {
   updateProject,
   viewEvents,
   createMeeting,
+  viewMeetings,
   addMarks,
 };
