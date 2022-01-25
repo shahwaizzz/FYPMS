@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-.body-div{
+.body-div {
   background: #d2d6de;
   display: flex;
   min-height: 100vh;
@@ -8,18 +8,18 @@
   align-items: center;
 }
 
-.maindiv1{
+.maindiv1 {
   display: flex;
   min-height: 78vh;
   justify-content: center;
   align-items: center;
 }
 
-.padd{
+.padd {
   padding: 25px 5px;
   text-align: center;
 }
-.padd12{
+.padd12 {
   padding: 15px 5px;
   text-align: center;
 }
@@ -43,23 +43,21 @@
   margin-top: -20px;
 }
 
-
-
 .register-form {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 10px;
 }
-.logo1{
-    margin-left:37%;
-    margin-top: 32px;
+.logo1 {
+  margin-left: 37%;
+  margin-top: 32px;
 }
-.heading1{
-    margin-left: 10px;
+.heading1 {
+  margin-left: 10px;
 }
-#email1{
-    margin-top: -17px;
+#email1 {
+  margin-top: -17px;
 }
 .success-message {
   font-family: "Roboto", sans-serif;
@@ -97,7 +95,7 @@
   color: white;
   cursor: pointer;
 }
-.green{
+.green {
   background: #00a65a;
   color: white;
   cursor: pointer;
@@ -105,58 +103,54 @@
 button:disabled {
   cursor: default;
 }
-.t-center{
-    text-align: center;
+.t-center {
+  text-align: center;
 }
-.form-link{
+.form-link {
   background: #4caf50;
   color: white;
   cursor: pointer;
   text-decoration: none;
   text-align: center;
 }
-.clr{
-    background-color: #00c0ef;
+.clr {
+  background-color: #00c0ef;
 }
-.clr1{
-    background: #3c8dbc;
+.clr1 {
+  background: #3c8dbc;
 }
-.clr2{
-    background: #4caf50;
+.clr2 {
+  background: #4caf50;
 }
 
-
-.iconic{
+.iconic {
   font-size: 25px;
   /* margin-left: 20px; */
   /* float: right; */
 }
 
-
-.lists{
+.lists {
   list-style: none;
   /* vertical-align: center; */
   margin-left: -35px;
-
 }
-.btnn{
+.btnn {
   background: transparent;
   color: #00a65a;
   float: right;
   margin-top: -10px;
-  
 }
-.btnn:hover{
+.btnn:hover {
   background: transparent;
   border: none;
   color: rgb(138, 32, 32);
 }
 
-.testing{
+.testing {
   justify-content: center;
   align-items: center;
 }
-.card-div{
+.card-div {
   width: 29%;
   height: 420px;
   justify-content: center;
@@ -170,15 +164,15 @@ button:disabled {
 .card-container {
   /* width: 360px; */
   background-color: white;
-  
+
   padding: 10px;
   /* padding-bottom: 35px; */
   /* margin-top: -20px; */
 }
-.card-div:hover{
+.card-div:hover {
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
-.card-heading{
+.card-heading {
   padding-top: 30px;
   padding-bottom: 0px;
   text-align: center;
@@ -189,26 +183,26 @@ button:disabled {
   color: black;
 }
 
-.card-shd{
+.card-shd {
   padding-left: 17px;
 }
-.btn-center{
-  margin-left: 28%; 
+.btn-center {
+  margin-left: 28%;
 }
-Link{
+Link {
   text-decoration: none;
 }
-.link{
+.link {
   text-decoration: none;
   padding: 10px 15px;
   margin-bottom: 30px;
 }
-.green:hover{
+.green:hover {
   background-color: #08874d;
   padding: 11px 17px;
   margin-left: calc(28% - 1px);
 }
-.chartpage{
+.chartpage {
   width: 66%;
   background-color: white;
   margin-left: 17%;
@@ -216,7 +210,7 @@ Link{
   margin-top: -57px;
   /* overflow: auto; */
 }
-.group-name{
+.group-name {
   position: fixed;
   text-align: center;
   background-color: whitesmoke;
@@ -224,27 +218,16 @@ Link{
   margin-top: 7px;
   padding: 13px 0px;
 }
-.chatdiv{
+.chatdiv {
   height: 76vh;
   overflow: auto;
 }
-.messagediv{
+.messagediv {
   /* position: fixed; */
   height: 10vh;
   background-color: antiquewhite;
 }
-.msg-right{
+.msg-right {
   width: 55%;
-  background-color:antiquewhite;
+  background-color: antiquewhite;
 }
-
-
-
-
-
-
-
-
-
-
-

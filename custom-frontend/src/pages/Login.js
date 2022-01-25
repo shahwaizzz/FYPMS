@@ -1,15 +1,29 @@
-import React from "react";
-import "./index.css";
+import React, { useState } from "react";
+import "./login.css";
 import logo from "./logo.png";
-export default function Std_login() {
+import axios from "axios";
+import { Navigate } from "react-router-dom";
+import { useAppContext } from "../context/appContext";
+export default function Adm_login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { pmoLogin } = useAppContext();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      console.log("values are empty");
+    }
+    pmoLogin({ email: email, password: password });
+  };
+
   return (
     <div className='body-div'>
       <div class='form-container'>
         <img src={logo} className='logo1' alt='logo' width='60px' />
         <h1 className='heading1'>
-          <b>PAS | Student </b>Login
+          <b>PAS | Admin </b>Login
         </h1>
-        <form class='register-form'>
+        <form class='register-form' onSubmit={handleSubmit}>
           {/* Uncomment the next line to show the success message */}
           {/* <div class="success-message">Success! Thank you for registering</div> */}
 
@@ -19,6 +33,8 @@ export default function Std_login() {
             type='text'
             placeholder='Email'
             name='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           {/* Uncomment the next line to show the error message */}
           {/* <span id="email-error">Please enter an email address</span> */}
@@ -28,18 +44,20 @@ export default function Std_login() {
             type='password'
             placeholder='Password'
             name='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           {/* Uncomment the next line to show the error message */}
           {/* <span id="last-name-error">Please enter a last name</span> */}
-          <button class='form-field clr button1' type='submit'>
-            Sign in as Student
+          <button className='form-field button1' type='submit' name='login'>
+            Sign in as Admin
           </button>
           <p className='t-center'>-OR-</p>
           <a href='/auth/supervisor' className='form-link form-field'>
-            Login in as Teacher
+            Login in as Supervisor
           </a>
-          <a href='/auth/pmo' className='form-link form-field clr1'>
-            Login in as Admin
+          <a href='/auth/student' className='form-link form-field clr'>
+            Login in as Student
           </a>
         </form>
       </div>
