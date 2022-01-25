@@ -3,8 +3,8 @@ import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
 import axios from "axios";
-import Progressbar from "../progressbar";
-import { eventUrl } from "../../apis";
+import Progressbar from "../../../components/progressbar";
+import { eventUrl } from "../../../apis";
 
 export default function Events() {
   const [getData, setGetData] = useState(false);

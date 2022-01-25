@@ -37,6 +37,24 @@ const AppProvider = ({ children }) => {
       console.log(pmo);
 
       addUserToLocalStorage({ user: pmo, token });
+      window.location.href = "/pmo";
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+  const supervisorLogin = async ({ email, password }) => {
+    try {
+      const { data } = await axios.post(`/api/v1/auth/supervisor/login`, {
+        email,
+        password,
+      });
+
+      const { supervisor, token } = data;
+      console.log(data);
+      console.log(supervisor);
+
+      addUserToLocalStorage({ user: supervisor, token });
+      window.location.href = "/supervisor/meetings";
     } catch (error) {
       console.log(error.response.data);
     }

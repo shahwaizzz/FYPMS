@@ -1,8 +1,9 @@
 import React from "react";
 import { IoNotificationsCircleSharp } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
-
+import { useAppContext } from "../context/appContext";
 export default function Navbar() {
+  const { logoutUser } = useAppContext();
   return (
     <div>
       <div className='title-bar'>
@@ -16,7 +17,7 @@ export default function Navbar() {
             <CgProfile size='2.5rem' />
           </div>
           <div>
-            <p className='lead' onClick={() => console.log("logout")}>
+            <p className='lead' onClick={logoutUser}>
               LOGOUT
             </p>
           </div>

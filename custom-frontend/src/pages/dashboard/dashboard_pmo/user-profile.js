@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../login/index.css";
+import "../../login.css";
 import axios from "axios";
 export default function UserProfile() {
   const [currentPassword, setCurrentPassword] = useState("");

@@ -4,10 +4,8 @@ import Sidebar from "../components/sidebar";
 const SharedLayout = () => {
   return (
     <>
-      <nav>
-        <Link to='all-jobs'>all jobs</Link>
-        <Link to='add-job'>all jobs</Link>
-      </nav>
+      <Navbar />
+      <Sidebar />
       <Outlet />
     </>
   );

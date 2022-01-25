@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
-import Progressbar from "../progressbar";
-import { supervisorsUrl } from "../../apis";
+import Progressbar from "../../../components/progressbar";
+import { supervisorsUrl } from "../../../apis";
 import axios from "axios";
 
 export default function Supervisor() {

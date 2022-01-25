@@ -1,5 +1,5 @@
 import React from "react";
-import "../login/index.css";
+import "../../login.css";
 import { Link } from "react-router-dom";
 
 export default function ManageProjects() {

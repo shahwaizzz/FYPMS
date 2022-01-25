@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./login.css";
 import logo from "./logo.png";
-import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
 export default function Adm_login() {
@@ -25,7 +24,7 @@ export default function Adm_login() {
         </h1>
         <form class='register-form' onSubmit={handleSubmit}>
           {/* Uncomment the next line to show the success message */}
-          {/* <div class="success-message">Success! Thank you for registering</div> */}
+          {/* <div class='success-message'>Success! Thank you for registering</div> */}
 
           <input
             id='email1'
