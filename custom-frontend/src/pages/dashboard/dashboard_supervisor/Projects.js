@@ -18,6 +18,8 @@ export default function Projects() {
   const [addProject, setAddProject] = useState(false);
   const [displayData, setDisplayData] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const token = localStorage.getItem("token");
+
   const data = [];
   const api = axios.create({
     baseURL: "/api/v1/supervisor/projects",
@@ -32,12 +34,12 @@ export default function Projects() {
   });
   useEffect(() => {
     api
-      .get("/")
+      .get("/",{headers: {"Authentication": `Bearer ${token}` }})
       .then((res) => {
         setGetData(res.data.projects);
 
         supervisorApi
-          .get("/")
+          .get("/",{headers: {"Authentication": `Bearer ${token}` }})
           .then((res) => {
             setSupervisorData(res.data.supervisor);
           })
@@ -46,7 +48,7 @@ export default function Projects() {
           });
 
         studentApi
-          .get("/")
+          .get("/",{headers: {"Authentication": `Bearer ${token}` }})
           .then((res) => {
             setStudentData(res.data);
           })

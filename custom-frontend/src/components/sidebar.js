@@ -21,11 +21,14 @@ import {
 // import Projects from "./main-components/projects";
 // import Events from "./main-components/events";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../context/appContext";
+
 
 export default function Sidebar(props) {
   const [menuChange, setMenuChange] = useState("menu-hide");
   const [dataWidth, setDataWidth] = useState("data-width");
   const [menubarList, setMenubarList] = useState("menubar-list");
+  const { removeUserFromLocalStorage } = useAppContext();
 
   function menuToggle(e) {
     if (menuChange === "menu-show" && dataWidth === null) {
@@ -39,6 +42,10 @@ export default function Sidebar(props) {
       setDataWidth(null);
       setMenubarList(null);
     }
+  }
+  function logout(){ 
+    removeUserFromLocalStorage();
+    window.location.href='/login';
   }
   return (
     <div>
@@ -54,7 +61,7 @@ export default function Sidebar(props) {
               <span className='menubar-title-test'>{props.name}</span>
             </h2>
             <ul className={menubarList}>
-              <Link to='/' className='links'>
+              <Link to='/pmo' className='links'>
                 <li>
                   <AiOutlineHome />
                   <span>Home</span>
@@ -97,10 +104,10 @@ export default function Sidebar(props) {
                   <span>User Profile</span>
                 </li>
               </Link>
-              <Link to='/pmo/logout' className='links'>
+              <Link to='/pmo/logout' className='links' onClick={logout}>
                 <li>
                   <MdLogout />
-                  <span>Logout</span>
+                  <span>Logout</span> 
                 </li>
               </Link>
             </ul>

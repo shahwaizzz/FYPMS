@@ -116,6 +116,7 @@ select {
 }
 
 input[type="search"]:focus,
+input[type="password"]:focus,
 input[type="date"]:focus,
 input[type="text"]:focus,
 input[type="number"]:focus,
@@ -505,4 +506,45 @@ footer {
     text-align: left;
   }
 }
-
+.admin{
+  background-color: #3c8dbc;
+}
+.admin:hover{
+  background-color: #23709c;
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.24);
+  color:white;
+  /* margin: 8px 0 10px 0;
+  padding: 12px;
+  font-size: 16px; */
+  transition: 0.3s;
+}
+.admin:focus{
+  background-color: #20648b;
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.24);
+  color:white;
+  transition: 0.2s;
+}
+.admin:hover{
+  background-color: #23709c;
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.24);
+  color:white;
+  /* margin: 8px 0 10px 0;
+  padding: 12px;
+  font-size: 16px; */
+  transition: 0.3s;
+}
+.supervisor{
+  background-color: #4caf50;
+  color: white;
+}
+.supervisor:hover{
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.24);
+  background-color: #3ba33f;
+  transition: 0.3s;
+}
+.hvr:hover{
+  color:white;
+  margin: 8px 0 10px 0;
+  padding: 12px;
+  font-size: 16px;
+}

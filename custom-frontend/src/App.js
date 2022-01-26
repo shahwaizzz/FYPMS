@@ -20,6 +20,8 @@ import {
   SupervisorProjects,
   SupervisorSidebar,
 } from "./pages/dashboard/dashboard_supervisor";
+import Logout from "./pages/dashboard/dashboard_pmo/logout";
+import SupervisorLogin from "./pages/SupervisorLogin";
 // function handleValidation(params) {}
 function App() {
   // Commit Test
@@ -59,6 +61,10 @@ function App() {
             path='/pmo/documents'
             element={<Sidebar name='Change Password' abc={<UploadDocs />} />}
           />
+          <Route
+            path='/pmo/logout'
+            element={<Sidebar name='Change Password' abc={<Logout />} />}
+          />
           {/* <Route index element={<div>HOme element</div>} />
           <Route path='all-jobs' element={<div>all Jobs</div>} />
           <Route path='add-job' element={<div>add Jobs</div>} />
@@ -92,11 +98,16 @@ function App() {
             element={<SupervisorSidebar name='Events' abc={<Events />} />}
           />
           <Route
-            path='/supervisor/meeting'
+            path='/supervisor/meetings'
             element={<SupervisorSidebar name='Meetings' abc={<Meetings />} />}
+          />
+          <Route
+            path='/supervisor/updatepassword'
+            element={<SupervisorSidebar name='Update Password' abc={<UserProfile />} />}
           />
         </Route>
         <Route path='/login' element={<Login />} />
+        <Route path='/auth/supervisor' element={<SupervisorLogin />} />
         <Route path='/landing' element={<div>landing page</div>} />
         <Route path='*' element={<div>Error</div>} />
       </Routes>

@@ -27,7 +27,7 @@
   margin-top: -20px;
 } */
 .form-container {
-  width: 360px;
+  width: 384px;
   background-color: white;
 
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
@@ -50,7 +50,7 @@
   padding: 10px;
 }
 .logo1 {
-  margin-left: 37%;
+  margin-left: calc(50% - 30px);
   margin-top: 32px;
 }
 .heading1 {
@@ -200,7 +200,8 @@ Link {
 .green:hover {
   background-color: #08874d;
   padding: 11px 17px;
-  margin-left: calc(28% - 1px);
+  color: white;
+  /* margin-left: calc(28% - 1px); */
 }
 .chartpage {
   width: 66%;
@@ -230,4 +231,28 @@ Link {
 .msg-right {
   width: 55%;
   background-color: antiquewhite;
+}
+.admin{
+  background-color: #3c8dbc;
+}
+.admin:hover{
+  background-color: #297cac;
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.24);
+}
+.student{
+  background-color: #00c0ef;
+}
+.student:hover{
+  background-color: #10aed6;
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.24);
+  transition: .3s;
+}
+.student:focus{
+  background-color: #1599b9;
+  box-shadow: 0 0 0px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.24);
+  transition: 0.1s;
+}
+.error-cls{
+  text-align: center;
+  color: rgb(228, 10, 10);
 }

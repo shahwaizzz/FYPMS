@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
-
 const initialState = {
   isPMO: false,
   isStudent: false,
@@ -23,6 +22,7 @@ const AppProvider = ({ children }) => {
   const removeUserFromLocalStorage = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    window.location.href='/login';
   };
 
   const pmoLogin = async ({ email, password }) => {
@@ -40,6 +40,7 @@ const AppProvider = ({ children }) => {
       window.location.href = "/pmo";
     } catch (error) {
       console.log(error.response.data);
+      return error.response.data;
     }
   };
   const supervisorLogin = async ({ email, password }) => {
@@ -56,7 +57,9 @@ const AppProvider = ({ children }) => {
       addUserToLocalStorage({ user: supervisor, token });
       window.location.href = "/supervisor/meetings";
     } catch (error) {
-      console.log(error.response.data);
+      console.log("msg",error.response.data.msg);
+      console.warn("error:",error);
+      // return error.response.data.msg;
     }
   };
 
@@ -70,6 +73,7 @@ const AppProvider = ({ children }) => {
         ...state,
         pmoLogin,
         logoutUser,
+        supervisorLogin,
       }}
     >
       {children}
