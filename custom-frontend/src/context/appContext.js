@@ -13,7 +13,7 @@ const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
-
+  const [error, setError] = useState(null);
   const addUserToLocalStorage = ({ user, token }) => {
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("token", token);
@@ -40,7 +40,9 @@ const AppProvider = ({ children }) => {
       window.location.href = "/pmo";
     } catch (error) {
       console.log(error.response.data);
-      return error.response.data;
+      // return error.response.data;
+      setError(error.response.data.msg);
+      // alert(error);
     }
   };
   const supervisorLogin = async ({ email, password }) => {
@@ -59,6 +61,30 @@ const AppProvider = ({ children }) => {
     } catch (error) {
       console.log("msg",error.response.data.msg);
       console.warn("error:",error);
+      setError(error.response.data.msg);
+      // alert(error)
+      // return error.response.data.msg;
+    }
+  };
+
+  const studentLogin = async ({ email, password }) => {
+    try {
+      const { data } = await axios.post(`/api/v1/auth/student/login`, {
+        email,
+        password,
+      });
+
+      const { student, token } = data;
+      console.log(data);
+      console.log(student);
+
+      addUserToLocalStorage({ user: student, token });
+      window.location.href = "/student";
+    } catch (error) {
+      console.log("msg",error.response.data.msg);
+      setError(error.response.data.msg);
+      // alert(error)
+      console.warn("error:",error);
       // return error.response.data.msg;
     }
   };
@@ -71,9 +97,12 @@ const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         ...state,
+        error,
         pmoLogin,
         logoutUser,
         supervisorLogin,
+        studentLogin,
+        setError,
       }}
     >
       {children}

@@ -3,7 +3,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Progressbar from "../../../components/progressbar";
-import { students } from "../../../apis";
+import { supervisorsUrl } from "../../../apis"; 
 import axios from "axios";
 
 export default function Meetings() {
@@ -17,12 +17,12 @@ export default function Meetings() {
   const [searchValue, setSearchValue] = useState("rollNumber");
 
   const api = axios.create({
-    baseURL: students,
+    baseURL: supervisorsUrl,
   });
 
   useEffect(() => {
     axios
-      .get(students)
+      .get(supervisorsUrl)
       .then((res) => {
         setGetData(res.data);
       })

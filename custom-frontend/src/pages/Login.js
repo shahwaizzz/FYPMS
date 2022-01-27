@@ -6,7 +6,7 @@ import { useAppContext } from "../context/appContext";
 export default function Adm_login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { pmoLogin } = useAppContext();
+  const { pmoLogin, error, setError } = useAppContext();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
@@ -52,6 +52,7 @@ export default function Adm_login() {
             Sign in as Admin
           </button> */}
           <input className='form-field button1 hvr admin' value="Sign in as Admin" type='submit' name='login' />
+          <span className="error-cls"> <b> {error}</b></span>
           <p className='t-center'>-OR-</p>
           <a href='/auth/supervisor' className='form-link form-field supervisor' >
             Login in as Supervisor

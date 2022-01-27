@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./login.css";
 import logo from "./logo.png";
-import { Navigate } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
-export default function Adm_login() {
+export default function StudentLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [error, setError] = useState("");
-  const { supervisorLogin, error, setError } = useAppContext();
+  const { studentLogin, error } = useAppContext();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       console.log("values are empty");
     }
-    const data = supervisorLogin({ email: email, password: password });
+    const data = studentLogin({ email: email, password: password });
   };
 
   return (
@@ -21,7 +19,7 @@ export default function Adm_login() {
       <div class='form-container'>
         <img src={logo} className='logo1' alt='logo' width='60px' />
         <h1 className='heading1'>
-          <b>PAS | Supervisor </b>Login
+          <b>PAS | Student </b>Login
         </h1>
         <form class='register-form' onSubmit={handleSubmit}>
           {/* Uncomment the next line to show the success message */}
@@ -52,14 +50,14 @@ export default function Adm_login() {
           {/* <button className='form-field button1 admin' type='submit' name='login'>
             Sign in as Admin
           </button> */}
-          <input className='form-field  hvr supervisor ' value="Sign in as Supervisor" type='submit' name='login' />
+          <input className='form-field  hvr student ' value="Sign in as Student" type='submit' name='login' />
           <span className="error-cls"> <b> {error}</b></span>
           <p className='t-center'>-OR-</p>
           <a href='/login' className='form-link form-field admin' >
             Login in as Admin
           </a>
-          <a href='/auth/student' className='form-link form-field student'>
-            Login in as Student
+          <a href='/auth/supervisor' className='form-link form-field supervisor'>
+            Login in as Supervisor
           </a>
         </form>
       </div>

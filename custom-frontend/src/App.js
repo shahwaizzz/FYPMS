@@ -22,6 +22,7 @@ import {
 } from "./pages/dashboard/dashboard_supervisor";
 import Logout from "./pages/dashboard/dashboard_pmo/logout";
 import SupervisorLogin from "./pages/SupervisorLogin";
+import StudentLogin from "./pages/StudentLogin";
 // function handleValidation(params) {}
 function App() {
   // Commit Test
@@ -108,6 +109,7 @@ function App() {
         </Route>
         <Route path='/login' element={<Login />} />
         <Route path='/auth/supervisor' element={<SupervisorLogin />} />
+        <Route path='/auth/student' element={<StudentLogin />} />
         <Route path='/landing' element={<div>landing page</div>} />
         <Route path='*' element={<div>Error</div>} />
       </Routes>

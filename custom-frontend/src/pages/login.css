@@ -241,6 +241,7 @@ Link {
 }
 .student{
   background-color: #00c0ef;
+  color: white;
 }
 .student:hover{
   background-color: #10aed6;
