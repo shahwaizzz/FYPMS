@@ -1,4 +1,6 @@
 import Error from "./Error";
 import Login from "./Login";
-import ProtectedRoute from "./ProtectedRoute";
-export { Error, Login, ProtectedRoute };
+import PMORoutes from "./PMORoutes";
+import SupervisorRoutes from "./SupervisorRoutes";
+import StudentRoutes from "./StudentRoutes";
+export { Error, Login, PMORoutes, SupervisorRoutes, StudentRoutes };

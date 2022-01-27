@@ -72,29 +72,16 @@ export default function SSidebar(props) {
                   <span>Manage Projects</span>
                 </li>
               </Link>
-              <Link to='/admin/events' className='links'>
+              <Link to='/supervisor/events' className='links'>
                 <li>
                   <MdOutlineEmojiEvents />
                   <span>Events</span>
                 </li>
               </Link>
-              <Link to='/supervisor/meeting' className='links'>
+              <Link to='/supervisor/meetings' className='links'>
                 <li>
                   <AiOutlineBook />
                   <span>Meeting</span>
-                </li>
-              </Link>
-              <Link to='/admin/supervisors' className='links'>
-                <li>
-                  <MdOutlineSupervisedUserCircle />
-                  <span>Supervisors</span>
-                </li>
-              </Link>
-              <Link to='/admin/documents' className='links whiteicon'>
-                <li className='whiteicon'>
-                  {/* <GrDocument className="clr-white" /> */}
-                  <CgFileDocument />
-                  <span className='whiteicon'>Upload Templates</span>
                 </li>
               </Link>
               <Link to='/supervisor/updatepassword' className='links'>

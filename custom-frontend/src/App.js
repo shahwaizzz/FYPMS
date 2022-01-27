@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./pages/login.css";
-import { ProtectedRoute, Login } from "./pages";
+import { PMORoutes, SupervisorRoutes, StudentRoutes, Login } from "./pages";
 import SharedLayout from "./assets/SharedLayout";
 import Sidebar from "./components/sidebar";
 import {
@@ -15,7 +15,7 @@ import {
 } from "./pages/dashboard/dashboard_pmo";
 import {
   ManageProjects,
-  Meetings,
+  SupervisorMeetings,
   ProjectProgress,
   SupervisorProjects,
   SupervisorSidebar,
@@ -32,9 +32,9 @@ function App() {
         <Route
           path='/pmo'
           element={
-            <ProtectedRoute>
+            <PMORoutes>
               <SharedLayout />
-            </ProtectedRoute>
+            </PMORoutes>
           }
         >
           <Route path='/pmo' element={<Sidebar name='Home' abc={<Home />} />} />
@@ -74,15 +74,18 @@ function App() {
         <Route
           path='/supervisor'
           element={
-            <ProtectedRoute>
+            <SupervisorRoutes>
               <SharedLayout />
-            </ProtectedRoute>
+            </SupervisorRoutes>
           }
         >
           <Route
             path='/supervisor/createproject'
             element={
-              <SupervisorSidebar name='Create Projects' abc={<Projects />} />
+              <SupervisorSidebar
+                name='Create Projects'
+                abc={<SupervisorProjects />}
+              />
             }
           />
           <Route
@@ -96,22 +99,28 @@ function App() {
           />
           <Route
             path='/supervisor/events'
-            element={<SupervisorSidebar name='Events' abc={<Events />} />}
+            element={
+              <SupervisorSidebar name='Events' abc={<ManageProjects />} />
+            }
           />
           <Route
             path='/supervisor/meetings'
-            element={<SupervisorSidebar name='Meetings' abc={<Meetings />} />}
+            element={
+              <SupervisorSidebar name='Meetings' abc={<SupervisorMeetings />} />
+            }
           />
           <Route
             path='/supervisor/updatepassword'
-            element={<SupervisorSidebar name='Update Password' abc={<UserProfile />} />}
+            element={
+              <SupervisorSidebar name='Update Password' abc={<UserProfile />} />
+            }
           />
         </Route>
         <Route path='/login' element={<Login />} />
         <Route path='/auth/supervisor' element={<SupervisorLogin />} />
         <Route path='/auth/student' element={<StudentLogin />} />
         <Route path='/landing' element={<div>landing page</div>} />
-        <Route path='*' element={<div>Error</div>} />
+        <Route path='*' element={<div>Not Found</div>} />
       </Routes>
     </BrowserRouter>
   );

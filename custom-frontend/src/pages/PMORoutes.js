@@ -1,11 +1,11 @@
 import { useAppContext } from "../context/appContext";
 import { Navigate } from "react-router-dom";
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAppContext();
-  if (!user) {
+const PMORoutes = ({ children }) => {
+  const { pmo } = useAppContext();
+  if (!pmo) {
     return <Navigate to='/login' />;
   }
   return children;
 };
 
-export default ProtectedRoute;
+export default PMORoutes;

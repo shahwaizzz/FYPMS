@@ -1,12 +1,14 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
+// token
 const token = localStorage.getItem("token");
-const user = localStorage.getItem("user");
+const pmo = localStorage.getItem("pmo");
+const supervisor = localStorage.getItem("supervisor");
+const student = localStorage.getItem("student");
 const initialState = {
-  isPMO: false,
-  isStudent: false,
-  isSupervisor: false,
-  user: user ? JSON.parse(user) : null,
+  pmo: pmo ? JSON.parse(pmo) : null,
+  supervisor: supervisor ? JSON.parse(supervisor) : null,
+  student: student ? JSON.parse(student) : null,
   token: token,
 };
 const AppContext = React.createContext();
@@ -14,15 +16,15 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
   const [error, setError] = useState(null);
-  const addUserToLocalStorage = ({ user, token }) => {
-    localStorage.setItem("user", JSON.stringify(user));
+  const addUserToLocalStorage = ({ userType, user, token }) => {
+    localStorage.setItem(`${userType}`, JSON.stringify(user));
     localStorage.setItem("token", token);
   };
 
   const removeUserFromLocalStorage = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href='/login';
+    window.location.href = "/login";
   };
 
   const pmoLogin = async ({ email, password }) => {
@@ -31,16 +33,11 @@ const AppProvider = ({ children }) => {
         email,
         password,
       });
-
       const { pmo, token } = data;
-      console.log(data);
-      console.log(pmo);
-
-      addUserToLocalStorage({ user: pmo, token });
+      addUserToLocalStorage({ userType: "pmo", user: pmo, token });
       window.location.href = "/pmo";
     } catch (error) {
       console.log(error.response.data);
-      // return error.response.data;
       setError(error.response.data.msg);
       // alert(error);
     }
@@ -53,14 +50,16 @@ const AppProvider = ({ children }) => {
       });
 
       const { supervisor, token } = data;
-      console.log(data);
-      console.log(supervisor);
 
-      addUserToLocalStorage({ user: supervisor, token });
+      addUserToLocalStorage({
+        userType: "supervisor",
+        user: supervisor,
+        token,
+      });
       window.location.href = "/supervisor/meetings";
     } catch (error) {
-      console.log("msg",error.response.data.msg);
-      console.warn("error:",error);
+      console.log("msg", error.response.data.msg);
+      console.warn("error:", error);
       setError(error.response.data.msg);
       // alert(error)
       // return error.response.data.msg;
@@ -78,13 +77,13 @@ const AppProvider = ({ children }) => {
       console.log(data);
       console.log(student);
 
-      addUserToLocalStorage({ user: student, token });
+      addUserToLocalStorage({ userType: "student", user: student, token });
       window.location.href = "/student";
     } catch (error) {
-      console.log("msg",error.response.data.msg);
+      console.log("msg", error.response.data.msg);
       setError(error.response.data.msg);
       // alert(error)
-      console.warn("error:",error);
+      console.warn("error:", error);
       // return error.response.data.msg;
     }
   };
