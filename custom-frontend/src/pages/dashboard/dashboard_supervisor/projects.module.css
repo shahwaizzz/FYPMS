@@ -1,0 +1,115 @@
+.mainprojectdiv{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.halfdiv{
+    width: 45%;
+    padding: 20px;
+    border-radius:10px;
+    background-color:#fff;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.halfdiv h1 {
+    font-size: 18px;
+    padding: 10px;
+    color: #222;
+}
+
+.halfdiv h1 span {
+    font-size: 18px;
+    padding: 10px;
+    color: #097545;
+}
+
+
+.inputdiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+
+.inputdiv input{
+    width: 400px;
+    border-radius: 5px;
+    padding: 5px;
+    outline: transparent;
+    border: 2px solid #097545;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+    font-size: 18px;
+}
+.inputdiv select{
+    width: 400px;
+    border-radius: 5px;
+    padding: 6px;
+    outline: transparent;
+    border: 2px solid #097545;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+    font-size: 16px;
+}
+.inputdiv textarea{
+    border-radius: 5px;
+    padding: 6px;
+    outline: transparent;
+    border: 2px solid #097545;
+    resize: none;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+    font-size: 16px;
+}
+
+.inputdiv label{
+    font-size: 20px;
+    margin-right:10px;
+    font-weight: bold;
+    width: 120px;
+}
+
+.notesdiv{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    max-height: fit-content(100px);
+    overflow-y: auto;
+    /* background-color:red; */
+    /* margin: auto; */
+
+}
+
+.Modal{
+    height: 650px;
+    overflow: auto;
+}
+
+.notesdiv p{
+
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px;
+    margin: 3px;
+    text-align: justify;
+    border-bottom: 1px solid #097545
+
+}
+
+
+@media only screen and (max-width:1048px){
+
+    .mainprojectdiv{
+        flex-direction: column;
+    }
+
+    .halfdiv{ 
+        width: 70%;
+        margin: 10px auto;
+    }
+}

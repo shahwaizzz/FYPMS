@@ -3,6 +3,7 @@ import "./login.css";
 import logo from "./logo.png";
 import { Navigate } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
+import {Link} from 'react-router-dom'
 export default function Adm_login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,12 +55,12 @@ export default function Adm_login() {
           <input className='form-field button1 hvr admin' value="Sign in as Admin" type='submit' name='login' />
           <span className="error-cls"> <b> {error}</b></span>
           <p className='t-center'>-OR-</p>
-          <a href='/auth/supervisor' className='form-link form-field supervisor' >
+          <Link to='/auth/supervisor' className='form-link form-field supervisor' >
             Login in as Supervisor
-          </a>
-          <a href='/auth/student' className='form-link form-field student'>
+          </Link>
+          <Link to='/auth/student' className='form-link form-field student'>
             Login in as Student
-          </a>
+          </Link>
         </form>
       </div>
     </div>

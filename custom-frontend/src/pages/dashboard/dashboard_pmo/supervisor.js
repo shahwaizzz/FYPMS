@@ -5,8 +5,10 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import Progressbar from "../../../components/progressbar";
 import { supervisorsUrl } from "../../../apis";
 import axios from "axios";
+import ReturnModal from "../../../components/Modals/dashboardsupervisormodal";
+import { erroralert,successalert } from "../../../components/alert";
 
-export default function Supervisor() {
+export default function Supervisor({admin}) {
   const [addSupervisor, setAddSupervisor] = useState(false);
   const [editForm, setEditForm] = useState(false);
   const [searchData, setSearchData] = useState("");
@@ -15,6 +17,9 @@ export default function Supervisor() {
   const [displayData, setDisplayData] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [searchValue, setSearchValue] = useState("name");
+  const [visible,setvisible] = useState(false);
+  const [visibletwo,setvisibletwo] = useState(false);
+  const [idset,setidset] = useState(false);
 
   const api = axios.create({
     baseURL: supervisorsUrl,
@@ -27,7 +32,7 @@ export default function Supervisor() {
         setGetData(res.data.supervisor);
       })
       .catch((err) => {
-        alert(err);
+        erroralert('Error',err.message);
       });
   }, [refresh]);
 
@@ -43,8 +48,8 @@ export default function Supervisor() {
             alert("Supervisor Delete Successfully");
           }
         })
-        .catch((res) => {
-          alert(res);
+        .catch((err) => {
+          erroralert('Error',err.message);
         });
     }
   }
@@ -93,17 +98,18 @@ export default function Supervisor() {
           if (result.err.code === 0) {
             setDisplayData(false);
             setRefresh(!refresh);
-            alert("Supervisor Add Successfully");
+            setvisible(false)
+            successalert('Success',"Supervisor Add Successfully");
           } else if (result.err.code === 11000) {
-            alert(
+            erroralert('Error'
               `This ${JSON.stringify(result.err.keyValue)} is already in use`
             );
           } else if (result.err.message) {
-            alert(result.err.message);
+            erroralert('Error',result.err.message);
           }
         },
         (error) => {
-          alert(error);
+          erroralert('Error',error.message);
         }
       );
   }
@@ -116,7 +122,7 @@ export default function Supervisor() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(displayData),
     };
-    fetch(`${supervisorsUrl}/${displayData._id}`, options)
+    fetch(`${supervisorsUrl}/${idset}`, options)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -124,17 +130,18 @@ export default function Supervisor() {
           if (result.err.code === 0) {
             setDisplayData(false);
             setRefresh(!refresh);
-            alert("Supervisor Update Successfully");
+            setvisibletwo(false)
+            erroralert('Success',"Supervisor Update Successfully");
           } else if (result.err.code === 11000) {
-            alert(
+            erroralert('Error'
               `This ${JSON.stringify(result.err.keyValue)} is already in use`
             );
           } else if (result.err.message) {
-            alert(result.err.message);
+            erroralert('Error',result.err.message);
           }
         },
         (error) => {
-          alert(error);
+          erroralert('Error',error.mesage);
         }
       );
   }
@@ -155,9 +162,14 @@ export default function Supervisor() {
           <option value='Email'>Email</option>
           <option value='Phone'>Phone</option>
         </select>
-        <button className='add-data-btn' onClick={() => toggleModel("add")}>
+        {admin && (
+          <button className='add-data-btn' onClick={() => {
+          setAddSupervisor(true)
+          setvisible(true)
+        }}>
           Add Supervisor
         </button>
+        )}
       </div>
       {!getData ? (
         <div>
@@ -172,9 +184,11 @@ export default function Supervisor() {
               <th scope='col'>Department</th>
               <th scope='col'>Email</th>
               <th scope='col'>Phone</th>
-              <th colSpan='2' scope='col'>
+              {admin && (
+                <th colSpan='2' scope='col'>
                 Options
               </th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -190,13 +204,19 @@ export default function Supervisor() {
                   <td data-label='Department'>{supervisor.department}</td>
                   <td data-label='Email'>{supervisor.email}</td>
                   <td data-label='Phone'>{supervisor.phone}</td>
-                  <td data-label='Options'>
+                  {admin && (
+                    <td data-label='Options'>
                     <div className='manage-buttons'>
                       <button
                         className='update-user'
                         title='Edit Supervisor'
-                        onClick={() => toggleModel("update", supervisor)}
+                        onClick={() => {
+                          setidset(supervisor._id)
+                          setEditForm(true)
+                          setvisibletwo(true)
+                        }}
                       >
+                        
                         <FaEdit size='1.5rem' />
                       </button>
                       <button
@@ -208,12 +228,16 @@ export default function Supervisor() {
                       </button>
                     </div>
                   </td>
+                  )}
+                  
                 </tr>
               ))}
           </tbody>
         </table>
       )}
-      {addSupervisor && (
+      <ReturnModal visibilty={visible} setvisibility={setvisible} submitfunc={submitSupervisor} setsuptype={setAddSupervisor} changefunc={handleChange} type="add" data={displayData} setsettid={setidset}/>
+      <ReturnModal visibilty={visibletwo} setvisibility={setvisibletwo} submitfunc={onSubmit} setsuptype={setEditForm} changefunc={handleChange} type="update" data={displayData} setsettid={setidset}/>
+      {/* {addSupervisor && (
         <div className='popup-container'>
           <div className='popup'>
             <h2>Add Supervisor</h2>
@@ -352,7 +376,7 @@ export default function Supervisor() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

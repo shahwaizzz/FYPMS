@@ -1,9 +1,10 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes,Navigate } from "react-router-dom";
 import "./pages/login.css";
-import { ProtectedRoute, Login } from "./pages";
-import SharedLayout from "./assets/SharedLayout";
+import {Login } from "./pages";
+import {SharedLayout,StudentSharedlayout} from "./assets/SharedLayout";
 import Sidebar from "./components/sidebar";
+import {ProtectedRoutespmo,ProtectedRoutestudent,ProtectedRoutesupervisor} from './pages/ProtectedRoute'
 import {
   Home,
   Events,
@@ -15,14 +16,18 @@ import {
 } from "./pages/dashboard/dashboard_pmo";
 import {
   ManageProjects,
-  Meetings,
   ProjectProgress,
   SupervisorProjects,
+  Meetings,
   SupervisorSidebar,
 } from "./pages/dashboard/dashboard_supervisor";
-import Logout from "./pages/dashboard/dashboard_pmo/logout";
+import {PmoLogout,Stdlogout,Supervisorlogout} from "./pages/dashboard/dashboard_pmo/logout";
 import SupervisorLogin from "./pages/SupervisorLogin";
 import StudentLogin from "./pages/StudentLogin";
+import Studentsidebar from "./pages/dashboard/dashboard_student/StudentSidebar";
+import Dashoard_std from "./pages/dashboard/dashboard_student/Dashboard_std";
+import { SupervisorViewEvents } from "./pages/dashboard/dashboard_supervisor/supervisorevents";
+import Marks from "./pages/dashboard/dashboard_student/Marks";
 // function handleValidation(params) {}
 function App() {
   // Commit Test
@@ -32,15 +37,15 @@ function App() {
         <Route
           path='/pmo'
           element={
-            <ProtectedRoute>
+            <ProtectedRoutespmo>
               <SharedLayout />
-            </ProtectedRoute>
+             </ProtectedRoutespmo>
           }
         >
-          <Route path='/pmo' element={<Sidebar name='Home' abc={<Home />} />} />
+          <Route path='/pmo' element={<Sidebar name='Home' abc={<Home admin={true}/>} />} />
           <Route
             path='/pmo/events'
-            element={<Sidebar name='Events' abc={<Events />} />}
+            element={<Sidebar name='Events' abc={<Events admin={true}/>} />}
           />
           <Route
             path='/pmo/projects'
@@ -48,11 +53,11 @@ function App() {
           />
           <Route
             path='/pmo/students'
-            element={<Sidebar name='Students' abc={<Student />} />}
+            element={<Sidebar name='Students' abc={<Student admin={true}/>} />}
           />
           <Route
             path='/pmo/supervisors'
-            element={<Sidebar name='Supervisors' abc={<Supervisor />} />}
+            element={<Sidebar name='Supervisors' abc={<Supervisor admin={true}/>} />}
           />
           <Route
             path='/pmo/change-password'
@@ -62,10 +67,7 @@ function App() {
             path='/pmo/documents'
             element={<Sidebar name='Change Password' abc={<UploadDocs />} />}
           />
-          <Route
-            path='/pmo/logout'
-            element={<Sidebar name='Change Password' abc={<Logout />} />}
-          />
+         
           {/* <Route index element={<div>HOme element</div>} />
           <Route path='all-jobs' element={<div>all Jobs</div>} />
           <Route path='add-job' element={<div>add Jobs</div>} />
@@ -74,18 +76,21 @@ function App() {
         <Route
           path='/supervisor'
           element={
-            <ProtectedRoute>
+            <ProtectedRoutesupervisor>
               <SharedLayout />
-            </ProtectedRoute>
+              </ProtectedRoutesupervisor>
           }
         >
+          
+          <Route path='/supervisor/home' element={<SupervisorSidebar name='Home' abc={<Home supervisor={true} />} />} />
+
           <Route
             path='/supervisor/createproject'
             element={
               <SupervisorSidebar name='Create Projects' abc={<Projects />} />
             }
           />
-          <Route
+          {/* <Route
             path='/supervisor/manageprojects'
             element={
               <SupervisorSidebar
@@ -93,25 +98,55 @@ function App() {
                 abc={<ManageProjects />}
               />
             }
-          />
+          /> */}
           <Route
             path='/supervisor/events'
-            element={<SupervisorSidebar name='Events' abc={<Events />} />}
+            element={<SupervisorSidebar name='Events' abc={<Events admin={false} />} />}
+          />
+          <Route
+            path='/supervisor/students'
+            element={<SupervisorSidebar name='Events' abc={<Student admin={false}/>} />}
           />
           <Route
             path='/supervisor/meetings'
-            element={<SupervisorSidebar name='Meetings' abc={<Meetings />} />}
+            element={<SupervisorSidebar name='Meetings' abc={<Meetings supervisor={true}/>} />}
+          />
+          <Route
+            path='/supervisor/total'
+            element={<SupervisorSidebar name='Supervisors' abc={<Supervisor admin={false}/>} />}
           />
           <Route
             path='/supervisor/updatepassword'
             element={<SupervisorSidebar name='Update Password' abc={<UserProfile />} />}
           />
+         
         </Route>
+        <Route exact path="/" element={<Navigate replace to="/login" />} />
         <Route path='/login' element={<Login />} />
         <Route path='/auth/supervisor' element={<SupervisorLogin />} />
         <Route path='/auth/student' element={<StudentLogin />} />
-        <Route path='/landing' element={<div>landing page</div>} />
-        <Route path='*' element={<div>Error</div>} />
+
+        <Route
+        path="/student"
+        element={
+          <ProtectedRoutestudent>
+            <StudentSharedlayout />
+            </ProtectedRoutestudent>
+        }
+        >
+        <Route path="/student/home" element={<Studentsidebar name='Home' abc={<Home student={true}/>}/>} />
+        <Route path="/student/events" element={<Studentsidebar name='Events' abc={<Events admin={false} />}/>} />
+        <Route path="/student/projects" element={<Studentsidebar name='Events' abc={<Projects student={true} />}/>} />
+        <Route path="/student/meetings" element={<Studentsidebar name='Meetings' abc={<Meetings supervisor={false} />}/>} />
+        <Route path="/student/marks" element={<Studentsidebar name='Meetings' abc={<Marks supervisor={false} />}/>} />
+
+
+        </Route>
+
+
+
+
+
       </Routes>
     </BrowserRouter>
   );

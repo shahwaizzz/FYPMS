@@ -71,12 +71,12 @@ const viewEvents = async (req, res) => {
 };
 
 const createMeeting = async (req, res) => {
-  req.body.supervisor = req.user.userId;
+  // req.body.supervisor = req.user.userId;
   const meeting = await Meeting.create({ ...req.body });
   res.status(StatusCodes.OK).json({ meeting, msg: "Meeting Created" });
 };
 const viewMeetings = async (req, res) => {
-  const meetings = await Meeting.find({ supervisor: req.user.userId });
+  const meetings = await Meeting.find({ supervisor: req.params.id });
   if (!meetings) {
     res.status(200).json({ msg: "No meetings yet" });
   }
@@ -103,6 +103,33 @@ const addMarks = async (req, res) => {
   res.status(StatusCodes.OK).json({ updateStudent });
 };
 
+const updatemeeting = async (req,res) => {
+
+  try{
+    const {timeofMeeting} = req.body
+
+    const {id} = req.params
+  
+    const updatemeeting = await Meeting.findByIdAndUpdate(id,{timeofMeeting:timeofMeeting},{new:true,upsert:true})
+  
+    if(!id){
+       throw new Error('No id available')
+    }
+    if(!updatemeeting){
+       throw new Error('There is an problem in updating meeting')
+    }
+  
+    res.status(StatusCodes.OK).json({
+      message:'meeting has been postponed'
+    })
+  
+  }catch(err){
+    console.log(err)
+    throw new Error(err.message)
+  }
+}
+
+
 module.exports = {
   createProject,
   getAllProjects,
@@ -113,4 +140,5 @@ module.exports = {
   createMeeting,
   viewMeetings,
   addMarks,
+  updatemeeting
 };

@@ -170,6 +170,8 @@ select:focus {
 /* Title Bar */
 .title-bar {
   display: flex;
+  align-items: center;
+  background-color: yellow;
   position: fixed;
   justify-content: space-between;
   width: 100%;
@@ -297,6 +299,15 @@ select:focus {
 .home {
   margin: 10px;
   display: flex;
+  align-items: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .home{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 }
 .home-box {
   cursor: pointer;

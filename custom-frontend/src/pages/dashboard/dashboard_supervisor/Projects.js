@@ -5,6 +5,8 @@ import { AiFillDelete } from "react-icons/ai";
 import Progressbar from "../../../components/progressbar";
 import { FaEdit } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { Modal } from "react-bootstrap";
+import styles from './projects.module.css';
 
 export default function Projects() {
   const [getData, setGetData] = useState(false);
@@ -36,11 +38,13 @@ export default function Projects() {
     api
       .get("/",{headers: {"Authentication": `Bearer ${token}` }})
       .then((res) => {
+        console.log(res.data)
         setGetData(res.data.projects);
 
         supervisorApi
           .get("/",{headers: {"Authentication": `Bearer ${token}` }})
           .then((res) => {
+            console.log(res.data)
             setSupervisorData(res.data.supervisor);
           })
           .catch((err) => {
@@ -50,6 +54,7 @@ export default function Projects() {
         studentApi
           .get("/",{headers: {"Authentication": `Bearer ${token}` }})
           .then((res) => {
+            console.log(res.data)
             setStudentData(res.data);
           })
           .catch((err) => {
@@ -87,6 +92,8 @@ export default function Projects() {
       });
     }
   }
+
+  console.log(displayData)
 
   function handleSearch(e) {
     setRefresh(!refresh);
@@ -222,6 +229,8 @@ export default function Projects() {
         );
     }
   }
+
+  console.log(getData)
   return (
     <div className='data-container'>
       <div className='data-container-top'>
@@ -247,7 +256,7 @@ export default function Projects() {
           Create A New Project
         </button>
       </div>
-      {!getData ? (
+      {/* {!getData ? (
         <div>
           <Progressbar visibility={true} />
         </div>
@@ -381,8 +390,37 @@ export default function Projects() {
               </div>
             </div>
           ))
+      )} */}
+      <div style={styles.mainprojectdiv}>
+
+      </div>
+
+      {editForm && displayData && (
+        <Modal
+        // {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Modal heading
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Centered Modal</h4>
+          <p>
+            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+            consectetur ac, vestibulum at eros.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          {/* <Button onClick={props.onHide}>Close</Button> */}
+        </Modal.Footer>
+      </Modal>
       )}
-      {addProject && (
+      {/* {addProject && (
         <div className='popup-container'>
           <div className='popup'>
             <h2>Crate A New Project</h2>
@@ -519,8 +557,8 @@ export default function Projects() {
             </div>
           </div>
         </div>
-      )}
-      {editForm && displayData && (
+      )} */}
+      {/* {editForm && displayData && (
         <div className='popup-container'>
           <div className='popup'>
             <h2>Edit Project</h2>
@@ -657,7 +695,7 @@ export default function Projects() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

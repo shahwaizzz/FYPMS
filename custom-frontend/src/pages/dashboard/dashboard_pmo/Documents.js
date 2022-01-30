@@ -3,6 +3,7 @@ import "../../login.css";
 import { AiFillDelete } from "react-icons/ai";
 import { HiDownload } from "react-icons/hi";
 import axios from "axios";
+import {pmouploadtemplate} from '../../../apis'
 const Document = () => {
   const [file, setFile] = useState("");
   const [fileName, setFileName] = useState("");
@@ -16,7 +17,7 @@ const Document = () => {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const response = axios.post("/api/v1/pmo/templates/upload", formData, {
+      const response = axios.post(pmouploadtemplate, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { IconContext } from "react-icons";
+import {useAppContext} from '../../../context/appContext'
 import {
   AiFillLeftCircle,
   AiOutlineHome,
@@ -20,9 +21,14 @@ import {
 // import Logout from "./main-components/logout";
 // import Projects from "./main-components/projects";
 // import Events from "./main-components/events";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 
 export default function SSidebar(props) {
+
+  const navigate = useNavigate()
+
+  const {removeUserFromLocalStorage} = useAppContext();
+
   const [menuChange, setMenuChange] = useState("menu-hide");
   const [dataWidth, setDataWidth] = useState("data-width");
   const [menubarList, setMenubarList] = useState("menubar-list");
@@ -54,7 +60,7 @@ export default function SSidebar(props) {
               <span className='menubar-title-test'>{props.name}</span>
             </h2>
             <ul className={menubarList}>
-              <Link to='/home' className='links'>
+              <Link to='/supervisor/home' className='links'>
                 <li>
                   <AiOutlineHome />
                   <span>Home</span>
@@ -66,44 +72,44 @@ export default function SSidebar(props) {
                   <span>Create Projects</span>
                 </li>
               </Link>
-              <Link to='/supervisor/manageprojects' className='links'>
+              <Link to='/supervisor/students' className='links'>
                 <li>
                   <AiOutlineProject />
-                  <span>Manage Projects</span>
+                  <span>Students</span>
                 </li>
               </Link>
-              <Link to='/admin/events' className='links'>
+              <Link to='/supervisor/events' className='links'>
                 <li>
                   <MdOutlineEmojiEvents />
                   <span>Events</span>
                 </li>
               </Link>
-              <Link to='/supervisor/meeting' className='links'>
+              <Link to='/supervisor/meetings' className='links'>
                 <li>
                   <AiOutlineBook />
                   <span>Meeting</span>
                 </li>
               </Link>
-              <Link to='/admin/supervisors' className='links'>
+              <Link to='/supervisor/total' className='links'>
                 <li>
                   <MdOutlineSupervisedUserCircle />
                   <span>Supervisors</span>
                 </li>
               </Link>
-              <Link to='/admin/documents' className='links whiteicon'>
+              {/* <Link to='/admin/documents' className='links whiteicon'>
                 <li className='whiteicon'>
-                  {/* <GrDocument className="clr-white" /> */}
+                  <GrDocument className="clr-white" />
                   <CgFileDocument />
                   <span className='whiteicon'>Upload Templates</span>
                 </li>
-              </Link>
+              </Link> */}
               <Link to='/supervisor/updatepassword' className='links'>
                 <li>
                   <AiOutlineProfile />
                   <span>User Profile</span>
                 </li>
               </Link>
-              <Link to='/admin/logout' className='links'>
+              <Link to='/auth/supervisor' className='links' onClick={() => removeUserFromLocalStorage('supervisor',"supervisortoken","/auth/supervisor",navigate)}>
                 <li>
                   <MdLogout />
                   <span>Logout</span>

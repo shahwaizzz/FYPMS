@@ -1,0 +1,45 @@
+.meetingsdiv{
+    width: 90%;
+    margin:10px auto;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    cursor: pointer;
+
+}
+
+
+.meetingsdiv:hover{
+    transform: scale(1.02);
+    transition: all 0.5s ease-in-out;
+}
+
+
+.meetingsdiv h1{
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+}
+
+.meetingsdiv h2{
+    font-size: 22px;
+    color: #097545;
+}
+
+.meetingsdiv ul li {
+    font-size:20px;
+    text-transform: capitalize;
+}
+
+
+@media only screen and (max-width: 768px){
+    .meetingsdiv h1{
+        font-size: 18px;
+    }
+    
+    .meetingsdiv h2{
+        font-size: 15px;
+    }
+    
+}

@@ -1,408 +1,256 @@
-import React, { useState, useEffect } from "react";
-import { AiFillDelete } from "react-icons/ai";
-import { FaEdit } from "react-icons/fa";
-import { AiFillCloseCircle } from "react-icons/ai";
-import Progressbar from "../../../components/progressbar";
-import { supervisorsUrl } from "../../../apis"; 
 import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { supervisorcreatemeetingapi,supervisorgetmeetingapi,supervisorupdatemeetingapi,projectUrl } from "../../../apis";
+import Progressbar from "../../../components/progressbar";
+import styles from './meetings.module.css'
+import { FaEdit } from "react-icons/fa";
+import { AiFillDelete } from "react-icons/ai";
+import ReturnModal from "../../../components/Modals/dashboardmeetingsmodal";
+import { Meetingupdatemodal } from "../../../components/Modals/dashboardupdatemeetingmodal";
+import { erroralert,successalert } from "../../../components/alert";
 
-export default function Meetings() {
-  const [addStudent, setAddStudent] = useState(false);
-  const [editForm, setEditForm] = useState(false);
-  const [searchData, setSearchData] = useState("");
-  const [searchBy, setSearchBy] = useState("Roll Number");
-  const [getData, setGetData] = useState(false);
-  const [displayData, setDisplayData] = useState(false);
-  const [refresh, setRefresh] = useState(false);
-  const [searchValue, setSearchValue] = useState("rollNumber");
 
-  const api = axios.create({
-    baseURL: supervisorsUrl,
+const Meetings = ({supervisor}) => {
+
+    const user = localStorage.getItem("supervisor")
+    
+
+
+  const [data, setdata] = useState([]);
+  const [timeOfMeeting,settimeOfMeeting] =  useState(new Date());
+  const [notes, setnotes] = useState([]);
+  const [projects,setprojects] = useState([]);
+  const [notval, setnoteval] = useState("");
+  const [refresh,setrefresh] = useState(false)
+  const [loading, setloading] = useState(false);
+  const [id, setid] = useState("");
+  const [projectid,setprojectid] = useState('')
+  const [datasend, setdatasend] = useState({
+    topic: "",
+    timeOfMeeting: new Date(),
+    meetingNotes: notes,
+    supervisor: JSON.parse(user).userId,
+    project: '',
   });
+  const [visible, setvisible] = useState(false);
+  const [visibletwo, setvisibletwo] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get(supervisorsUrl)
-      .then((res) => {
-        setGetData(res.data);
-      })
-      .catch((res) => {
-        alert(res);
-      });
-  }, [refresh]);
+  console.log(projectid)
 
-  function deleteStudent(id) {
-    var check = window.confirm("Are sure you want to delete the student");
-    if (check) {
-      api
-        .delete(`/${id}`)
-        .then((res) => {
-          if (res.status === 200) {
-            setRefresh(!refresh);
-            alert("Student Delete Successfully");
-          }
-        })
-        .catch((res) => {
-          alert(res);
-        });
-    }
-  }
+  const notesfunc = (e) => {
+      e.preventDefault();
+    setnotes([...notes, notval]);
+    setnoteval("");
+    setdatasend({...datasend,meetingNotes:[...notes]})
+  };
 
-  function toggleModel(e, student) {
-    setDisplayData(student);
-    if (e === "add") {
-      addStudent ? setAddStudent(false) : setAddStudent(true);
-    } else if (e === "update") {
-      editForm ? setEditForm(false) : setEditForm(true);
-    }
-  }
+  const changenoteval = (e) => {
+    setnoteval(e.target.value);
+  };
 
-  function handleChange(e) {
+  const handlechange = (e) => {
     const name = e.target.name;
     var value = e.target.value;
-    setDisplayData({ ...displayData, [name]: value });
-  }
+    setdatasend({ ...datasend, [name]: value });
 
-  function handleSearch(e) {
-    var getValue = e.target.value;
-    if (getValue === "Roll Number") {
-      setSearchValue("rollNumber");
-    } else if (getValue === "Name") {
-      setSearchValue("name");
-    } else if (getValue === "Batch") {
-      setSearchValue("batch");
-    } else if (getValue === "Section") {
-      setSearchValue("section");
-    } else if (getValue === "Department") {
-      setSearchValue("department");
-    } else if (getValue === "Email") {
-      setSearchValue("email");
-    } else if (getValue === "Phone") {
-      setSearchValue("phone");
+  };
+
+  useEffect(() => {
+    const getmeetings = async () => {
+        setloading(true)
+      try {
+        const response = await axios.get(supervisorgetmeetingapi(JSON.parse(user).userId));
+        console.log(response.data.meetings)
+        setdata(response.data.meetings);
+        setloading(false);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getmeetings();
+
+    return getmeetings;
+  }, [refresh]);
+
+  useEffect(() => {
+    axios.get(projectUrl).then((res) => {
+        console.log(res.data.projects)
+        setprojects(res.data.projects)
+      }).catch(err => {
+          erroralert('Error',err.message)
+      })
+},[])
+
+  const updatemeeting = async (e) => {
+
+    e.preventDefault()
+
+    console.log(timeOfMeeting)
+
+    const options = {
+        method:'PATCH',
+        headers: { 'Content-Type': 'application/json'},
+        data:timeOfMeeting,
+        url:supervisorupdatemeetingapi(id)
     }
-    setSearchBy(e.target.value);
-  }
-  function submitStudent(e) {
-    e.preventDefault();
-    const options = {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(displayData),
-    };
-    fetch(students, options)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-          if (result.err.code === 0) {
-            setDisplayData(false);
-            setRefresh(!refresh);
-            alert("Student Add Successfully");
-          } else if (result.err.code === 11000) {
-            alert(
-              `This ${JSON.stringify(result.err.keyValue)} is already in use`
-            );
-          } else if (result.err.message) {
-            alert(result.err.message);
-          }
-        },
-        (error) => {
-          alert(error);
-        }
-      );
+    try {
+        const response = await axios(options);
+
+      if(response.data){
+          setvisibletwo(false)
+          successalert('Success','Meeting has been postponed')
+      }
+    } catch (error) {
+        erroralert('Error',error.message)
+    }
+    
+
+      
   }
 
-  function onSubmit(e) {
-    e.preventDefault();
-    const options = {
-      method: "put",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(displayData),
-    };
-    fetch(`${students}/${displayData._id}`, options)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          if (result.err.code === 0) {
-            setDisplayData(false);
-            setRefresh(!refresh);
-            alert("Student Update Successfully");
-          } else if (result.err.code === 11000) {
-            alert(
-              `This ${JSON.stringify(result.err.keyValue)} is already in use`
-            );
-          } else if (result.err.message) {
-            alert(result.err.message);
-          }
-        },
-        (error) => {
-          alert(error);
-        }
-      );
+  const createMeeting = async (e) => {
+      e.preventDefault();
+      const options = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json'},
+          data:datasend,
+          url:supervisorcreatemeetingapi
+      }
+
+      try{
+        const response = await axios(options);
+        setvisible(false)
+        successalert('Success','meeting has been scheduled')
+      }catch(err){
+          erroralert('Error',err.message)
+      }
+
+     
+      setrefresh(!refresh)
   }
+
+
+  const datechange = (e) => {
+      settimeOfMeeting(new Date(e.target.value))
+  }
+ 
+
   return (
-    <div className='data-container'>
-      <div className='data-container-top'>
-        <input
-          type='search'
-          value={searchData}
-          onChange={(e) => setSearchData(e.target.value)}
-          placeholder={"Search Student By " + searchBy}
+    <>
+      <div className="data-container-top">
+        {/* <input
+          type="search"
+            value={searchData}
+            onChange={(e) => setSearchData(e.target.value)}
+            placeholder={"Search Student By " + searchBy}
         />
-
-        <select onChange={handleSearch}>
-          <option value='Roll Number'>Roll Number</option>
-          <option value='Name'>Name</option>
-          <option value='Batch'>Batch</option>
-          <option value='Section'>Section</option>
-          <option value='Department'>Department</option>
-          <option value='Email'>Email</option>
-          <option value='Phone'>Phone</option>
-        </select>
-        <button className='add-data-btn' onClick={() => toggleModel("add")}>
-          Add Student
+        onChange={handleSearch}
+        <select>
+          <option value="Name">Topic Name</option>
+          <option value="Date">Time</option>
+          <option value="Venue">Supervisor</option>
+          <option value="Year">Project</option>
+          <option value="Semester">Semester</option>
+          <option value="Details">Details</option>
+        </select> */}
+        {supervisor && (
+            <div style={{margin:'10px auto'}}>
+            <button
+          className="add-data-btn"
+          onClick={() => {
+              setvisible(true)
+            
+          }}
+        >
+          Schedule Meeting
         </button>
+        </div>
+        )}
       </div>
-      {!getData ? (
-        <div>
-          <Progressbar visibility={true} />
-        </div>
-      ) : (
-        <table className='table'>
-          <thead>
-            <tr>
-              <th scope='col'>Sr No.</th>
-              <th scope='col'>Title</th>
-              <th scope='col'>Project</th>
-              <th scope='col'>Date</th>
-              <th scope='col'>Time</th>
-              <th scope='col'>Venu</th>
-              <th scope='col'>Phone</th>
-              <th colSpan='2' scope='col'>
-                Options
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {getData
-              .filter(
-                (student) =>
-                  student[searchValue].toString().indexOf(searchData) > -1
-              )
-              .map((student) => (
-                <tr key={student._id}>
-                  <td data-label='#Roll-No'>{student.rollNumber}</td>
-                  <td data-label='Name'>{student.name}</td>
-                  <td data-label='Department'>{student.department}</td>
-                  <td data-label='Section'>{student.section}</td>
-                  <td data-label='Batch'>{student.batch}</td>
-                  <td data-label='Email'>{student.email}</td>
-                  <td data-label='Phone'>{student.phone}</td>
-                  <td data-label='Options'>
-                    <div className='manage-buttons'>
-                      <button
-                        className='update-user'
-                        title='Edit Student'
-                        onClick={() => toggleModel("update", student)}
-                      >
-                        <FaEdit size='1.5rem' />
-                      </button>
-                      <button
-                        className='delete-user'
-                        title='Delete Student'
-                        onClick={() => deleteStudent(student._id)}
-                      >
-                        <AiFillDelete size='1.5rem' />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      )}
-      {addStudent && (
-        <div className='popup-container'>
-          <div className='popup'>
-            <h2>Add Student</h2>
-            <div className='form-modal'>
-              <form
-                className='data-form'
-                onSubmit={submitStudent}
-                autoComplete='off'
-                id='student-form'
-              >
-                <div>
-                  <label>Student Roll Number</label>
-                  <input
-                    type='text'
-                    name='rollNumber'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Student Name</label>
-                  <input type='text' name='name' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Department</label>
-                  <input
-                    type='text'
-                    name='department'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Section</label>
-                  <input type='text' name='section' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Batch</label>
-                  <input type='text' name='batch' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Email</label>
-                  <input type='email' name='email' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Phone Number</label>
-                  <input type='number' name='phone' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Password</label>
-                  <input
-                    type='password'
-                    name='password'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <button type='submit'>Add Student</button>
-                </div>
-              </form>
-              <span>
-                <AiFillCloseCircle
-                  size='1.7rem'
-                  onClick={() => toggleModel("add")}
-                />
-              </span>
-              <button className='close-data' onClick={() => toggleModel("add")}>
-                Close
-              </button>
-              <form />
-            </div>
+
+      {loading && (
+          <div>
+              <Progressbar visibility={true}/>
           </div>
-        </div>
       )}
-      {editForm && displayData && (
-        <div className='popup-container'>
-          <div className='popup'>
-            <h2>Edit Student</h2>
-            <div className='form-modal'>
-              <form
-                className='data-form'
-                onSubmit={onSubmit}
-                autoComplete='off'
-                id='student-form'
-              >
-                <div>
-                  <label>Student Roll Number</label>
-                  <input
-                    type='text'
-                    name='rollNumber'
-                    value={displayData.rollNumber}
-                    onChange={handleChange}
-                  />
-                  <input
-                    type='text'
-                    name='_id'
-                    value={displayData._id}
-                    hidden
-                  />
-                </div>
-                <div>
-                  <label>Student Name</label>
-                  <input
-                    type='text'
-                    name='name'
-                    value={displayData.name}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Department</label>
-                  <input
-                    type='text'
-                    name='department'
-                    value={displayData.department}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Section</label>
-                  <input
-                    type='text'
-                    name='section'
-                    value={displayData.section}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Batch</label>
-                  <input
-                    type='text'
-                    name='batch'
-                    value={displayData.batch}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Email</label>
-                  <input
-                    type='email'
-                    name='email'
-                    value={displayData.email}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Phone Number</label>
-                  <input
-                    type='number'
-                    name='phone'
-                    value={displayData.phone}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Password</label>
-                  <input
-                    type='password'
-                    name='password'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <button type='submit'>Edit Student</button>
-                </div>
-              </form>
-              <span>
-                <AiFillCloseCircle
-                  size='1.7rem'
-                  onClick={() => toggleModel("update")}
-                />
-              </span>
-              <button
-                className='close-data'
-                onClick={() => toggleModel("update")}
-              >
-                Close
-              </button>
-              <form />
-            </div>
+      {!loading && (
+          <div style={{width: '90%', padding:'10px',margin:'auto'}}>
+              <h1>Meetings</h1>
           </div>
-        </div>
       )}
-    </div>
+
+      {!loading && data && data?.map((e,i) => {
+          return(
+              <div className={styles.meetingsdiv}>
+                  <div>
+                    <h1>Topic Name</h1>
+                      <h2>{e.topic}</h2>
+                  </div>
+                  <div>
+                      <h1>Time of Meeting</h1>
+                  <h2>{e.timeOfMeeting}</h2>
+                  </div>
+                  <div>
+                      <h1>Meeting Notes</h1>
+                      <ul>
+                      {e.meetingNotes?.map((e,i) => {
+                          return(
+                              <li>{e}</li>
+                          )
+                      })}
+                      </ul>
+                  </div>
+                  <div>
+                      <h1>Supervisor</h1>
+                      <h2>{e.supervisor}</h2>
+                  </div>
+                  <div>
+                       <h1>Project</h1>
+                      <h2>{e.project}</h2>
+                  </div>
+                  <div style={{display: 'flex',alignItems: 'center',justifyContent: 'center',width:'100%',padding:'10px'}}>
+                      {supervisor && (
+                        <button
+                     onClick={() => {
+                         setid(e._id)
+                         setvisibletwo(true)
+                     }}
+                     >Postpone Meeting</button>
+                      )}
+                     
+                  </div>
+              </div>
+          )
+      })}
+
+      <ReturnModal
+        visibilty={visible}
+        setvisibility={setvisible}
+        changefunc={handlechange}
+        submitfunc={createMeeting}
+        type="add"
+        setsettid={setid}
+        projects={projects}
+        data={datasend}
+        noteaddfunc={notesfunc}
+        noteval={notval}
+        projectid={projectid}
+        setprojectid={setprojectid}
+        notes={notes}
+        changenotval={changenoteval}
+        id={JSON.parse(user).userId}
+      />
+      <Meetingupdatemodal 
+      visibilty={visibletwo}
+      setvisibility={setvisibletwo}
+      setsettid={setid}
+      changefunc={datechange}
+      submitfunc={updatemeeting}
+      val={timeOfMeeting}
+
+      />
+    </>
   );
-}
+};
+
+export default Meetings;

@@ -5,8 +5,11 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import axios from "axios";
 import Progressbar from "../../../components/progressbar";
 import { eventUrl } from "../../../apis";
+import ReturnModal from '../../../components/Modals/dashboardeventmodal'
+import Swal from 'sweetalert2'
+import {erroralert,successalert} from '../../../components/alert'
 
-export default function Events() {
+export default function Events({admin}) {
   const [getData, setGetData] = useState(false);
   const [editEvent, setEditEvent] = useState(false);
   const [addEvent, setAddEvent] = useState(false);
@@ -15,6 +18,11 @@ export default function Events() {
   const [searchValue, setSearchValue] = useState("name");
   const [searchData, setSearchData] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const [visible,setvisible] = useState(false);
+  const [visibletwo,setvisibletwo] = useState(false);
+  const [settid,setsettid] = useState('');
+
+  console.log(settid)
 
   const api = axios.create({
     baseURL: eventUrl,
@@ -27,7 +35,7 @@ export default function Events() {
         setGetData(res.data.events);
       })
       .catch((err) => {
-        alert(err);
+        erroralert('Error',err.message);
       });
   }, [refresh]);
 
@@ -49,21 +57,36 @@ export default function Events() {
     setSearchBy(getValue);
   }
   function deleteEvent(id) {
-    var check = window.confirm("Are sure you want to delete the event");
-    if (check) {
-      api
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00A65A',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        api
         .delete(`/${id}`)
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
             setRefresh(!refresh);
-            alert("Event Delete Successfully");
+            Swal.fire(
+              'Deleted!',
+              'Event Deleted Successfully',
+              'success'
+            )
           }
         })
         .catch((res) => {
           alert(res);
         });
-    }
+        
+      }
+    })
+   
   }
 
   function toggleModel(action, event) {
@@ -99,18 +122,19 @@ export default function Events() {
         (result) => {
           if (result.err.code === 0) {
             setRefresh(!refresh);
-            toggleModel("add", false);
-            alert("Event Create Successfully");
+            setAddEvent(false)
+            setvisible(false);
+            successalert('Completed','Event has been Created')
           } else if (result.err.code === 11000) {
-            alert(
+            erroralert('Error',
               `This ${JSON.stringify(result.err.keyValue)} is already in use`
             );
           } else if (result.err.message) {
-            alert(result.err.message);
+            erroralert('Error',result.err.message);
           }
         },
         (error) => {
-          alert(error);
+          erroralert('Error',error.message);
         }
       );
   }
@@ -121,24 +145,25 @@ export default function Events() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(displayData),
     };
-    fetch(`${eventUrl}/${displayData._id}`, options)
+    fetch(`${eventUrl}/${settid}`, options)
       .then((res) => res.json())
       .then(
         (result) => {
           if (result.err.code === 0) {
             setRefresh(!refresh);
-            toggleModel("update", false);
-            alert("Event Update Successfully");
+            setvisibletwo(false)
+            successalert('Completed','Event has been Edited')
+            
           } else if (result.err.code === 11000) {
-            alert(
+            erroralert('Error',
               `This ${JSON.stringify(result.err.keyValue)} is already in use`
             );
           } else if (result.err.message) {
-            alert(result.err.message);
+            erroralert('Error',result.err.message);
           }
         },
         (error) => {
-          alert(error);
+          erroralert('Error',error.message);
         }
       );
   }
@@ -162,12 +187,19 @@ export default function Events() {
             <option value='Semester'>Semester</option>
             <option value='Details'>Details</option>
           </select>
-          <button
+          {admin && (
+            <button
             className='add-data-btn'
-            onClick={() => toggleModel("add", false)}
+            onClick={() => {
+             
+              setAddEvent(true)
+              setvisible(true)
+            }}
           >
             Add New Event
           </button>
+          )}
+          
         </div>
         {!getData ? (
           <div>
@@ -183,9 +215,11 @@ export default function Events() {
                 <th scope='col'>Year</th>
                 <th scope='col'>Semester</th>
                 <th scope='col'>Details</th>
-                <th colSpan='2' scope='col'>
+                {admin && (
+                  <th colSpan='2' scope='col'>
                   Options
                 </th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -213,12 +247,17 @@ export default function Events() {
                       <td data-label='Year'>{event.year}</td>
                       <td data-label='Semester'>{event.semester}</td>
                       <td data-label='Details'>{event.details}</td>
-                      <td data-label='Options'>
+                      {admin && (
+                        <td data-label='Options'>
                         <div className='manage-buttons'>
                           <button
                             className='update-user'
                             title='Edit Student'
-                            onClick={() => toggleModel("update", event)}
+                            onClick={() => {
+                              setsettid(event._id)
+                              setEditEvent(true)
+                              setvisibletwo(true)
+                            }}
                           >
                             <FaEdit size='1.5rem' />
                           </button>
@@ -233,6 +272,8 @@ export default function Events() {
                           </button>
                         </div>
                       </td>
+                      )}
+                      
                     </tr>
                   );
                 })}
@@ -240,193 +281,10 @@ export default function Events() {
           </table>
         )}
       </div>
-      {addEvent && (
-        <div className='popup-container'>
-          <div className='popup'>
-            <h2>Create a New Event</h2>
-            <div className='form-modal'>
-              <form
-                className='data-form'
-                onSubmit={handleAddSubmit}
-                autoComplete='off'
-                id='student-form'
-              >
-                <input type='text' name='_id' value={displayData._id} hidden />
-                <div>
-                  <label>Event Name</label>
-                  <select
-                    name='name'
-                    value={displayData.name}
-                    onChange={handleChange}
-                  >
-                    <option value='Defense'>Defense</option>
-                    <option value='Mid Evaluation'>Mid Evaluation</option>
-                    <option value='Final Evaluation'>Final Evaluation</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Event Date</label>
-                  <input
-                    type='date'
-                    name='date'
-                    value={displayData.date}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Venue</label>
-                  <input
-                    type='text'
-                    name='venue'
-                    value={displayData.venue}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Year</label>
-                  <input
-                    type='number'
-                    name='year'
-                    value={displayData.year}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Semester</label>
-                  <select
-                    name='semester'
-                    value={displayData.semester}
-                    onChange={handleChange}
-                  >
-                    <option value='Fall'>Fall</option>
-                    <option value='Spring'>Spring</option>
-                  </select>
-                </div>
-                <div>
-                  <label className='event-details'>Details</label>
-                  <textarea
-                    type='text'
-                    name='details'
-                    value={displayData.details}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <button type='submit'>Save Event</button>
-                </div>
-              </form>
-              <span>
-                <AiFillCloseCircle
-                  size='1.7rem'
-                  onClick={() => toggleModel("add", false)}
-                />
-              </span>
-              <button
-                className='close-data'
-                onClick={() => toggleModel("add", false)}
-              >
-                Close
-              </button>
-              <form />
-            </div>
-          </div>
-        </div>
-      )}
-      {editEvent && displayData && (
-        <div className='popup-container'>
-          <div className='popup'>
-            <h2>Edit Event</h2>
-            <div className='form-modal'>
-              <form
-                className='data-form'
-                onSubmit={handleEditSubmit}
-                autoComplete='off'
-                id='student-form'
-              >
-                <input type='text' name='_id' value={displayData._id} hidden />
-                <div>
-                  <label>Event Name</label>
-                  <select
-                    name='name'
-                    value={displayData.name}
-                    onChange={handleChange}
-                  >
-                    <option value='Defense'>Defense</option>
-                    <option value='Mid Evaluation'>Mid Evaluation</option>
-                    <option value='Final Evaluation'>Final Evaluation</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Current Date: {displayData.convertDate}</label>
-                </div>
-                <div>
-                  <label>Event Date</label>
-                  <input
-                    type='date'
-                    name='date'
-                    value={displayData.date}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Venue</label>
-                  <input
-                    type='text'
-                    name='venue'
-                    value={displayData.venue}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Year</label>
-                  <input
-                    type='number'
-                    name='year'
-                    value={displayData.year}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Semester</label>
-                  <select
-                    name='semester'
-                    value={displayData.semester}
-                    onChange={handleChange}
-                  >
-                    <option value='Fall'>Fall</option>
-                    <option value='Spring'>Spring</option>
-                  </select>
-                </div>
-                <div>
-                  <label className='event-details'>Details</label>
-                  <textarea
-                    type='text'
-                    name='details'
-                    value={displayData.details}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <button type='submit'>Edit Event</button>
-                </div>
-              </form>
-              <span>
-                <AiFillCloseCircle
-                  size='1.7rem'
-                  onClick={() => toggleModel("update", false)}
-                />
-              </span>
-              <button
-                className='close-data'
-                onClick={() => toggleModel("update", false)}
-              >
-                Close
-              </button>
-              <form />
-            </div>
-          </div>
-        </div>
-      )}
+     
+      <ReturnModal visibilty={visibletwo} setvisibility={setvisibletwo} seteventtype={setEditEvent} submitfunc={handleEditSubmit} changefunc={handleChange} data={displayData} type="update" setsettid={setsettid}/>
+      <ReturnModal visibilty={visible} setvisibility={setvisible} seteventtype={setAddEvent} submitfunc={handleAddSubmit} changefunc={handleChange} data={displayData} type="add" setsettid={setsettid}/>
+      
     </>
   );
 }

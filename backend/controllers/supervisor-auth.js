@@ -22,7 +22,7 @@ const login = async (req, res) => {
 
   res
     .status(StatusCodes.OK)
-    .json({ supervisor: { name: supervisor.name }, token });
+    .json({ supervisor: { name: supervisor.name,userId:supervisor._id }, token });
 };
 
 module.exports = {

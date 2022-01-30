@@ -8,7 +8,9 @@ export default function Navbar() {
     <div>
       <div className='title-bar'>
         <span></span>
-        <h2>FYPMS</h2>
+        <div>
+        <h2 style={{textAlign: 'center'}}>FYPMS</h2>
+        </div>
         <div className='title-bar-icons'>
           <div>
             <IoNotificationsCircleSharp size='2.5rem' />

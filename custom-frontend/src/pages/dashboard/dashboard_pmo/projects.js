@@ -5,8 +5,15 @@ import { AiFillDelete } from "react-icons/ai";
 import Progressbar from "../../../components/progressbar";
 import { FaEdit } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
+import styles from "../dashboard_supervisor/projects.module.css";
+import Modal from "react-awesome-modal";
+import ReturnModal from "../../../components/Modals/dashboardprojectmodal";
+import { erroralert,successalert } from "../../../components/alert";
+import {StudentProjectManagemodel} from '../../../components/Modals/studentprojectmanagemodal'
 
-export default function Projects() {
+export default function Projects({student}) {
+  const [visible, setvisible] = useState(false);
+  const [visibletwo, setvisibletwo] = useState(false);
   const [getData, setGetData] = useState(false);
   const [searchData, setSearchData] = useState("");
   const [searchBy, setSearchBy] = useState("Title");
@@ -18,6 +25,7 @@ export default function Projects() {
   const [addProject, setAddProject] = useState(false);
   const [displayData, setDisplayData] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [idset,setidset] = useState('');
   const data = [];
   const api = axios.create({
     baseURL: projectUrl,
@@ -42,7 +50,7 @@ export default function Projects() {
             setSupervisorData(res.data.supervisor);
           })
           .catch((err) => {
-            alert(err);
+            erroralert('Error',err.message);
           });
 
         studentApi
@@ -51,40 +59,40 @@ export default function Projects() {
             setStudentData(res.data);
           })
           .catch((err) => {
-            alert(err);
+            erroralert('Error',err.message);
           });
       })
       .catch((err) => {
-        alert(err);
+        erroralert('Error',err.message);
       });
   }, [refresh]);
 
-  function toggleModel(action, project) {
-    if (action === "add") {
-      addProject ? setAddProject(false) : setAddProject(true);
-    } else if (action === "update") {
-      editForm ? setEditForm(false) : setEditForm(true);
-    }
-    if (project !== null) {
-      var supervisorName = "";
-      supervisorData.map(
-        (e) => project.supervisor === e._id && (supervisorName = e.name)
-      );
+  // function toggleModel(action, project) {
+  //   if (action === "add") {
+  //     addProject ? setAddProject(false) : setAddProject(true);
+  //   } else if (action === "update") {
+  //     editForm ? setEditForm(false) : setEditForm(true);
+  //   }
+  //   if (project !== null) {
+  //     var supervisorName = "";
+  //     supervisorData.map(
+  //       (e) => project.supervisor === e._id && (supervisorName = e.name)
+  //     );
 
-      setDisplayData({
-        _id: project._id,
-        title: project.title,
-        status: project.status,
-        description: project.description,
-        objectives: project.objectives,
-        batch: project.batch,
-        supervisor: supervisorName,
-        member_1: project.group[0],
-        member_2: project.group[1],
-        member_3: project.group[2],
-      });
-    }
-  }
+  //     setDisplayData({
+  //       _id: project._id,
+  //       title: project.title,
+  //       status: project.status,
+  //       description: project.description,
+  //       objectives: project.objectives,
+  //       batch: project.batch,
+  //       supervisor: supervisorName,
+  //       member_1: project.group[0],
+  //       member_2: project.group[1],
+  //       member_3: project.group[2],
+  //     });
+  //   }
+  // }
 
   function handleSearch(e) {
     setRefresh(!refresh);
@@ -161,7 +169,7 @@ export default function Projects() {
       group: manageGroup,
     };
     if (editForm) {
-      putProject = { ...putProject, _id: displayData._id };
+      putProject = { ...putProject, _id: idset };
       console.log(putProject);
       const options = {
         method: "put",
@@ -174,26 +182,26 @@ export default function Projects() {
           (result) => {
             if (result.err.code === 0) {
               setRefresh(!refresh);
-              toggleModel("update", null);
               setDisplayData(false);
-              alert("Project Update Successfully");
+              setvisibletwo(false)
+              successalert('Success',"Project Update Successfully");
             } else if (result.err.code === 11000) {
-              alert(
+              erroralert('Error'
                 `This ${JSON.stringify(result.err.keyValue)} is already in use`
               );
             } else if (result.err.message) {
-              alert(result.err.message);
+              erroralert('Error',result.err.message);
             }
           },
           (error) => {
-            alert(error);
+            erroralert('Error',error.message);
           }
         );
     }
     if (addProject) {
       console.log(putProject);
       const options = {
-        method: "post",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(putProject),
       };
@@ -201,461 +209,280 @@ export default function Projects() {
         .then((res) => res.json())
         .then(
           (result) => {
+            console.log(result);
             if (result.err.code === 0) {
               setRefresh(!refresh);
-              toggleModel("add", null);
-              setDisplayData(false);
-              alert("Project Add Successfully");
+              setvisible(false);
+              successalert('Success',"Project Add Successfully");
             } else if (result.err.code === 11000) {
-              alert(
+              erroralert('Error'
                 `This ${JSON.stringify(result.err.keyValue)} is already in use`
               );
             } else if (result.err.message) {
-              alert(result.err.message);
+              erroralert('Error',result.err.message);
             }
           },
           (error) => {
-            alert(error);
+            erroralert('Error',error);
           }
         );
     }
   }
+
   return (
-    <div className='data-container'>
-      <div className='data-container-top'>
-        <input
-          type='search'
-          value={searchData}
-          onChange={(e) => setSearchData(e.target.value)}
-          placeholder={"Search Project By " + searchBy}
-        />
+    <>
+      
+      <div className="data-container">
+        <div className="data-container-top">
+          <input
+            type="search"
+            value={searchData}
+            onChange={(e) => setSearchData(e.target.value)}
+            placeholder={"Search Project By " + searchBy}
+          />
 
-        <select onChange={handleSearch}>
-          <option value='Title'>Title</option>
-          <option value='Project ID'>Project ID</option>
-          <option value='Batch'>Batch</option>
-          <option value='Status'>Status</option>
-          <option value='Supervisor'>Supervisor</option>
-          <option value='Group Member'>Group Member</option>
-        </select>
-        <button
-          className='add-data-btn'
-          onClick={() => toggleModel("add", null)}
-        >
-          Create A New Project
-        </button>
-      </div>
-      {!getData ? (
-        <div>
-          <Progressbar visibility={true} />
+          <select onChange={handleSearch}>
+            <option value="Title">Title</option>
+            <option value="Project ID">Project ID</option>
+            <option value="Batch">Batch</option>
+            <option value="Status">Status</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Group Member">Group Member</option>
+          </select>
+          <button
+            className="add-data-btn"
+            onClick={() => {
+              setAddProject(true);
+              setvisible(true);
+            }}
+          >
+            Create A New Project
+          </button>
         </div>
-      ) : searchSupervisor ? (
-        searchSupervisor
-          .filter(
-            (project) =>
-              project[searchValue].toString().indexOf(searchData) > -1
-          )
-          .map((project) => (
-            <div className='show-projects'>
-              <div>
-                <h1 className='project-title'>
-                  Project Title : <span>{project.title}</span>
-                </h1>
-                <br />
-                <h1>
-                  Status : <span>{project.status}</span>
-                </h1>
-                <br />
-                <h1>
-                  Description : <span>{project.description}</span>
-                </h1>
-                <br />
-                <h1>
-                  Objectives : <span>{project.objectives}</span>
-                </h1>
-                <br />
-                <h1>
-                  Batch : <span>{project.batch}</span>
-                </h1>
-                <br />
-                <h1>
-                  Supervisor : <span> {project.supervisorName}</span>
-                </h1>
-                <br />
-                <h1 className='project-group'>
-                  Group Members :
-                  {project.group.map((group) => (
-                    <span> {group} , </span>
-                  ))}
-                </h1>
-                <br />
-                <h1>
-                  Project ID : <span>{project._id}</span>
-                </h1>
-              </div>
-              <div className='manage-buttons'>
-                <button
-                  className='update-user'
-                  title='Edit Project'
-                  onClick={() => toggleModel("update", project)}
-                >
-                  <FaEdit size='1.5rem' />
-                </button>
-                <button
-                  className='delete-user'
-                  title='Delete Project'
-                  onClick={() => deleteProject(project._id)}
-                >
-                  <AiFillDelete size='1.5rem' />
-                </button>
-              </div>
+        
+        <div className={styles.mainprojectdiv}>
+          {/* <div className={styles.halfdiv}> */}
+          {!getData ? (
+            <div style={{ width: "100%" }}>
+              <Progressbar visibility={true} />
             </div>
-          ))
-      ) : (
-        getData &&
-        getData
-          .filter(
-            (project) =>
-              project[searchValue].toString().indexOf(searchData) > -1
-          )
-          .map((project) => (
-            <div className='show-projects'>
-              <div>
-                <h1 className='project-title'>
-                  Project Title : <span>{project.title}</span>
-                </h1>
-                <br />
-                <h1>
-                  Status : <span>{project.status}</span>
-                </h1>
-                <br />
-                <h1>
-                  Description : <span>{project.description}</span>
-                </h1>
-                <br />
-                <h1>
-                  Objectives : <span>{project.objectives}</span>
-                </h1>
-                <br />
-                <h1>
-                  Batch : <span>{project.batch}</span>
-                </h1>
-                <br />
-                <h1>
-                  Supervisor :
-                  {supervisorData &&
-                    supervisorData.map(
-                      (e) =>
-                        project.supervisor === e._id && <span> {e.name}</span>
+          ) : searchSupervisor ? (
+            searchSupervisor
+              .filter(
+                (project) =>
+                  project[searchValue].toString().indexOf(searchData) > -1
+              )
+              .map((project, i) => {
+                
+                console.log(project);
+                return (
+                  <div className={styles.halfdiv} key={i}>
+                    <div>
+                      <h1 className="project-title">
+                        Project Title : <span>{project.title}</span>
+                      </h1>
+
+                      <h1>
+                        Status : <span>{project.status}</span>
+                      </h1>
+
+                      <h1>
+                        Description : <span>{project.description}</span>
+                      </h1>
+
+                      <h1>
+                        Objectives : <span>{project.objectives}</span>
+                      </h1>
+
+                      <h1>
+                        Batch : <span>{project.batch}</span>
+                      </h1>
+
+                      <h1>
+                        Supervisor : <span> {project.supervisorName}</span>
+                      </h1>
+
+                      <h1 className="project-group">
+                        Group Members :
+                        {project.group.map((group, i) => (
+                          // console.log(group)
+                          <span key={i}>{group}</span>
+                        ))}
+                      </h1>
+
+                      <h1>Project ID : {project._id}</h1>
+                    </div>
+                    <div className="manage-buttons">
+                      <button
+                        className="update-user"
+                        title="Edit Project"
+                        onClick={() => {
+                          setDisplayData({
+                            _id: project._id,
+                            title: project.title,
+                            status: project.status,
+                            description: project.description,
+                            objectives: project.objectives,
+                            batch: project.batch,
+                            // supervisor: supervisorName,
+                            member_1: project.group[0],
+                            member_2: project.group[1],
+                            member_3: project.group[2],
+                          });
+                          setidset(project._id)
+                          setvisible(true)}}
+                      >
+                        <FaEdit size="1.5rem" />
+                      </button>
+                      <button
+                        className="delete-user"
+                        title="Delete Project"
+                        onClick={() => deleteProject(project._id)}
+                      >
+                        <AiFillDelete size="1.5rem" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+          ) : (
+            getData &&
+            getData
+              .filter(
+                (project) =>
+                  project[searchValue].toString().indexOf(searchData) > -1
+              )
+              .map((project, i) => {
+                
+                return(
+                <div className={styles.halfdiv} key={i}>
+                  <div>
+                    <h1>
+                      Project Title : <span>{project.title}</span>
+                    </h1>
+
+                    <h1>
+                      Status : <span>{project.status}</span>
+                    </h1>
+
+                    <h1>
+                      Description : <span>{project.description}</span>
+                    </h1>
+
+                    <h1>
+                      Objectives : <span>{project.objectives}</span>
+                    </h1>
+
+                    <h1>
+                      Batch : <span>{project.batch}</span>
+                    </h1>
+
+                    <h1>
+                      Supervisor :
+                      {supervisorData &&
+                        supervisorData.map(
+                          (e) =>
+                            project.supervisor === e._id && (
+                              <span>{e.name}</span>
+                            )
+                        )}
+                    </h1>
+
+                    <h1 className="project-group">
+                      Group Members :
+                      {project.group.map((group) => (
+                        <span>{group}</span>
+                      ))}
+                    </h1>
+                    <h1>
+                      Project ID : <span>{project._id}</span>
+                    </h1>
+                  </div>
+                  <div className="manage-buttons">
+                    <button
+                      className="update-user"
+                      title="Edit Project"
+                      onClick={() => {
+                        setDisplayData({
+                          _id: project._id,
+                          title: project.title,
+                          status: project.status,
+                          description: project.description,
+                          objectives: project.objectives,
+                          batch: project.batch,
+                          // supervisor: supervisorName,
+                          member_1: project.group[0],
+                          member_2: project.group[1],
+                          member_3: project.group[2],
+                        });
+                        setidset(project._id)
+                        setEditForm(true);
+                        setvisibletwo(true);
+                      }}
+                    >
+                      <FaEdit size="1.5rem" />
+                    </button>
+                    {!student && (
+                      <button
+                      className="delete-user"
+                      title="Delete Project"
+                      onClick={() => deleteProject(project._id)}
+                    >
+                      <AiFillDelete size="1.5rem" />
+                    </button>
                     )}
-                </h1>
-                <br />
-                <h1 className='project-group'>
-                  Group Members :
-                  {project.group.map((group) => (
-                    <span> {group} , </span>
-                  ))}
-                </h1>
-                <br />
-                <h1>
-                  Project ID : <span>{project._id}</span>
-                </h1>
-              </div>
-              <div className='manage-buttons'>
-                <button
-                  className='update-user'
-                  title='Edit Project'
-                  onClick={() => toggleModel("update", project)}
-                >
-                  <FaEdit size='1.5rem' />
-                </button>
-                <button
-                  className='delete-user'
-                  title='Delete Project'
-                  onClick={() => deleteProject(project._id)}
-                >
-                  <AiFillDelete size='1.5rem' />
-                </button>
-              </div>
-            </div>
-          ))
-      )}
-      {addProject && (
-        <div className='popup-container'>
-          <div className='popup'>
-            <h2>Crate A New Project</h2>
-            <div className='form-modal'>
-              <form
-                className='data-form'
-                onSubmit={handleSubmit}
-                autoComplete='off'
-                id='student-form'
-              >
-                <input type='text' name='_id' value={displayData._id} hidden />
-                <div>
-                  <label>Project Title</label>
-                  <input
-                    type='text'
-                    name='title'
-                    value={displayData.title}
-                    onChange={handleChange}
-                  />
+                    
+                  </div>
                 </div>
-                <div>
-                  <label>Status</label>
-                  <select
-                    name='status'
-                    value={displayData.status}
-                    onChange={handleChange}
-                  >
-                    <option value='Pending'>Pending</option>
-                    <option value='Rejected'>Rejected</option>
-                    <option value='Approved'>Approved</option>
-                    <option value='Working'>Working</option>
-                    <option value='Completed'>Complete</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Description</label>
-                  <input
-                    type='text'
-                    name='description'
-                    value={displayData.description}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Objective</label>
-                  <input
-                    type='text'
-                    name='objectives'
-                    value={displayData.objectives}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Batch</label>
-                  <input
-                    type='number'
-                    name='batch'
-                    value={displayData.batch}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Supervisor</label>
-                  <input
-                    type='text'
-                    name='supervisor'
-                    value={displayData.supervisor}
-                    list='supervisor-list'
-                    onChange={handleChange}
-                  />
-                  <datalist id='supervisor-list'>
-                    {supervisorData.map((e) => (
-                      <option>{e.name}</option>
-                    ))}
-                  </datalist>
-                </div>
-                <div>
-                  <label>Group Leader</label>
-                  <input
-                    type='text'
-                    name='member_1'
-                    value={displayData.member_1}
-                    onChange={handleChange}
-                    list='student-list'
-                    placeholder='None'
-                    required
-                  />
-                </div>
-                <div>
-                  <label>Group Member</label>
-                  <input
-                    type='text'
-                    name='member_2'
-                    value={displayData.member_2}
-                    onChange={handleChange}
-                    list='student-list'
-                    placeholder='None'
-                  />
-                </div>
-                <div>
-                  <label>Group Member</label>
-                  <input
-                    type='text'
-                    name='member_3'
-                    value={displayData.member_3}
-                    onChange={handleChange}
-                    list='student-list'
-                    placeholder='None'
-                  />
-                </div>
-                <datalist id='student-list'>
-                  {studentData.map((e) => (
-                    <option>{e.rollNumber}</option>
-                  ))}
-                </datalist>
-
-                <div>
-                  <button type='submit'>Add Project</button>
-                </div>
-              </form>
-              <span>
-                <AiFillCloseCircle
-                  size='1.7rem'
-                  onClick={() => toggleModel("add", null)}
-                />
-              </span>
-              <button
-                className='close-data'
-                onClick={() => toggleModel("add", null)}
-              >
-                Close
-              </button>
-              <form />
-            </div>
-          </div>
+              )})
+          )}
         </div>
-      )}
-      {editForm && displayData && (
-        <div className='popup-container'>
-          <div className='popup'>
-            <h2>Edit Project</h2>
-            <div className='form-modal'>
-              <form
-                className='data-form'
-                onSubmit={handleSubmit}
-                autoComplete='off'
-                id='student-form'
-              >
-                <input type='text' name='_id' value={displayData._id} hidden />
-                <div>
-                  <label>Project Title</label>
-                  <input
-                    type='text'
-                    name='title'
-                    value={displayData.title}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Status</label>
-                  <select
-                    name='status'
-                    value={displayData.status}
-                    onChange={handleChange}
-                  >
-                    <option value='Pending'>Pending</option>
-                    <option value='Rejected'>Rejected</option>
-                    <option value='Approved'>Approved</option>
-                    <option value='Working'>Working</option>
-                    <option value='Completed'>Complete</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Description</label>
-                  <input
-                    type='text'
-                    name='description'
-                    value={displayData.description}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Objective</label>
-                  <input
-                    type='text'
-                    name='objectives'
-                    value={displayData.objectives}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Batch</label>
-                  <input
-                    type='number'
-                    name='batch'
-                    value={displayData.batch}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Supervisor</label>
-                  <input
-                    type='text'
-                    name='supervisor'
-                    value={displayData.supervisor}
-                    list='supervisor-list'
-                    onChange={handleChange}
-                  />
-                  <datalist id='supervisor-list'>
-                    {supervisorData.map((e) => (
-                      <option>{e.name}</option>
-                    ))}
-                  </datalist>
-                </div>
-                <div>
-                  <label>Group Leader</label>
-                  <input
-                    type='text'
-                    name='member_1'
-                    value={displayData.member_1}
-                    onChange={handleChange}
-                    list='student-list'
-                    placeholder='None'
-                    required
-                  />
-                </div>
-                <div>
-                  <label>Group Member</label>
-                  <input
-                    type='text'
-                    name='member_2'
-                    value={displayData.member_2}
-                    onChange={handleChange}
-                    list='student-list'
-                    placeholder='None'
-                  />
-                </div>
-                <div>
-                  <label>Group Member</label>
-                  <input
-                    type='text'
-                    name='member_3'
-                    value={displayData.member_3}
-                    onChange={handleChange}
-                    list='student-list'
-                    placeholder='None'
-                  />
-                </div>
-                <datalist id='student-list'>
-                  {studentData.map((e) => (
-                    <option>{e.rollNumber}</option>
-                  ))}
-                </datalist>
 
-                <div>
-                  <button type='submit'>Edit Project</button>
-                </div>
-              </form>
-              <span>
-                <AiFillCloseCircle
-                  size='1.7rem'
-                  onClick={() => toggleModel("update", null)}
-                />
-              </span>
-              <button
-                className='close-data'
-                onClick={() => toggleModel("update", null)}
-              >
-                Close
-              </button>
-              <form />
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+        {!student && (
+          <>
+          <ReturnModal
+          visibilty={visible}
+          setvisibility={setvisible}
+          setformtype={setAddProject}
+          submitfunc={handleSubmit}
+          changefunc={handleChange}
+          data={displayData}
+          supdata={supervisorData}
+          stddata={studentData}
+          type="add"
+          setid={setidset}
+        />
+        <ReturnModal
+          visibilty={visibletwo}
+          setvisibility={setvisibletwo}
+          setformtype={setEditForm}
+          submitfunc={handleSubmit}
+          changefunc={handleChange}
+          data={displayData}
+          supdata={supervisorData}
+          stddata={studentData}
+          type="update"
+          setid={setidset}
+        />
+        </>
+        )}
+        {student && (
+          <StudentProjectManagemodel
+          visibilty={visibletwo}
+          setvisibility={setvisibletwo}
+          setformtype={setEditForm}
+          submitfunc={handleSubmit}
+          changefunc={handleChange}
+          data={displayData}
+          supdata={supervisorData}
+          stddata={studentData}
+          type="update"
+          setid={setidset}
+        />
+        )}
+          
+        
+      </div>
+    </>
   );
 }

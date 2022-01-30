@@ -32,9 +32,9 @@ pmoSchema.pre("save", async function () {
 pmoSchema.methods.createJWT = function () {
   return jwt.sign(
     { userId: this._id, name: this.name },
-    process.env.JWT_SECRET,
+    'VkYp3s6v9y$B&E)H@McQeThWmZq4t7w!',
     {
-      expiresIn: process.env.JWT_Lifetime,
+      expiresIn: '30d',
     }
   )
 }

@@ -1,9 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./login.css";
 import logo from "./logo.png";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
 export default function Adm_login() {
+
+  
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const data = localStorage.getItem('supervisor')
+    if(data){
+      navigate('/supervisor/home')
+    }else{
+      navigate('/auth/supervisor')
+    }
+   },[])
+ 
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [error, setError] = useState("");
@@ -13,7 +27,7 @@ export default function Adm_login() {
     if (!email || !password) {
       console.log("values are empty");
     }
-    const data = supervisorLogin({ email: email, password: password });
+    const data = await supervisorLogin({ email: email, password: password });
   };
 
   return (

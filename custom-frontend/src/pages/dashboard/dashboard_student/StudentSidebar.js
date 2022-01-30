@@ -21,14 +21,15 @@ import {
 // import Projects from "./main-components/projects";
 // import Events from "./main-components/events";
 import { Link,useNavigate } from "react-router-dom";
-import { useAppContext } from "../context/appContext";
+import { useAppContext } from "../../../context/appContext";
 
 
-export default function Sidebar(props) {
+export default function Studentsidebar(props) {
   const [menuChange, setMenuChange] = useState("menu-hide");
   const [dataWidth, setDataWidth] = useState("data-width");
   const [menubarList, setMenubarList] = useState("menubar-list");
   const { removeUserFromLocalStorage } = useAppContext();
+
   const navigate = useNavigate()
 
   function menuToggle(e) {
@@ -44,10 +45,12 @@ export default function Sidebar(props) {
       setMenubarList(null);
     }
   }
-  function logout(){ 
-    removeUserFromLocalStorage();
-    window.location.href='/login';
-  }
+
+  const {logout} = useAppContext();
+//   function logout(){ 
+//     removeUserFromLocalStorage();
+//     window.location.href='/login';
+//   }
   return (
     <div>
       <div className={"menubar " + menuChange}>
@@ -62,50 +65,37 @@ export default function Sidebar(props) {
               <span className='menubar-title-test'>{props.name}</span>
             </h2>
             <ul className={menubarList}>
-              <Link to='/pmo' className='links'>
+              <Link to='/student/home' className='links'>
                 <li>
                   <AiOutlineHome />
                   <span>Home</span>
                 </li>
               </Link>
-              <Link to='/pmo/projects' className='links'>
+              <Link to='/student/events' className='links'>
                 <li>
                   <AiOutlineProject />
                   <span>Manage Projects</span>
                 </li>
               </Link>
-              <Link to='/pmo/events' className='links'>
+              <Link to='/student/events' className='links'>
                 <li>
                   <MdOutlineEmojiEvents />
                   <span>Events</span>
                 </li>
               </Link>
-              <Link to='/pmo/students' className='links'>
+              <Link to='/student/meetings' className='links'>
                 <li>
                   <AiOutlineBook />
-                  <span>Students</span>
+                  <span>Meetings</span>
                 </li>
               </Link>
-              <Link to='/pmo/supervisors' className='links'>
+              <Link to='/student/marks' className='links'>
                 <li>
-                  <MdOutlineSupervisedUserCircle />
-                  <span>Supervisors</span>
+                  <AiOutlineBook />
+                  <span>Marks</span>
                 </li>
               </Link>
-              <Link to='/pmo/documents' className='links whiteicon'>
-                <li className='whiteicon'>
-                  {/* <GrDocument className="clr-white" /> */}
-                  <CgFileDocument />
-                  <span className='whiteicon'>Upload Templates</span>
-                </li>
-              </Link>
-              <Link to='/pmo/change-password' className='links'>
-                <li>
-                  <AiOutlineProfile />
-                  <span>User Profile</span>
-                </li>
-              </Link>
-              <Link to='/login' className='links' onClick={() => removeUserFromLocalStorage("pmoadmin","pmotoken",'/login',navigate)}>
+              <Link to='/auth/student' className='links' onClick={() => removeUserFromLocalStorage("student","stdtoken","/auth/student",navigate)}>
                 <li>
                   <MdLogout />
                   <span>Logout</span> 

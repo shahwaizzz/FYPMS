@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaMarker } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Progressbar from "../../../components/progressbar";
-import { students } from "../../../apis";
+import { students,assignmarks,assignmarkssupervisor } from "../../../apis";
 import axios from "axios";
+import {MarksModal,Supervisorassignmarks} from "../../../components/Modals/assignmarksstudentpmomodal";
+import ReturnModal from "../../../components/Modals/dashboardstudentsmodal";
+import { successalert,erroralert } from "../../../components/alert";
 
-export default function Student() {
+
+export default function Student({admin}) {
   const [addStudent, setAddStudent] = useState(false);
   const [editForm, setEditForm] = useState(false);
   const [searchData, setSearchData] = useState("");
@@ -15,6 +19,16 @@ export default function Student() {
   const [displayData, setDisplayData] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [searchValue, setSearchValue] = useState("rollNumber");
+  const [visible, setvisible] = useState(false);
+  const [visibletwo, setvisibletwo] = useState(false);
+  const [visiblethree, setvisiblethree] = useState(false);
+  const [idset, setidset] = useState();
+  const [marksdata, setmarksdata] = useState({});
+  const [supervisormarks,setsupervisormarks] = useState({
+    studentId:'',
+    marks:''
+  });
+
 
   const api = axios.create({
     baseURL: students,
@@ -27,7 +41,7 @@ export default function Student() {
         setGetData(res.data);
       })
       .catch((res) => {
-        alert(res);
+        erroralert('Error',res.message);
       });
   }, [refresh]);
 
@@ -43,7 +57,7 @@ export default function Student() {
           }
         })
         .catch((res) => {
-          alert(res);
+          erroralert('Error',res.message);
         });
     }
   }
@@ -61,6 +75,80 @@ export default function Student() {
     const name = e.target.name;
     var value = e.target.value;
     setDisplayData({ ...displayData, [name]: value });
+  }
+  function handleChangemarks(e) {
+    const name = e.target.name;
+    var value = e.target.value;
+    if (name === "proposal") {
+      setmarksdata({
+        flag: "proposal",
+        marks: +value,
+      });
+    } else if (name === "mid") {
+      setmarksdata({
+        flag: "mid",
+        marks: +value,
+      });
+    } else if (name === "final") {
+      setmarksdata({
+        flag: "final",
+        marks: +value,
+      });
+    }
+  }
+
+  function changesupervisormarks(e){
+    setsupervisormarks({studentId:idset,marks:+e.target.value})
+  }
+  
+  async function Submitsupervisormarks(e){
+    e.preventDefault()
+    setsupervisormarks({...supervisormarks,marks:""})
+
+    const options = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data:supervisormarks,
+      url:assignmarkssupervisor
+    }
+
+    try{
+
+      const response = await axios(options)
+      console.log(response)
+      if(response.data){
+        setvisiblethree(false)
+        successalert('Success','Marks has been assigned')
+      }
+    }catch(err){
+      erroralert('Error',err.message)
+    }
+  }
+
+  async function submitmarks(e) {
+
+    e.preventDefault()
+
+    const options = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: marksdata,
+      url:assignmarks(idset)
+    };
+
+    try{
+
+      const response = await axios(options)
+      if(response.data){
+        setvisiblethree(false)
+
+        successalert('Success','Marks has been assigned')
+      }
+      console.log(response.data);
+
+    }catch(err){
+      console.log(err)
+    }
   }
 
   function handleSearch(e) {
@@ -95,19 +183,20 @@ export default function Student() {
         (result) => {
           console.log(result);
           if (result.err.code === 0) {
-            setDisplayData(false);
+            setDisplayData(result);
             setRefresh(!refresh);
-            alert("Student Add Successfully");
+            setvisible(false)
+            successalert('Success',"Student Add Successfully");
           } else if (result.err.code === 11000) {
-            alert(
+            erroralert('Error'
               `This ${JSON.stringify(result.err.keyValue)} is already in use`
             );
           } else if (result.err.message) {
-            alert(result.err.message);
+            erroralert('Error',result.err.message);
           }
         },
         (error) => {
-          alert(error);
+          erroralert('Error',error);
         }
       );
   }
@@ -119,47 +208,58 @@ export default function Student() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(displayData),
     };
-    fetch(`${students}/${displayData._id}`, options)
+    fetch(`${students}/${idset}`, options)
       .then((res) => res.json())
       .then(
         (result) => {
           if (result.err.code === 0) {
-            setDisplayData(false);
+            setDisplayData(result);
             setRefresh(!refresh);
-            alert("Student Update Successfully");
+            setvisibletwo(false)
+            successalert('Success',"Student updated Successfully");
           } else if (result.err.code === 11000) {
-            alert(
-              `This ${JSON.stringify(result.err.keyValue)} is already in use`
-            );
+            erroralert('Error'
+            `This ${JSON.stringify(result.err.keyValue)} is already in use`
+          );
           } else if (result.err.message) {
-            alert(result.err.message);
+            erroralert('Error',result.err.message);
           }
         },
         (error) => {
-          alert(error);
+          erroralert('Error',error.message);
         }
       );
   }
+
+  console.log(displayData);
+  console.log(marksdata);
+
   return (
-    <div className='data-container'>
-      <div className='data-container-top'>
+    <div className="data-container">
+      <div className="data-container-top">
         <input
-          type='search'
+          type="search"
           value={searchData}
           onChange={(e) => setSearchData(e.target.value)}
           placeholder={"Search Student By " + searchBy}
         />
 
         <select onChange={handleSearch}>
-          <option value='Roll Number'>Roll Number</option>
-          <option value='Name'>Name</option>
-          <option value='Batch'>Batch</option>
-          <option value='Section'>Section</option>
-          <option value='Department'>Department</option>
-          <option value='Email'>Email</option>
-          <option value='Phone'>Phone</option>
+          <option value="Roll Number">Roll Number</option>
+          <option value="Name">Name</option>
+          <option value="Batch">Batch</option>
+          <option value="Section">Section</option>
+          <option value="Department">Department</option>
+          <option value="Email">Email</option>
+          <option value="Phone">Phone</option>
         </select>
-        <button className='add-data-btn' onClick={() => toggleModel("add")}>
+        <button
+          className="add-data-btn"
+          onClick={() => {
+            setAddStudent(true);
+            setvisible(true);
+          }}
+        >
           Add Student
         </button>
       </div>
@@ -168,17 +268,17 @@ export default function Student() {
           <Progressbar visibility={true} />
         </div>
       ) : (
-        <table className='table'>
+        <table className="table">
           <thead>
             <tr>
-              <th scope='col'>#Roll-No</th>
-              <th scope='col'>Name</th>
-              <th scope='col'>Department</th>
-              <th scope='col'>Section</th>
-              <th scope='col'>Batch</th>
-              <th scope='col'>Email</th>
-              <th scope='col'>Phone</th>
-              <th colSpan='2' scope='col'>
+              <th scope="col">#Roll-No</th>
+              <th scope="col">Name</th>
+              <th scope="col">Department</th>
+              <th scope="col">Section</th>
+              <th scope="col">Batch</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone</th>
+              <th colSpan="3" scope="col">
                 Options
               </th>
             </tr>
@@ -191,29 +291,59 @@ export default function Student() {
               )
               .map((student) => (
                 <tr key={student._id}>
-                  <td data-label='#Roll-No'>{student.rollNumber}</td>
-                  <td data-label='Name'>{student.name}</td>
-                  <td data-label='Department'>{student.department}</td>
-                  <td data-label='Section'>{student.section}</td>
-                  <td data-label='Batch'>{student.batch}</td>
-                  <td data-label='Email'>{student.email}</td>
-                  <td data-label='Phone'>{student.phone}</td>
-                  <td data-label='Options'>
-                    <div className='manage-buttons'>
-                      <button
-                        className='update-user'
-                        title='Edit Student'
-                        onClick={() => toggleModel("update", student)}
+                  <td data-label="#Roll-No">{student.rollNumber}</td>
+                  <td data-label="Name">{student.name}</td>
+                  <td data-label="Department">{student.department}</td>
+                  <td data-label="Section">{student.section}</td>
+                  <td data-label="Batch">{student.batch}</td>
+                  <td data-label="Email">{student.email}</td>
+                  <td data-label="Phone">{student.phone}</td>
+                  <td data-label="Options">
+                    <div className="manage-buttons">
+                      {admin ? (
+                        <>
+                        <button
+                        className="update-user"
+                        title="Edit Student"
+                        onClick={() => {
+                          setidset(student._id);
+                          setEditForm(true);
+                          setvisibletwo(true);
+                        }}
                       >
-                        <FaEdit size='1.5rem' />
+                        <FaEdit size="1.5rem" />
                       </button>
                       <button
-                        className='delete-user'
-                        title='Delete Student'
+                        className="delete-user"
+                        title="Assign Marks"
+                        onClick={() => {
+                          setidset(student._id);
+                          setvisiblethree(true);
+                        }}
+                      >
+                        <FaMarker size="1.5rem" />
+                      </button>
+                      <button
+                        className="delete-user"
+                        title="Delete Student"
                         onClick={() => deleteStudent(student._id)}
                       >
-                        <AiFillDelete size='1.5rem' />
+                        <AiFillDelete size="1.5rem" />
                       </button>
+                      </>
+                      ) : (
+                        <button
+                        className="delete-user"
+                        title="Assign Marks"
+                        onClick={() => {
+                          setidset(student._id);
+                          setvisiblethree(true);
+                        }}
+                      >
+                        <FaMarker size="1.5rem" />
+                      </button>
+                      )}
+                      
                     </div>
                   </td>
                 </tr>
@@ -221,188 +351,47 @@ export default function Student() {
           </tbody>
         </table>
       )}
-      {addStudent && (
-        <div className='popup-container'>
-          <div className='popup'>
-            <h2>Add Student</h2>
-            <div className='form-modal'>
-              <form
-                className='data-form'
-                onSubmit={submitStudent}
-                autoComplete='off'
-                id='student-form'
-              >
-                <div>
-                  <label>Student Roll Number</label>
-                  <input
-                    type='text'
-                    name='rollNumber'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Student Name</label>
-                  <input type='text' name='name' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Department</label>
-                  <input
-                    type='text'
-                    name='department'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Section</label>
-                  <input type='text' name='section' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Batch</label>
-                  <input type='text' name='batch' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Email</label>
-                  <input type='email' name='email' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Phone Number</label>
-                  <input type='number' name='phone' onChange={handleChange} />
-                </div>
-                <div>
-                  <label>Password</label>
-                  <input
-                    type='password'
-                    name='password'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <button type='submit'>Add Student</button>
-                </div>
-              </form>
-              <span>
-                <AiFillCloseCircle
-                  size='1.7rem'
-                  onClick={() => toggleModel("add")}
-                />
-              </span>
-              <button className='close-data' onClick={() => toggleModel("add")}>
-                Close
-              </button>
-              <form />
-            </div>
-          </div>
-        </div>
+      <ReturnModal
+        visibilty={visible}
+        setvisibility={setvisible}
+        setstdtype={setAddStudent}
+        submitfunc={submitStudent}
+        changefunc={handleChange}
+        type={"add"}
+        setsettid={setidset}
+        data={displayData}
+      />
+      <ReturnModal
+        visibilty={visibletwo}
+        setvisibility={setvisibletwo}
+        setstdtype={setEditForm}
+        submitfunc={onSubmit}
+        changefunc={handleChange}
+        type={"update"}
+        setsettid={setidset}
+        data={displayData}
+      />
+      {admin ? (
+        <MarksModal
+        visibilty={visiblethree}
+        setvisibility={setvisiblethree}
+        changefunc={handleChangemarks}
+        data={marksdata}
+        setsettid={setidset}
+        submitfunc={submitmarks}
+      />
+      ) : (
+<Supervisorassignmarks
+        visibilty={visiblethree}
+        setvisibility={setvisiblethree}
+        changefunc={changesupervisormarks}
+        data={supervisormarks}
+        setsettid={setidset}
+        submitfunc={Submitsupervisormarks}
+      />
       )}
-      {editForm && displayData && (
-        <div className='popup-container'>
-          <div className='popup'>
-            <h2>Edit Student</h2>
-            <div className='form-modal'>
-              <form
-                className='data-form'
-                onSubmit={onSubmit}
-                autoComplete='off'
-                id='student-form'
-              >
-                <div>
-                  <label>Student Roll Number</label>
-                  <input
-                    type='text'
-                    name='rollNumber'
-                    value={displayData.rollNumber}
-                    onChange={handleChange}
-                  />
-                  <input
-                    type='text'
-                    name='_id'
-                    value={displayData._id}
-                    hidden
-                  />
-                </div>
-                <div>
-                  <label>Student Name</label>
-                  <input
-                    type='text'
-                    name='name'
-                    value={displayData.name}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Department</label>
-                  <input
-                    type='text'
-                    name='department'
-                    value={displayData.department}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Section</label>
-                  <input
-                    type='text'
-                    name='section'
-                    value={displayData.section}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Batch</label>
-                  <input
-                    type='text'
-                    name='batch'
-                    value={displayData.batch}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Email</label>
-                  <input
-                    type='email'
-                    name='email'
-                    value={displayData.email}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Phone Number</label>
-                  <input
-                    type='number'
-                    name='phone'
-                    value={displayData.phone}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Password</label>
-                  <input
-                    type='password'
-                    name='password'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <button type='submit'>Edit Student</button>
-                </div>
-              </form>
-              <span>
-                <AiFillCloseCircle
-                  size='1.7rem'
-                  onClick={() => toggleModel("update")}
-                />
-              </span>
-              <button
-                className='close-data'
-                onClick={() => toggleModel("update")}
-              >
-                Close
-              </button>
-              <form />
-            </div>
-          </div>
-        </div>
-      )}
+      
+      
     </div>
   );
 }
