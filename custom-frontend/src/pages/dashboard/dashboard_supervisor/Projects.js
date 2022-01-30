@@ -9,6 +9,7 @@ import { Modal } from "react-bootstrap";
 import styles from './projects.module.css';
 
 export default function Projects() {
+<<<<<<< HEAD
   const [getData, setGetData] = useState(false);
   const [searchData, setSearchData] = useState("");
   const [searchBy, setSearchBy] = useState("Title");
@@ -698,4 +699,7 @@ export default function Projects() {
       )} */}
     </div>
   );
+=======
+  return <div>Projects</div>;
+>>>>>>> a21aca909bbc90776c7e2a45f025ae6ac054a956
 }

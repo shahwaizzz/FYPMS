@@ -1,8 +1,13 @@
 import React from "react";
 import { BrowserRouter, Route, Routes,Navigate } from "react-router-dom";
 import "./pages/login.css";
+<<<<<<< HEAD
 import {Login } from "./pages";
 import {SharedLayout,StudentSharedlayout} from "./assets/SharedLayout";
+=======
+import { PMORoutes, SupervisorRoutes, StudentRoutes, Login } from "./pages";
+import SharedLayout from "./assets/SharedLayout";
+>>>>>>> a21aca909bbc90776c7e2a45f025ae6ac054a956
 import Sidebar from "./components/sidebar";
 import {ProtectedRoutespmo,ProtectedRoutestudent,ProtectedRoutesupervisor} from './pages/ProtectedRoute'
 import {
@@ -16,6 +21,10 @@ import {
 } from "./pages/dashboard/dashboard_pmo";
 import {
   ManageProjects,
+<<<<<<< HEAD
+=======
+  SupervisorMeetings,
+>>>>>>> a21aca909bbc90776c7e2a45f025ae6ac054a956
   ProjectProgress,
   SupervisorProjects,
   Meetings,
@@ -37,9 +46,15 @@ function App() {
         <Route
           path='/pmo'
           element={
+<<<<<<< HEAD
             <ProtectedRoutespmo>
               <SharedLayout />
              </ProtectedRoutespmo>
+=======
+            <PMORoutes>
+              <SharedLayout />
+            </PMORoutes>
+>>>>>>> a21aca909bbc90776c7e2a45f025ae6ac054a956
           }
         >
           <Route path='/pmo' element={<Sidebar name='Home' abc={<Home admin={true}/>} />} />
@@ -76,9 +91,15 @@ function App() {
         <Route
           path='/supervisor'
           element={
+<<<<<<< HEAD
             <ProtectedRoutesupervisor>
               <SharedLayout />
               </ProtectedRoutesupervisor>
+=======
+            <SupervisorRoutes>
+              <SharedLayout />
+            </SupervisorRoutes>
+>>>>>>> a21aca909bbc90776c7e2a45f025ae6ac054a956
           }
         >
           
@@ -87,7 +108,10 @@ function App() {
           <Route
             path='/supervisor/createproject'
             element={
-              <SupervisorSidebar name='Create Projects' abc={<Projects />} />
+              <SupervisorSidebar
+                name='Create Projects'
+                abc={<SupervisorProjects />}
+              />
             }
           />
           {/* <Route
@@ -101,6 +125,7 @@ function App() {
           /> */}
           <Route
             path='/supervisor/events'
+<<<<<<< HEAD
             element={<SupervisorSidebar name='Events' abc={<Events admin={false} />} />}
           />
           <Route
@@ -114,10 +139,23 @@ function App() {
           <Route
             path='/supervisor/total'
             element={<SupervisorSidebar name='Supervisors' abc={<Supervisor admin={false}/>} />}
+=======
+            element={
+              <SupervisorSidebar name='Events' abc={<ManageProjects />} />
+            }
+          />
+          <Route
+            path='/supervisor/meetings'
+            element={
+              <SupervisorSidebar name='Meetings' abc={<SupervisorMeetings />} />
+            }
+>>>>>>> a21aca909bbc90776c7e2a45f025ae6ac054a956
           />
           <Route
             path='/supervisor/updatepassword'
-            element={<SupervisorSidebar name='Update Password' abc={<UserProfile />} />}
+            element={
+              <SupervisorSidebar name='Update Password' abc={<UserProfile />} />
+            }
           />
          
         </Route>
@@ -125,6 +163,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/auth/supervisor' element={<SupervisorLogin />} />
         <Route path='/auth/student' element={<StudentLogin />} />
+<<<<<<< HEAD
 
         <Route
         path="/student"
@@ -147,6 +186,10 @@ function App() {
 
 
 
+=======
+        <Route path='/landing' element={<div>landing page</div>} />
+        <Route path='*' element={<div>Not Found</div>} />
+>>>>>>> a21aca909bbc90776c7e2a45f025ae6ac054a956
       </Routes>
     </BrowserRouter>
   );
