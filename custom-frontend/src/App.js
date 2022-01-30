@@ -91,7 +91,7 @@ function App() {
             element={
               <SupervisorSidebar
                 name='Create Projects'
-                abc={<SupervisorProjects />}
+                abc={<Projects />}
               />
             }
           />
