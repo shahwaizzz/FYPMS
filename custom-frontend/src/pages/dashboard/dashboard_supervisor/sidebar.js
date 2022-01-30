@@ -90,7 +90,6 @@ export default function SSidebar(props) {
                   <span>Meeting</span>
                 </li>
               </Link>
-<<<<<<< HEAD
               <Link to='/supervisor/total' className='links'>
                 <li>
                   <MdOutlineSupervisedUserCircle />
@@ -104,8 +103,6 @@ export default function SSidebar(props) {
                   <span className='whiteicon'>Upload Templates</span>
                 </li>
               </Link> */}
-=======
->>>>>>> a21aca909bbc90776c7e2a45f025ae6ac054a956
               <Link to='/supervisor/updatepassword' className='links'>
                 <li>
                   <AiOutlineProfile />
