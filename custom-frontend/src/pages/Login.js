@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./login.css";
 import logo from "./logo.png";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
 import {Link} from 'react-router-dom'
 export default function Adm_login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { pmoLogin, error, setError } = useAppContext();
+  const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
@@ -15,6 +16,20 @@ export default function Adm_login() {
     }
     pmoLogin({ email: email, password: password });
   };
+
+  const pmotoken = localStorage.getItem('pmotoken')
+  const supervisortoken = localStorage.getItem('supervisortoken')
+  const stdtoken = localStorage.getItem('stdtoken')
+
+  useEffect(() => {
+      if(pmotoken){
+        navigate('/pmo')
+      }else if(supervisortoken){
+        navigate('/supervisor/home')
+      }else if(stdtoken){
+        navigate('/student/home')
+      }
+  },[])
 
   return (
     <div className='body-div'>

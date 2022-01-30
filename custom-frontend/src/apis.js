@@ -14,4 +14,5 @@ export const supervisorupdatemeetingapi = (id) => `http://${localhost}/api/v1/su
 export const assignmarks = (id) => `http://${localhost}/api/v1/pmo/${id}/marks`
 export const assignmarkssupervisor = `http://${localhost}/api/v1/supervisor/marks`
 export const getstdmarks = `http://${localhost}/api/v1/student/marks`
+export const getstdmeetings = `http://${localhost}/api/v1/student/meetings`
 

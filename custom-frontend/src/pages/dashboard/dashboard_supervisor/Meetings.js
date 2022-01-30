@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { supervisorcreatemeetingapi,supervisorgetmeetingapi,supervisorupdatemeetingapi,projectUrl } from "../../../apis";
+import { supervisorcreatemeetingapi,supervisorgetmeetingapi,supervisorupdatemeetingapi,projectUrl,getstdmeetings } from "../../../apis";
 import Progressbar from "../../../components/progressbar";
 import styles from './meetings.module.css'
 import { FaEdit } from "react-icons/fa";
@@ -29,7 +29,7 @@ const Meetings = ({supervisor}) => {
     topic: "",
     timeOfMeeting: new Date(),
     meetingNotes: notes,
-    supervisor: JSON.parse(user).userId,
+    supervisor: user ? JSON.parse(user).userId : null,
     project: '',
   });
   const [visible, setvisible] = useState(false);
@@ -56,20 +56,38 @@ const Meetings = ({supervisor}) => {
   };
 
   useEffect(() => {
-    const getmeetings = async () => {
-        setloading(true)
-      try {
-        const response = await axios.get(supervisorgetmeetingapi(JSON.parse(user).userId));
-        console.log(response.data.meetings)
-        setdata(response.data.meetings);
-        setloading(false);
-      } catch (e) {
-        console.log(e);
+      if(user){
+        const getmeetings = async () => {
+            setloading(true)
+          try {
+            const response = await axios.get(supervisorgetmeetingapi(JSON.parse(user).userId));
+            console.log(response.data.meetings)
+            setdata(response.data.meetings);
+            setloading(false);
+          } catch (err) {
+            erroralert('Error',err.message)
+          }
+        };
+        getmeetings();
+    
+        return getmeetings;
+      }else{
+        const getmeetings = async () => {
+            setloading(true)
+          try {
+            const response = await axios.get(getstdmeetings);
+            console.log(response.data.meetings)
+            setdata(response.data.meetings);
+            setloading(false);
+          } catch (err) {
+            erroralert('Error',err.message)
+          }
+        };
+        getmeetings();
+    
+        return getmeetings;
       }
-    };
-    getmeetings();
-
-    return getmeetings;
+    
   }, [refresh]);
 
   useEffect(() => {
@@ -238,7 +256,7 @@ const Meetings = ({supervisor}) => {
         setprojectid={setprojectid}
         notes={notes}
         changenotval={changenoteval}
-        id={JSON.parse(user).userId}
+        id={user ? JSON.parse(user).userId : null}
       />
       <Meetingupdatemodal 
       visibilty={visibletwo}
