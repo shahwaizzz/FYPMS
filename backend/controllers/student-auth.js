@@ -19,7 +19,7 @@ const login = async (req, res) => {
   }
   const token = student.createJWT();
 
-  res.status(StatusCodes.OK).json({ student: { name: student.name }, token });
+  res.status(StatusCodes.OK).json({ student: { name: student.name,userId:student._id,rollno:student.rollNumber }, token });
 };
 
 module.exports = {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { projectUrl, students, supervisorsUrl } from "../../../apis";
+import { projectUrl, students, supervisorsUrl,stdupdateproject,stdgetproject } from "../../../apis";
 import axios from "axios";
 import { AiFillDelete } from "react-icons/ai";
 import Progressbar from "../../../components/progressbar";
@@ -38,8 +38,13 @@ export default function Projects({student}) {
   const supervisorApi = axios.create({
     baseURL: supervisorsUrl,
   });
+
+  const std = localStorage.getItem("student")
+
+
   useEffect(() => {
-    api
+    if(!std){
+      api
       .get("/")
       .then((res) => {
         setGetData(res.data.projects);
@@ -65,6 +70,15 @@ export default function Projects({student}) {
       .catch((err) => {
         erroralert('Error',err.message);
       });
+    }else{
+      axios.get(stdgetproject(JSON.parse(std).rollno)).then((res) => {
+        console.log(res)
+        setGetData(res.data.projects)
+      }).catch(err => {
+        erroralert('Error',err.message)
+      })
+    }
+    
   }, [refresh]);
 
   // function toggleModel(action, project) {
@@ -229,6 +243,38 @@ export default function Projects({student}) {
     }
   }
 
+
+  async function studentupdateprojectsubmit(e){
+
+    e.preventDefault();
+
+    const obj = {
+      description:displayData?.description,
+      objectives:displayData?.objectives
+    }
+
+    const options = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json'},
+      data:obj,
+      url:stdupdateproject(JSON.parse(std).rollno)
+    }
+
+    try{
+
+      const response = await axios(options)
+      console.log(response)
+      if(response.data){
+        setvisibletwo(false)
+        setRefresh(!refresh)
+        successalert('Success',"Project Updated Successfully");
+      }
+
+    }catch(err){
+      erroralert('Error',err.message)
+    }
+  }
+
   return (
     <>
       
@@ -249,7 +295,8 @@ export default function Projects({student}) {
             <option value="Supervisor">Supervisor</option>
             <option value="Group Member">Group Member</option>
           </select>
-          <button
+          {!student && (
+            <button
             className="add-data-btn"
             onClick={() => {
               setAddProject(true);
@@ -258,6 +305,8 @@ export default function Projects({student}) {
           >
             Create A New Project
           </button>
+          )}
+          
         </div>
         
         <div className={styles.mainprojectdiv}>
@@ -471,11 +520,9 @@ export default function Projects({student}) {
           visibilty={visibletwo}
           setvisibility={setvisibletwo}
           setformtype={setEditForm}
-          submitfunc={handleSubmit}
+          submitfunc={studentupdateprojectsubmit}
           changefunc={handleChange}
           data={displayData}
-          supdata={supervisorData}
-          stddata={studentData}
           type="update"
           setid={setidset}
         />

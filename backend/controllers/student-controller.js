@@ -6,14 +6,35 @@ const { StatusCodes } = require("http-status-codes");
 const { NotFoundError, BadRequestError } = require("../errors");
 var mongoose = require("mongoose");
 
+const viewprojects = async (req, res,next) => {
+
+  const {rollno} = req.params
+
+  const projects = await Project.find(
+    {group:{$in:[rollno]}}
+  )
+
+  if(!projects){
+    res.status(StatusCodes.OK).json({ message: 'Projects not found'})
+    next()
+  }
+
+
+  res.status(StatusCodes.OK).json({projects})
+
+}
+
 const addProjectDetails = async (req, res) => {
   const { description, objectives } = req.body;
   if (!description || !objectives) {
     throw new BadRequestError("Please fil all the details");
   }
-  const studentId = mongoose.Types.ObjectId(req.user.userId);
+  //!authhentication middleware when added
+  // const studentId = mongoose.Types.ObjectId(req.user.userId);
+
+
   const project = await Project.findOneAndUpdate(
-    { group: studentId },
+    { group: {$in:[req.params.rollno]} },
     req.body,
     {
       new: true,
@@ -32,13 +53,24 @@ const viewEvents = async (req, res) => {
   res.status(StatusCodes.OK).json({ events });
   // res.send("Events");
 };
+
+//!authhentication middleware when connected
+// const viewMarks = async (req, res) => {
+//   const studentId = req.user.userId;
+//   console.log(studentId);
+//   const marks = await Student.find({ _id: studentId }).select("marks");
+
+//   res.status(StatusCodes.OK).json({ marks });
+// };
+
 const viewMarks = async (req, res) => {
-  const studentId = req.user.userId;
+  const studentId = req.params.id;
   console.log(studentId);
   const marks = await Student.find({ _id: studentId }).select("marks");
 
   res.status(StatusCodes.OK).json({ marks });
 };
+ 
 const viewMeetings = async (req, res) => {
   // const studentId = mongoose.Types.ObjectId(req.user.userId);
   // group: studentId
@@ -57,6 +89,7 @@ module.exports = {
   viewMeetings,
   viewMarks,
   viewSingleMeeting,
+  viewprojects
 };
 
 

@@ -71,7 +71,7 @@ export default function Studentsidebar(props) {
                   <span>Home</span>
                 </li>
               </Link>
-              <Link to='/student/events' className='links'>
+              <Link to='/student/projects' className='links'>
                 <li>
                   <AiOutlineProject />
                   <span>Manage Projects</span>

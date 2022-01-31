@@ -18,8 +18,8 @@ export const StudentProjectManagemodel = ({
     <>
       <Modal
         visible={visibilty}
-        width="500"
-        height="400"
+        width="600"
+        height="250"
         effect="fadeInUp"
         onClickAway={() => {
           setformtype(false);
@@ -63,6 +63,7 @@ export const StudentProjectManagemodel = ({
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: "10px",
+                margin:'10px auto'
               }}
             >
               <button type="submit">

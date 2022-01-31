@@ -13,6 +13,8 @@ export const supervisorgetmeetingapi = (id) => `http://${localhost}/api/v1/super
 export const supervisorupdatemeetingapi = (id) => `http://${localhost}/api/v1/supervisor/updatemeeting/${id}`
 export const assignmarks = (id) => `http://${localhost}/api/v1/pmo/${id}/marks`
 export const assignmarkssupervisor = `http://${localhost}/api/v1/supervisor/marks`
-export const getstdmarks = `http://${localhost}/api/v1/student/marks`
+export const getstdmarks = (id) => `http://${localhost}/api/v1/student/marks/${id}`
 export const getstdmeetings = `http://${localhost}/api/v1/student/meetings`
+export const stdupdateproject = (rollno) => `http://${localhost}/api/v1/student/add-details/${rollno}`
+export const stdgetproject = (rollno) => `http://${localhost}/api/v1/student/projects/${rollno}`
 

@@ -1,0 +1,112 @@
+.eventdiv{
+    width: 85%;
+    max-height: fit-content(300px);
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 10px;
+    margin: 10px auto;
+    border-radius:10px;
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+}
+
+
+.countdowndiv{
+
+}
+
+.countdowndiv h1{
+    font-size: 100px;
+    font-weight:bold;
+    margin:0px;
+    text-align: center;
+}
+.countdowndiv h2{
+    font-size: 50px;
+    font-weight:bold;
+    margin:0px;
+    text-align: center;
+}
+
+.countdowndiv h3{
+    font-size:18px;
+    text-align: center;
+
+}
+
+.infodivbox{
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+    padding: 5px;
+    background-color:white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    width: 400px;
+    border-radius: 10px;
+    margin: 12px auto;
+
+}
+
+
+
+.infodivbox h2{
+    font-size:19px;
+    margin: 10px;
+    width: 100%;
+}
+
+.green{
+    color: green !important;
+}
+
+.black{
+    color: #222 !important;
+
+}
+
+.flexdiv{
+    width: 85%;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    max-height: fit-content(300px);
+    margin: 20px auto;
+    padding: 10px;
+
+}
+
+.flexunderdiv{
+    width: 47%;
+    padding: 10px;
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius:10px;
+
+}
+
+@media only screen and (max-width: 1100px){
+
+    .flexdiv{
+        flex-direction: column;
+        align-items: center;
+        width: 85%;
+    }
+
+    .flexunderdiv{
+        width: 100%;
+        margin: 15px auto;
+
+    }
+
+    .infodivbox{
+        width: 100%;
+    }
+
+    .eventdiv{
+        flex-direction: column;
+        align-items: center;
+        margin: 15px auto;
+    }
+
+}

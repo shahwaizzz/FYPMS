@@ -198,6 +198,9 @@ const Meetings = ({supervisor}) => {
       )}
 
       {!loading && data && data?.map((e,i) => {
+
+        const date = new Date(e.timeOfMeeting)
+
           return(
               <div className={styles.meetingsdiv}>
                   <div>
@@ -206,7 +209,11 @@ const Meetings = ({supervisor}) => {
                   </div>
                   <div>
                       <h1>Time of Meeting</h1>
-                  <h2>{e.timeOfMeeting}</h2>
+                  <h2>{date.getFullYear() +
+                          "/" +
+                          (date.getMonth() + 1) +
+                          "/" +
+                          date.getDate()}</h2>
                   </div>
                   <div>
                       <h1>Meeting Notes</h1>

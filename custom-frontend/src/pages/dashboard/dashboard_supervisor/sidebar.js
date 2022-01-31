@@ -90,12 +90,7 @@ export default function SSidebar(props) {
                   <span>Meeting</span>
                 </li>
               </Link>
-              <Link to='/supervisor/total' className='links'>
-                <li>
-                  <MdOutlineSupervisedUserCircle />
-                  <span>Supervisors</span>
-                </li>
-              </Link>
+              
               {/* <Link to='/admin/documents' className='links whiteicon'>
                 <li className='whiteicon'>
                   <GrDocument className="clr-white" />
