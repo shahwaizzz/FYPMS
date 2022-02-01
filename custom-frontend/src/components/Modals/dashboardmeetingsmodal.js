@@ -56,32 +56,7 @@ const ReturnModal = ({
               required
             />
           </div>
-          <div className={styles.inputdiv}>
-            <label>Notes</label>
-            <input type="text" value={noteval} onChange={changenotval}/>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "10px",
-            }}
-          >
-            <button onClick={noteaddfunc}>Add Note point</button>
-
-            
-
-            
-          </div>
-          <div className={styles.notesdiv}>
-                
-                {notes?.length > 0 &&
-              notes?.map((e, i) => {
-                return <p key={i}>{e}</p>
-              })}
-                
-            </div>
+          
           <div className={styles.inputdiv}>
             <label>Supervisor</label>
             <input

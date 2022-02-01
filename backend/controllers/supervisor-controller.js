@@ -16,7 +16,7 @@ const createProject = async (req, res) => {
 };
 
 const getAllProjects = async (req, res) => {
-  const projects = await Project.find({ supervisor: req.user.userId }).sort(
+  const projects = await Project.find({ supervisor: req.params.id }).sort(
     "title"
   );
   res.status(StatusCodes.OK).json({ count: projects.length, projects });
@@ -75,6 +75,25 @@ const createMeeting = async (req, res) => {
   const meeting = await Meeting.create({ ...req.body });
   res.status(StatusCodes.OK).json({ meeting, msg: "Meeting Created" });
 };
+
+const addmeetingnotes = async (req, res) => {
+  console.log(req.body)
+  const {meetingNotes,id} = req.body
+
+  if(!id){
+    throw new Error("No meetings with this id")
+  }
+
+  const updatemeeting = await Meeting.findByIdAndUpdate({_id:id},{meetingNotes:meetingNotes},{new:true,upsert:true})
+
+
+  if(!updatemeeting){
+    throw new Error("could not update the meeting")
+  }
+
+  res.status(StatusCodes.OK).json({ mesage:'meeting has been updated' });
+}
+
 const viewMeetings = async (req, res) => {
   const meetings = await Meeting.find({ supervisor: req.params.id });
   if (!meetings) {
@@ -82,6 +101,25 @@ const viewMeetings = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ meetings });
 };
+
+// const addmeetingdocscomment = async (req,res) => {
+
+  
+
+//   try{
+//     const meetings = await Meeting.findOneAndUpdate({ supervisor: req.params.id },{document:[{doctype: `http://localhost:8000/meetingdocs/${file.name}`,id:req.params.id}]}); 
+
+//     if(!meetings){
+//       throw new Error("there is an error")
+//     }
+
+//     res.status(StatusCodes.OK).json({message:'document has been uploaded'})
+//   }catch(err){
+//     res.status(500).json({message:err.message})
+//   }
+
+// }
+
 const addMarks = async (req, res) => {
   const { marks, studentId } = req.body;
 
@@ -106,12 +144,19 @@ const addMarks = async (req, res) => {
 const updatemeeting = async (req,res) => {
 
   try{
-    const {timeofMeeting} = req.body
+    const {timeOfMeeting} = req.body
+    console.log(timeOfMeeting)
 
     const {id} = req.params
+    console.log(id)
   
-    const updatemeeting = await Meeting.findByIdAndUpdate(id,{timeofMeeting:timeofMeeting},{new:true,upsert:true})
-  
+
+    const updatemeeting = await Meeting.findByIdAndUpdate({_id:id},{timeOfMeeting:timeOfMeeting},{new:true,upsert:true})
+
+  //   const meeting = Meeting.find({_id:id})
+  //   meeting.timeOfMeeting = timeOfMeeting
+  //  await meeting.save({runValidators:false})
+    
     if(!id){
        throw new Error('No id available')
     }
@@ -140,5 +185,6 @@ module.exports = {
   createMeeting,
   viewMeetings,
   addMarks,
-  updatemeeting
+  updatemeeting,
+  addmeetingnotes,
 };

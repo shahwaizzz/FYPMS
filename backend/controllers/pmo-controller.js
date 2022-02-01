@@ -1,11 +1,16 @@
 const PMO = require("../models/pmo-model");
 const Supervisor = require("../models/supervisor-model");
+const multer = require("multer")
 const { StatusCodes } = require("http-status-codes");
 const {
   BadRequestError,
   NotFoundError,
   UnauthenticatedError,
 } = require("../errors");
+const folder = "../controllers"
+const fs = require("fs");
+const download = require("download");
+const Template = require("../models/template-model")
 
 const Student = require("../models/student-model");
 
@@ -326,15 +331,46 @@ const uploadTemplateDocuments = async (req, res) => {
     throw new BadRequestError("No file was uploaded");
   }
   const file = req.files.file;
-  file.mv(`../custom-frontend/public/uploads/${file.name}`, (err) => {
+  file.mv(`public/uploads/${file.name}`, (err) => {
     console.error(err);
-    return res.status(500).send(err);
   });
-  res.status(StatusCodes.OK).json({ msg: "File Uploaded Successfully" });
+  try{
+   const template = await Template.create({
+      templateurl:`http://localhost:8000/uploads/${file.name}`
+    })
+    if(!template){
+      throw new Error("ERRROR")
+    }else{
+      res.status(StatusCodes.OK).json({ msg: "File Uploaded Successfully" });
+    }
+  }catch(err){
+    console.log(err)
+  }
+
+ 
   // res
   //   .status(StatusCodes.OK)
   //   .json({ fileName: file.name, filePath: `/uploads/${file.name}` });
 };
+
+// const readfiles = (req,res) => {
+
+//   let arr = []
+
+//   fs.readdir(folder, (err, files) => {
+//     console.log(files);
+//     console.log(err)
+//     files?.forEach(file => {
+//       arr.push(file)
+//     });
+//   });
+
+//   res.status(200).json({ 
+//     data:arr
+//   })
+
+// }
+
 const changePassword = async (req, res) => {
   const pmoId = req.user.userId;
   const { currentPassword, newPassword, confirmPassword } = req.body;
@@ -360,6 +396,87 @@ const changePassword = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Password Updated" });
 };
 
+const Findtemplates = async (req,res) => {
+  try{
+    const templates = await Template.find({});
+    if(!templates){
+      throw new Error('there is an error')
+    }
+    res.status(StatusCodes.OK).json({
+      data:templates
+    })
+  }catch(err){
+    res.status(404).json({ msg: err.message})
+  }
+}
+
+// let multerstorage = multer.diskStorage({   
+//   destination: function(req, file, cb) {
+//     console.log(req)
+//     console.log(file)
+//      cb(null, '/public/uploads/'); 
+//     //  require('')   
+//   }, 
+//   filename: function (req, file, cb) { 
+//      cb(null , file.originalname);   
+//   }
+// });
+
+// function multerFilter (req, file, cb) {    
+
+//   // console.log(file)
+
+//   // Allowed ext
+//    const filetypes = /docx|pdf|zip|doc|excel/;
+
+//  // Check ext
+//   const extname =  filetypes.test(path.extname(file.originalname).toLowerCase());
+//  // Check mime
+//  const mimetype = filetypes.test(file.mimetype);
+
+//  if(mimetype && extname){
+//      return cb(null,true);
+//  } else {
+//      cb('You can only provides thes files only .docx,.pdf,.zip,.doc,.excel');
+//  }
+// }
+
+// const upload = multer({storage:multerstorage})
+// ,fileFilter:multerFilter,limits : {fileSize : 4000000}
+
+// const uploadtemplatefiles = async (req,res) => {
+
+//   // console.log(req.files.file)
+
+//   if(!req.files.file){
+//     throw new Error("please provide the file")
+//   }
+  
+  
+//   upload(req, res, function (err) {
+//     if (err) {
+//       console.log("There was an error uploading the image.");
+//     }
+//     res.send(req.files.file)
+//     })
+  
+//     // upload(req.files.file)
+
+// }
+
+
+
+// const downloading = async (req, res, next) => {
+//   console.log('fileController.download: started')
+//   const path = `http://localhost:8000/public/uploads/${req.params.path}`
+
+//   await download('https://images.unsplash.com/photo-1643644069843-b71b3b28227b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',"public")
+//   // const file = fs.createReadStream(path)
+//   // const filename = (new Date()).toISOString()
+//   // res.setHeader('Content-Disposition', 'attachment: filename="' + filename + '"')
+//   // file.pipe(res)
+// }
+
 module.exports = {
   createStudent,
   getStudent,
@@ -383,4 +500,5 @@ module.exports = {
   createProject,
   uploadTemplateDocuments,
   changePassword,
+  Findtemplates
 };

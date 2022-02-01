@@ -1,12 +1,14 @@
 require("dotenv").config();
 const cors = require("cors")
 require("express-async-errors");
+const bodyParser = require("body-parser")
 const express = require("express");
 const app = express();
 const connectDB = require("./db/connect");
 const authenticateUser = require("./middleware/authentication");
 const fileUpload = require("express-fileupload");
 const morgan = require("morgan");
+// const path = require("path");
 
 const pmoAuthRoutes = require("./routes/pmo-auth-routes");
 const pmoRoutes = require("./routes/pmo-routes");
@@ -19,6 +21,10 @@ const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 
 app.use(morgan("dev"));
+// app.use(bodyParser())
+const publicdir = require('path').join(__dirname, '/public')
+
+app.use(express.static(publicdir))
 app.use(fileUpload());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -26,7 +32,7 @@ app.use(express.json());
 app.use((req, res, next) => {
   res.append("Access-Control-Allow-Origin", "*");
   res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH");
-  res.append("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  res.append("Access-Control-Allow-Headers", "Content-Type");
   res.append("Access-Control-Allow-Headers", "Authorization");
   next();
 });

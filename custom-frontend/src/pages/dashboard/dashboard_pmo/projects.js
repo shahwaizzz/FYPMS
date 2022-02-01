@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { projectUrl, students, supervisorsUrl,stdupdateproject,stdgetproject } from "../../../apis";
+import {
+  projectUrl,
+  students,
+  supervisorsUrl,
+  stdupdateproject,
+  stdgetproject,
+  supervisorgetproject,
+  stdupdatetemp,
+} from "../../../apis";
 import axios from "axios";
 import { AiFillDelete } from "react-icons/ai";
 import Progressbar from "../../../components/progressbar";
@@ -8,10 +16,10 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import styles from "../dashboard_supervisor/projects.module.css";
 import Modal from "react-awesome-modal";
 import ReturnModal from "../../../components/Modals/dashboardprojectmodal";
-import { erroralert,successalert } from "../../../components/alert";
-import {StudentProjectManagemodel} from '../../../components/Modals/studentprojectmanagemodal'
+import { erroralert, successalert } from "../../../components/alert";
+import { StudentProjectManagemodel } from "../../../components/Modals/studentprojectmanagemodal";
 
-export default function Projects({student}) {
+export default function Projects({ student }) {
   const [visible, setvisible] = useState(false);
   const [visibletwo, setvisibletwo] = useState(false);
   const [getData, setGetData] = useState(false);
@@ -25,7 +33,47 @@ export default function Projects({student}) {
   const [addProject, setAddProject] = useState(false);
   const [displayData, setDisplayData] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const [idset,setidset] = useState('');
+  const [idset, setidset] = useState("");
+  const [file, setFile] = useState("");
+  const [templates, settemplates] = useState([]);
+  const [fileName, setFileName] = useState("");
+
+  const [flag, setflag] = useState("");
+  const std = localStorage.getItem("student");
+  const supervisor = localStorage.getItem("supervisor");
+
+  const onChange = (e) => {
+    setflag(e.target.id);
+    setFile(e.target.files[0]);
+    setFileName(e.target.files[0].name);
+  };
+
+  console.log(file);
+  console.log(fileName);
+  const handlefileSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log(formData);
+    try {
+      const response = axios.patch(
+        stdupdatetemp(JSON.parse(std).rollno, flag),
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      // const { fileName, filePath } = response.data;
+      console.log(response);
+      // setUploadedFiles({ fileName, filePath });
+      successalert("Success", "File uploaded successfully");
+      setRefresh(!refresh);
+    } catch (error) {
+      erroralert("Error", error.message);
+    }
+  };
   const data = [];
   const api = axios.create({
     baseURL: projectUrl,
@@ -39,46 +87,57 @@ export default function Projects({student}) {
     baseURL: supervisorsUrl,
   });
 
-  const std = localStorage.getItem("student")
-
-
   useEffect(() => {
-    if(!std){
+    if (!std && !supervisor) {
       api
-      .get("/")
-      .then((res) => {
-        setGetData(res.data.projects);
+        .get("/")
+        .then((res) => {
+          setGetData(res.data.projects);
 
-        supervisorApi
-          .get("/")
-          .then((res) => {
-            setSupervisorData(res.data.supervisor);
-          })
-          .catch((err) => {
-            erroralert('Error',err.message);
-          });
+          supervisorApi
+            .get("/")
+            .then((res) => {
+              setSupervisorData(res.data.supervisor);
+            })
+            .catch((err) => {
+              erroralert("Error", err.message);
+            });
 
-        studentApi
-          .get("/")
-          .then((res) => {
-            setStudentData(res.data);
-          })
-          .catch((err) => {
-            erroralert('Error',err.message);
-          });
-      })
-      .catch((err) => {
-        erroralert('Error',err.message);
-      });
-    }else{
-      axios.get(stdgetproject(JSON.parse(std).rollno)).then((res) => {
-        console.log(res)
-        setGetData(res.data.projects)
-      }).catch(err => {
-        erroralert('Error',err.message)
-      })
+          studentApi
+            .get("/")
+            .then((res) => {
+              setStudentData(res.data);
+            })
+            .catch((err) => {
+              erroralert("Error", err.message);
+            });
+        })
+        .catch((err) => {
+          erroralert("Error", err.message);
+        });
     }
-    
+    if (supervisor && !std) {
+      axios
+        .get(supervisorgetproject(JSON.parse(supervisor).userId))
+        .then((res) => {
+          console.log(res);
+          setGetData(res.data.projects);
+        })
+        .catch((err) => {
+          erroralert("Error", err.message);
+        });
+    }
+    if (std && !supervisor) {
+      axios
+        .get(stdgetproject(JSON.parse(std).rollno))
+        .then((res) => {
+          console.log(res);
+          setGetData(res.data.projects);
+        })
+        .catch((err) => {
+          erroralert("Error", err.message);
+        });
+    }
   }, [refresh]);
 
   // function toggleModel(action, project) {
@@ -197,18 +256,20 @@ export default function Projects({student}) {
             if (result.err.code === 0) {
               setRefresh(!refresh);
               setDisplayData(false);
-              setvisibletwo(false)
-              successalert('Success',"Project Update Successfully");
+              setvisibletwo(false);
+              successalert("Success", "Project Update Successfully");
             } else if (result.err.code === 11000) {
-              erroralert('Error'
-                `This ${JSON.stringify(result.err.keyValue)} is already in use`
+              erroralert(
+                "Error"`This ${JSON.stringify(
+                  result.err.keyValue
+                )} is already in use`
               );
             } else if (result.err.message) {
-              erroralert('Error',result.err.message);
+              erroralert("Error", result.err.message);
             }
           },
           (error) => {
-            erroralert('Error',error.message);
+            erroralert("Error", error.message);
           }
         );
     }
@@ -227,88 +288,87 @@ export default function Projects({student}) {
             if (result.err.code === 0) {
               setRefresh(!refresh);
               setvisible(false);
-              successalert('Success',"Project Add Successfully");
+              successalert("Success", "Project Add Successfully");
             } else if (result.err.code === 11000) {
-              erroralert('Error'
-                `This ${JSON.stringify(result.err.keyValue)} is already in use`
+              erroralert(
+                "Error"`This ${JSON.stringify(
+                  result.err.keyValue
+                )} is already in use`
               );
             } else if (result.err.message) {
-              erroralert('Error',result.err.message);
+              erroralert("Error", result.err.message);
             }
           },
           (error) => {
-            erroralert('Error',error);
+            erroralert("Error", error);
           }
         );
     }
   }
 
-
-  async function studentupdateprojectsubmit(e){
-
+  async function studentupdateprojectsubmit(e) {
     e.preventDefault();
 
     const obj = {
-      description:displayData?.description,
-      objectives:displayData?.objectives
-    }
+      description: displayData?.description,
+      objectives: displayData?.objectives,
+    };
 
     const options = {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json'},
-      data:obj,
-      url:stdupdateproject(JSON.parse(std).rollno)
-    }
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: obj,
+      url: stdupdateproject(JSON.parse(std).rollno),
+    };
 
-    try{
-
-      const response = await axios(options)
-      console.log(response)
-      if(response.data){
-        setvisibletwo(false)
-        setRefresh(!refresh)
-        successalert('Success',"Project Updated Successfully");
+    try {
+      const response = await axios(options);
+      console.log(response);
+      if (response.data) {
+        setvisibletwo(false);
+        setRefresh(!refresh);
+        successalert("Success", "Project Updated Successfully");
       }
-
-    }catch(err){
-      erroralert('Error',err.message)
+    } catch (err) {
+      erroralert("Error", err.message);
     }
   }
 
   return (
     <>
-      
       <div className="data-container">
-        <div className="data-container-top">
-          <input
-            type="search"
-            value={searchData}
-            onChange={(e) => setSearchData(e.target.value)}
-            placeholder={"Search Project By " + searchBy}
-          />
+        {!student && (
+          <>
+            <div className="data-container-top">
+              <input
+                type="search"
+                value={searchData}
+                onChange={(e) => setSearchData(e.target.value)}
+                placeholder={"Search Project By " + searchBy}
+              />
 
-          <select onChange={handleSearch}>
-            <option value="Title">Title</option>
-            <option value="Project ID">Project ID</option>
-            <option value="Batch">Batch</option>
-            <option value="Status">Status</option>
-            <option value="Supervisor">Supervisor</option>
-            <option value="Group Member">Group Member</option>
-          </select>
-          {!student && (
-            <button
-            className="add-data-btn"
-            onClick={() => {
-              setAddProject(true);
-              setvisible(true);
-            }}
-          >
-            Create A New Project
-          </button>
-          )}
-          
-        </div>
-        
+              <select onChange={handleSearch}>
+                <option value="Title">Title</option>
+                <option value="Project ID">Project ID</option>
+                <option value="Batch">Batch</option>
+                <option value="Status">Status</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Group Member">Group Member</option>
+              </select>
+
+              <button
+                className="add-data-btn"
+                onClick={() => {
+                  setAddProject(true);
+                  setvisible(true);
+                }}
+              >
+                Create A New Project
+              </button>
+            </div>
+          </>
+        )}
+
         <div className={styles.mainprojectdiv}>
           {/* <div className={styles.halfdiv}> */}
           {!getData ? (
@@ -322,7 +382,6 @@ export default function Projects({student}) {
                   project[searchValue].toString().indexOf(searchData) > -1
               )
               .map((project, i) => {
-                
                 console.log(project);
                 return (
                   <div className={styles.halfdiv} key={i}>
@@ -348,7 +407,7 @@ export default function Projects({student}) {
                       </h1>
 
                       <h1>
-                        Supervisor : <span> {project.supervisorName}</span>
+                        Supervisor : <span> {project.supervisor}</span>
                       </h1>
 
                       <h1 className="project-group">
@@ -358,6 +417,35 @@ export default function Projects({student}) {
                           <span key={i}>{group}</span>
                         ))}
                       </h1>
+                      <h1 className="project-group">Project docs :</h1>
+                      <div>
+                        <h1>proposal</h1>
+                        <a
+                          style={{ color: "greenyellow" }}
+                          href={project.projecDoc?.proposal}
+                          download
+                        >
+                          {project.projectDoc?.proposal.slice(31)}
+                        </a>
+                      </div>
+                      <div>
+                        <h1>Mid Evaluation</h1>
+                        <a
+                          style={{ color: "greenyellow" }}
+                          href={project.projecDoc?.midEvaluation}
+                        >
+                          {project.projectDoc?.midEvaluation?.slice(31)}
+                        </a>
+                      </div>
+                      <div>
+                        <h1>Final Documentation</h1>
+                        <a
+                          style={{ color: "greenyellow" }}
+                          href={project.projecDoc?.finalDocumentation}
+                        >
+                          {project.projectDoc?.finalDocumentation?.slice(31)}
+                        </a>
+                      </div>
 
                       <h1>Project ID : {project._id}</h1>
                     </div>
@@ -373,13 +461,15 @@ export default function Projects({student}) {
                             description: project.description,
                             objectives: project.objectives,
                             batch: project.batch,
-                            // supervisor: supervisorName,
+                            supervisor: project.supervisor,
                             member_1: project.group[0],
                             member_2: project.group[1],
                             member_3: project.group[2],
                           });
-                          setidset(project._id)
-                          setvisible(true)}}
+                          console.log(project.supervisor);
+                          setidset(project._id);
+                          setvisible(true);
+                        }}
                       >
                         <FaEdit size="1.5rem" />
                       </button>
@@ -402,133 +492,237 @@ export default function Projects({student}) {
                   project[searchValue].toString().indexOf(searchData) > -1
               )
               .map((project, i) => {
-                
-                return(
-                <div className={styles.halfdiv} key={i}>
-                  <div>
-                    <h1>
-                      Project Title : <span>{project.title}</span>
-                    </h1>
+                console.log(project?.projecDoc?.finalDocumentation);
+                console.log(project?.projecDoc?.proposal);
+                console.log(project?.projecDoc?.midEvaluation);
 
-                    <h1>
-                      Status : <span>{project.status}</span>
-                    </h1>
+                return (
+                  <div className={styles.halfdiv} key={i}>
+                    <div>
+                      <h1>
+                        Project Title : <span>{project.title}</span>
+                      </h1>
 
-                    <h1>
-                      Description : <span>{project.description}</span>
-                    </h1>
+                      <h1>
+                        Status : <span>{project.status}</span>
+                      </h1>
 
-                    <h1>
-                      Objectives : <span>{project.objectives}</span>
-                    </h1>
+                      <h1>
+                        Description : <span>{project.description}</span>
+                      </h1>
 
-                    <h1>
-                      Batch : <span>{project.batch}</span>
-                    </h1>
+                      <h1>
+                        Objectives : <span>{project.objectives}</span>
+                      </h1>
 
-                    <h1>
-                      Supervisor :
-                      {supervisorData &&
-                        supervisorData.map(
-                          (e) =>
-                            project.supervisor === e._id && (
-                              <span>{e.name}</span>
-                            )
-                        )}
-                    </h1>
+                      <h1>
+                        Batch : <span>{project.batch}</span>
+                      </h1>
 
-                    <h1 className="project-group">
-                      Group Members :
-                      {project.group.map((group) => (
-                        <span>{group}</span>
-                      ))}
-                    </h1>
-                    <h1>
-                      Project ID : <span>{project._id}</span>
-                    </h1>
-                  </div>
-                  <div className="manage-buttons">
-                    <button
-                      className="update-user"
-                      title="Edit Project"
-                      onClick={() => {
-                        setDisplayData({
-                          _id: project._id,
-                          title: project.title,
-                          status: project.status,
-                          description: project.description,
-                          objectives: project.objectives,
-                          batch: project.batch,
-                          // supervisor: supervisorName,
-                          member_1: project.group[0],
-                          member_2: project.group[1],
-                          member_3: project.group[2],
-                        });
-                        setidset(project._id)
-                        setEditForm(true);
-                        setvisibletwo(true);
-                      }}
-                    >
-                      <FaEdit size="1.5rem" />
-                    </button>
-                    {!student && (
+                      <h1>
+                        Supervisor :<span>{project.supervisor}</span>
+                      </h1>
+
+                      <h1 className="project-group">
+                        Group Members :
+                        {project.group.map((group) => (
+                          <span>{group}</span>
+                        ))}
+                      </h1>
+                      <h1 className="project-group">Project docs :</h1>
+                      <div>
+                        <h1>proposal</h1>
+                        <a
+                          style={{ color: "green", fontWeight: "bold" }}
+                          href={project.projecDoc?.proposal}
+                          download
+                        >
+                          {project.projectDoc?.proposal.slice(31)}
+                        </a>
+                      </div>
+                      <div>
+                        <h1>Mid Evaluation</h1>
+                        <a
+                          style={{ color: "green", fontWeight: "bold" }}
+                          href={project.projecDoc?.midEvaluation}
+                        >
+                          {project.projectDoc?.midEvaluation?.slice(31)}
+                        </a>
+                      </div>
+                      <div>
+                        <h1>Final Documentation</h1>
+                        <a
+                          style={{ color: "green", fontWeight: "bold" }}
+                          href={project.projecDoc?.finalDocumentation}
+                        >
+                          {project.projectDoc?.finalDocumentation?.slice(31)}
+                        </a>
+                      </div>
+
+                      <h1>
+                        Project ID : <span>{project._id}</span>
+                      </h1>
+                    </div>
+                    <div className="manage-buttons">
                       <button
-                      className="delete-user"
-                      title="Delete Project"
-                      onClick={() => deleteProject(project._id)}
-                    >
-                      <AiFillDelete size="1.5rem" />
-                    </button>
+                        className="update-user"
+                        title="Edit Project"
+                        onClick={() => {
+                          setDisplayData({
+                            _id: project._id,
+                            title: project.title,
+                            status: project.status,
+                            description: project.description,
+                            objectives: project.objectives,
+                            batch: project.batch,
+                            // supervisor: supervisorName,
+                            member_1: project.group[0],
+                            member_2: project.group[1],
+                            member_3: project.group[2],
+                          });
+                          setidset(project._id);
+                          setEditForm(true);
+                          setvisibletwo(true);
+                        }}
+                      >
+                        <FaEdit size="1.5rem" />
+                      </button>
+                      {!student && (
+                        <button
+                          className="delete-user"
+                          title="Delete Project"
+                          onClick={() => deleteProject(project._id)}
+                        >
+                          <AiFillDelete size="1.5rem" />
+                        </button>
+                      )}
+                    </div>
+                    {student && (
+                      <div style={{ marginTop: "10px" }}>
+                        {project.projectDoc?.proposal === undefined && (
+                          <form
+                            class="register-form"
+                            onSubmit={handlefileSubmit}
+                          >
+                            <h3>Proposal Project</h3>
+                            <input
+                              id="proposal"
+                              class="form-field widt input1"
+                              type="file"
+                              placeholder="file"
+                              name="file"
+                              onChange={onChange}
+                            />
+
+                            <button
+                              className="form-field button1 docu green"
+                              type="submit"
+                              name="upload"
+                            >
+                              Upload
+                            </button>
+                          </form>
+                        )}
+                        {project.projectDoc?.midEvaluation === undefined && (
+                          <form
+                            class="register-form"
+                            onSubmit={handlefileSubmit}
+                          >
+                            <h3>Mid Evaluation</h3>
+                            <input
+                              id="mid"
+                              class="form-field widt input1"
+                              type="file"
+                              placeholder="file"
+                              name="file"
+                              onChange={onChange}
+                            />
+
+                            <button
+                              className="form-field button1 docu green"
+                              type="submit"
+                              name="upload"
+                            >
+                              Upload
+                            </button>
+                          </form>
+                        )}
+                        {project.projectDoc?.finalDocumentation ===
+                          undefined && (
+                          <form
+                            class="register-form"
+                            onSubmit={handlefileSubmit}
+                          >
+                            <h3>Final Evaluation</h3>
+
+                            <input
+                              id="final"
+                              class="form-field widt input1"
+                              type="file"
+                              placeholder="file"
+                              name="file"
+                              onChange={onChange}
+                            />
+
+                            <button
+                              className="form-field button1 docu green"
+                              type="submit"
+                              name="upload"
+                            >
+                              Upload
+                            </button>
+                          </form>
+                        )}
+                      </div>
                     )}
-                    
                   </div>
-                </div>
-              )})
+                );
+              })
           )}
         </div>
 
         {!student && (
           <>
-          <ReturnModal
-          visibilty={visible}
-          setvisibility={setvisible}
-          setformtype={setAddProject}
-          submitfunc={handleSubmit}
-          changefunc={handleChange}
-          data={displayData}
-          supdata={supervisorData}
-          stddata={studentData}
-          type="add"
-          setid={setidset}
-        />
-        <ReturnModal
-          visibilty={visibletwo}
-          setvisibility={setvisibletwo}
-          setformtype={setEditForm}
-          submitfunc={handleSubmit}
-          changefunc={handleChange}
-          data={displayData}
-          supdata={supervisorData}
-          stddata={studentData}
-          type="update"
-          setid={setidset}
-        />
-        </>
+            <ReturnModal
+              visibilty={visible}
+              setvisibility={setvisible}
+              setformtype={setAddProject}
+              submitfunc={handleSubmit}
+              changefunc={handleChange}
+              data={displayData}
+              supdata={supervisorData}
+              stddata={studentData}
+              type="add"
+              setid={setidset}
+            />
+            <ReturnModal
+              visibilty={visibletwo}
+              setvisibility={setvisibletwo}
+              setformtype={setEditForm}
+              submitfunc={handleSubmit}
+              changefunc={handleChange}
+              data={displayData}
+              supdata={supervisorData}
+              stddata={studentData}
+              type="update"
+              setid={setidset}
+              supid={supervisor ? JSON.parse(supervisor).userId : null}
+              supervisor={supervisor}
+            />
+          </>
         )}
         {student && (
           <StudentProjectManagemodel
-          visibilty={visibletwo}
-          setvisibility={setvisibletwo}
-          setformtype={setEditForm}
-          submitfunc={studentupdateprojectsubmit}
-          changefunc={handleChange}
-          data={displayData}
-          type="update"
-          setid={setidset}
-        />
+            visibilty={visibletwo}
+            setvisibility={setvisibletwo}
+            setformtype={setEditForm}
+            submitfunc={studentupdateprojectsubmit}
+            changefunc={handleChange}
+            data={displayData}
+            type="update"
+            setid={setidset}
+          />
         )}
-          
-        
       </div>
     </>
   );

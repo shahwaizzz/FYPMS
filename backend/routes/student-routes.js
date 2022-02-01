@@ -8,6 +8,8 @@ const {
   viewMarks,
   viewprojects,
   viewSingleMeeting,
+  updateProject,
+  updatemeetingdocs
 } = require("../controllers/student-controller");
 
 //!authhentication middleware when attached
@@ -15,6 +17,8 @@ const {
 
 router.patch("/add-details/:rollno", addProjectDetails);
 router.get("/projects/:rollno", viewprojects);
+router.patch("/updateproject/:rollno/:flag",updateProject)
+router.patch("/addmeetingdocs/:id/:rollno",updatemeetingdocs)
 router.route("/events").get(viewEvents);
 router.route("/meetings").get(viewMeetings);
 router.route("/marks/:id").get(viewMarks);

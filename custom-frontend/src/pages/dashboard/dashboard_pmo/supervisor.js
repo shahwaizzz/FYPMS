@@ -211,6 +211,7 @@ export default function Supervisor({admin}) {
                         className='update-user'
                         title='Edit Supervisor'
                         onClick={() => {
+                          setDisplayData(supervisor)
                           setidset(supervisor._id)
                           setEditForm(true)
                           setvisibletwo(true)

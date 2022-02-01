@@ -20,6 +20,11 @@ const meetingSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please Provide Project"],
   },
+  document:[{
+    doctype:String,
+    rollno:String,
+    comment:String,
+  }]
 });
 
 module.exports = mongoose.model("Meetings", meetingSchema);

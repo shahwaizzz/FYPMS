@@ -91,6 +91,13 @@ export default function SSidebar(props) {
                 </li>
               </Link>
               
+              <Link to='/supervisor/globaltemplates' className='links'>
+                <li>
+                  <AiOutlineBook />
+                  <span>Global Templates</span>
+                </li>
+              </Link>
+              
               {/* <Link to='/admin/documents' className='links whiteicon'>
                 <li className='whiteicon'>
                   <GrDocument className="clr-white" />

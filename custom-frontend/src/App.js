@@ -30,6 +30,7 @@ import Studentsidebar from "./pages/dashboard/dashboard_student/StudentSidebar";
 import Dashoard_std from "./pages/dashboard/dashboard_student/Dashboard_std";
 import { SupervisorViewEvents } from "./pages/dashboard/dashboard_supervisor/supervisorevents";
 import Marks from "./pages/dashboard/dashboard_student/Marks";
+import { Showdocments } from "./pages/dashboard/dashboard_supervisor/docs";
 // function handleValidation(params) {}
 function App() {
   // Commit Test
@@ -121,6 +122,10 @@ function App() {
             element={<SupervisorSidebar name='Supervisors' abc={<Supervisor admin={false}/>} />}
           />
           <Route
+            path='/supervisor/globaltemplates'
+            element={<SupervisorSidebar name='Global Templates' abc={<Showdocments />} />}
+          />
+          <Route
             path='/supervisor/updatepassword'
             element={
               <SupervisorSidebar name='Update Password' abc={<UserProfile />} />
@@ -143,9 +148,10 @@ function App() {
         >
         <Route path="/student/home" element={<Studentsidebar name='Home' abc={<Home student={true}/>}/>} />
         <Route path="/student/events" element={<Studentsidebar name='Events' abc={<Events admin={false} />}/>} />
-        <Route path="/student/projects" element={<Studentsidebar name='Events' abc={<Projects student={true} />}/>} />
+        <Route path="/student/projects" element={<Studentsidebar name='Manage Projects' abc={<Projects student={true} />}/>} />
         <Route path="/student/meetings" element={<Studentsidebar name='Meetings' abc={<Meetings supervisor={false} />}/>} />
-        <Route path="/student/marks" element={<Studentsidebar name='Meetings' abc={<Marks supervisor={false} />}/>} />
+        <Route path="/student/marks" element={<Studentsidebar name='Marks' abc={<Marks supervisor={false} />}/>} />
+        <Route path="/student/globaltemplates" element={<Studentsidebar name='Marks' abc={<Showdocments  />}/>} />
 
 
         </Route>

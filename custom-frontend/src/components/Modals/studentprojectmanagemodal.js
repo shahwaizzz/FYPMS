@@ -29,7 +29,7 @@ export const StudentProjectManagemodel = ({
       >
         <h2 style={{ textAlign: "center" }}>{type} Project</h2>
         <div>
-          <form onSubmit={submitfunc} autoComplete="off" id="student-form">
+          <form onSubmit={(e) => submitfunc(e)} autoComplete="off" id="student-form">
             <input
               type="text"
               name="_id"

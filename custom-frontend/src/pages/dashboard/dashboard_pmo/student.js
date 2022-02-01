@@ -306,6 +306,7 @@ export default function Student({admin}) {
                         className="update-user"
                         title="Edit Student"
                         onClick={() => {
+                          setDisplayData(student)
                           setidset(student._id);
                           setEditForm(true);
                           setvisibletwo(true);

@@ -35,10 +35,16 @@ const ProjectSchema = new mongoose.Schema({
     type:String
   },
   projectDoc: {
-      proposal: {type:String},
-      midEvaluation: {type:String},
-      finalDocumentation: {type:String},
-    },
+      proposal: {
+        type:String,
+      },
+      midEvaluation: {
+        type:String
+      },
+      finalDocumentation: {
+        type:String
+      },
+  },
   status: {
     type: String,
     enum: {

@@ -95,6 +95,12 @@ export default function Studentsidebar(props) {
                   <span>Marks</span>
                 </li>
               </Link>
+              <Link to='/student/globaltemplates' className='links'>
+                <li>
+                  <AiOutlineBook />
+                  <span>Global Templates</span>
+                </li>
+              </Link>
               <Link to='/auth/student' className='links' onClick={() => removeUserFromLocalStorage("student","stdtoken","/auth/student",navigate)}>
                 <li>
                   <MdLogout />
