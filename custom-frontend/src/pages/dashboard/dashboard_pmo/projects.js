@@ -264,9 +264,8 @@ export default function Projects({ student }) {
               successalert("Success", "Project Add Successfully");
             } else if (result.err.code === 11000) {
               erroralert(
-                "Error"`This ${JSON.stringify(
-                  result.err.keyValue
-                )} is already in use`
+                "Error",
+                `This ${JSON.stringify(result.err.keyValue)} is already in use`
               );
             } else if (result.err.message) {
               erroralert("Error", result.err.message);
