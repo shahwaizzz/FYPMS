@@ -560,7 +560,7 @@ footer {
   font-size: 16px;
 }
 /* Performa CSS */
-
+/* 
 .main{
   width: 66%;
   margin-left: 17%;
@@ -580,7 +580,6 @@ footer {
 .hdrdiv2{
   width: 63%;
   height: 100px;
-  /* background-color: black; */
   float: left;
   padding-top: 12px;
 }
@@ -609,7 +608,6 @@ table{
   border-spacing: 0ch;
 }
 .t1 table tr td{
-  /* min-width: 170px; */
   padding: 5px 2px;
 }
 .grayc{
@@ -657,14 +655,6 @@ table{
   background-color: black;
   color: white;
 }
-/* .t4 tr th{
-  width: 14%;
-  padding: 6px 2px;
-} */
-/* .t4 tr td{
-  width: 12%;
-  padding: 6px 2px;
-} */
 .tab23 table tr th{
   padding: 6px 2px;
 }
@@ -676,7 +666,6 @@ table{
   width: 165px;
   height: 130px;
   border: 1.5px solid black;
-  /* background-color: yellow; */
   margin-left: 35%;
 }
 .signdiv p{
@@ -693,17 +682,9 @@ ul{
 ul li{
   padding: 3px 2px;
 }
-/* li{
-  list-style:square
-} */
 .mmargin{
   margin-left: 15px;
 }
-
-
-/* li::before{
-  content: "\00BB";
-} */
 
 
 .tmd2 table tr th{
@@ -740,7 +721,7 @@ ul li{
 }
 
 
-
+ */
 
 
 
