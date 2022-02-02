@@ -193,7 +193,7 @@ export default function Projects({ student }) {
   function handleSubmit(e) {
     e.preventDefault();
     var supervisorID;
-    supervisorData.map(
+    supervisorData &&  supervisorData.map(
       (e) => e.name === displayData.supervisor && (supervisorID = e._id)
     );
     console.log(supervisorID);
