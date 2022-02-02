@@ -559,3 +559,200 @@ footer {
   padding: 12px;
   font-size: 16px;
 }
+/* Performa CSS */
+
+.main{
+  width: 66%;
+  margin-left: 17%;
+}
+.hdr{
+  height: 112px;
+}
+.imgdiv{
+  height: 112px;
+  width: 23%;
+  float: left;
+}
+.imgdiv img{
+  margin-top: 13px;
+  margin-left: 38%;
+}
+.hdrdiv2{
+  width: 63%;
+  height: 100px;
+  /* background-color: black; */
+  float: left;
+  padding-top: 12px;
+}
+.hdrdiv2 h3{
+  text-align: center;
+}
+.hdrdiv2 h2{
+  text-align: center;
+  color: #00a65a ;
+}
+.content{
+  
+}
+.heading{
+  padding: 15px 0;
+}
+.heading h3{
+  text-align: center;
+}
+.heading h4{
+  text-align: center;
+}
+table{
+  width: 88%;
+  margin-left: 6%;
+  border-spacing: 0ch;
+}
+.t1 table tr td{
+  /* min-width: 170px; */
+  padding: 5px 2px;
+}
+.grayc{
+  background-color: lightgray;
+}
+.smhd{
+  font-size: 11px;
+}
+.studhd{
+  text-align: center;
+  padding: 8px 0px;
+}
+.t2 table tr td{
+  padding: 5px 2px;
+  height: 22px;
+}
+.t3 table tr td{
+  padding: 5px 2px;
+  height: 22px;
+}
+.t3 table tr th{
+  max-width: 0px;
+}
+.space{
+  height: 50px;
+}
+.left-div{
+  width: 50%;
+}
+.pad{
+  padding: 2px 110px;
+}
+.marg{
+  padding-top: 30px;
+}
+.td-width{
+  min-width: 120px;
+}
+.hd1{
+  padding-top: 9px;
+}
+
+
+.blackc{
+  background-color: black;
+  color: white;
+}
+/* .t4 tr th{
+  width: 14%;
+  padding: 6px 2px;
+} */
+/* .t4 tr td{
+  width: 12%;
+  padding: 6px 2px;
+} */
+.tab23 table tr th{
+  padding: 6px 2px;
+}
+.srwidth{
+  width: 25px;
+  height: 30px;
+}
+.signdiv{
+  width: 165px;
+  height: 130px;
+  border: 1.5px solid black;
+  /* background-color: yellow; */
+  margin-left: 35%;
+}
+.signdiv p{
+  text-align:center;
+}
+.padd1{
+  padding: 5px 2px;
+}
+ul{
+  margin-left: 100px;
+  margin-top: 20px;
+  
+}
+ul li{
+  padding: 3px 2px;
+}
+/* li{
+  list-style:square
+} */
+.mmargin{
+  margin-left: 15px;
+}
+
+
+/* li::before{
+  content: "\00BB";
+} */
+
+
+.tmd2 table tr th{
+  padding: 6px 2px;
+}
+.tmd2 table tr td{
+  max-width: 110px;
+  padding: 2px;
+}
+.mwid{
+  width: 110px;
+  min-width: 140px;
+}
+.mrl{
+  margin-left: 25%;
+}
+.sidebord{
+  border-right: 1px solid black;
+}
+.nestt{
+  text-align: center;
+}
+.nestbord{
+  border-bottom: 1px solid black;
+}
+.wid12{
+  min-width: 150px;
+}
+.ul2{
+  margin-left: 0px;
+}
+.padmem{
+  padding: 7px 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
