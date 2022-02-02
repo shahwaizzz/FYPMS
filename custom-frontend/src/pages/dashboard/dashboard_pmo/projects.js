@@ -140,33 +140,6 @@ export default function Projects({ student }) {
     }
   }, [refresh]);
 
-  // function toggleModel(action, project) {
-  //   if (action === "add") {
-  //     addProject ? setAddProject(false) : setAddProject(true);
-  //   } else if (action === "update") {
-  //     editForm ? setEditForm(false) : setEditForm(true);
-  //   }
-  //   if (project !== null) {
-  //     var supervisorName = "";
-  //     supervisorData.map(
-  //       (e) => project.supervisor === e._id && (supervisorName = e.name)
-  //     );
-
-  //     setDisplayData({
-  //       _id: project._id,
-  //       title: project.title,
-  //       status: project.status,
-  //       description: project.description,
-  //       objectives: project.objectives,
-  //       batch: project.batch,
-  //       supervisor: supervisorName,
-  //       member_1: project.group[0],
-  //       member_2: project.group[1],
-  //       member_3: project.group[2],
-  //     });
-  //   }
-  // }
-
   function handleSearch(e) {
     setRefresh(!refresh);
     var getValue = e.target.value;
@@ -336,28 +309,28 @@ export default function Projects({ student }) {
 
   return (
     <>
-      <div className="data-container">
+      <div className='data-container'>
         {!student && (
           <>
-            <div className="data-container-top">
+            <div className='data-container-top'>
               <input
-                type="search"
+                type='search'
                 value={searchData}
                 onChange={(e) => setSearchData(e.target.value)}
                 placeholder={"Search Project By " + searchBy}
               />
 
               <select onChange={handleSearch}>
-                <option value="Title">Title</option>
-                <option value="Project ID">Project ID</option>
-                <option value="Batch">Batch</option>
-                <option value="Status">Status</option>
-                <option value="Supervisor">Supervisor</option>
-                <option value="Group Member">Group Member</option>
+                <option value='Title'>Title</option>
+                <option value='Project ID'>Project ID</option>
+                <option value='Batch'>Batch</option>
+                <option value='Status'>Status</option>
+                <option value='Supervisor'>Supervisor</option>
+                <option value='Group Member'>Group Member</option>
               </select>
 
               <button
-                className="add-data-btn"
+                className='add-data-btn'
                 onClick={() => {
                   setAddProject(true);
                   setvisible(true);
@@ -386,7 +359,7 @@ export default function Projects({ student }) {
                 return (
                   <div className={styles.halfdiv} key={i}>
                     <div>
-                      <h1 className="project-title">
+                      <h1 className='project-title'>
                         Project Title : <span>{project.title}</span>
                       </h1>
 
@@ -410,14 +383,14 @@ export default function Projects({ student }) {
                         Supervisor : <span> {project.supervisor}</span>
                       </h1>
 
-                      <h1 className="project-group">
+                      <h1 className='project-group'>
                         Group Members :
                         {project.group.map((group, i) => (
                           // console.log(group)
                           <span key={i}>{group}</span>
                         ))}
                       </h1>
-                      <h1 className="project-group">Project docs :</h1>
+                      <h1 className='project-group'>Project docs :</h1>
                       <div>
                         <h1>proposal</h1>
                         <a
@@ -449,10 +422,10 @@ export default function Projects({ student }) {
 
                       <h1>Project ID : {project._id}</h1>
                     </div>
-                    <div className="manage-buttons">
+                    <div className='manage-buttons'>
                       <button
-                        className="update-user"
-                        title="Edit Project"
+                        className='update-user'
+                        title='Edit Project'
                         onClick={() => {
                           setDisplayData({
                             _id: project._id,
@@ -471,14 +444,14 @@ export default function Projects({ student }) {
                           setvisible(true);
                         }}
                       >
-                        <FaEdit size="1.5rem" />
+                        <FaEdit size='1.5rem' />
                       </button>
                       <button
-                        className="delete-user"
-                        title="Delete Project"
+                        className='delete-user'
+                        title='Delete Project'
                         onClick={() => deleteProject(project._id)}
                       >
-                        <AiFillDelete size="1.5rem" />
+                        <AiFillDelete size='1.5rem' />
                       </button>
                     </div>
                   </div>
@@ -523,13 +496,13 @@ export default function Projects({ student }) {
                         Supervisor :<span>{project.supervisor}</span>
                       </h1>
 
-                      <h1 className="project-group">
+                      <h1 className='project-group'>
                         Group Members :
                         {project.group.map((group) => (
                           <span>{group}</span>
                         ))}
                       </h1>
-                      <h1 className="project-group">Project docs :</h1>
+                      <h1 className='project-group'>Project docs :</h1>
                       <div>
                         <h1>proposal</h1>
                         <a
@@ -563,10 +536,10 @@ export default function Projects({ student }) {
                         Project ID : <span>{project._id}</span>
                       </h1>
                     </div>
-                    <div className="manage-buttons">
+                    <div className='manage-buttons'>
                       <button
-                        className="update-user"
-                        title="Edit Project"
+                        className='update-user'
+                        title='Edit Project'
                         onClick={() => {
                           setDisplayData({
                             _id: project._id,
@@ -585,15 +558,15 @@ export default function Projects({ student }) {
                           setvisibletwo(true);
                         }}
                       >
-                        <FaEdit size="1.5rem" />
+                        <FaEdit size='1.5rem' />
                       </button>
                       {!student && (
                         <button
-                          className="delete-user"
-                          title="Delete Project"
+                          className='delete-user'
+                          title='Delete Project'
                           onClick={() => deleteProject(project._id)}
                         >
-                          <AiFillDelete size="1.5rem" />
+                          <AiFillDelete size='1.5rem' />
                         </button>
                       )}
                     </div>
@@ -601,23 +574,23 @@ export default function Projects({ student }) {
                       <div style={{ marginTop: "10px" }}>
                         {project.projectDoc?.proposal === undefined && (
                           <form
-                            class="register-form"
+                            class='register-form'
                             onSubmit={handlefileSubmit}
                           >
                             <h3>Proposal Project</h3>
                             <input
-                              id="proposal"
-                              class="form-field widt input1"
-                              type="file"
-                              placeholder="file"
-                              name="file"
+                              id='proposal'
+                              class='form-field widt input1'
+                              type='file'
+                              placeholder='file'
+                              name='file'
                               onChange={onChange}
                             />
 
                             <button
-                              className="form-field button1 docu green"
-                              type="submit"
-                              name="upload"
+                              className='form-field button1 docu green'
+                              type='submit'
+                              name='upload'
                             >
                               Upload
                             </button>
@@ -625,23 +598,23 @@ export default function Projects({ student }) {
                         )}
                         {project.projectDoc?.midEvaluation === undefined && (
                           <form
-                            class="register-form"
+                            class='register-form'
                             onSubmit={handlefileSubmit}
                           >
                             <h3>Mid Evaluation</h3>
                             <input
-                              id="mid"
-                              class="form-field widt input1"
-                              type="file"
-                              placeholder="file"
-                              name="file"
+                              id='mid'
+                              class='form-field widt input1'
+                              type='file'
+                              placeholder='file'
+                              name='file'
                               onChange={onChange}
                             />
 
                             <button
-                              className="form-field button1 docu green"
-                              type="submit"
-                              name="upload"
+                              className='form-field button1 docu green'
+                              type='submit'
+                              name='upload'
                             >
                               Upload
                             </button>
@@ -650,24 +623,24 @@ export default function Projects({ student }) {
                         {project.projectDoc?.finalDocumentation ===
                           undefined && (
                           <form
-                            class="register-form"
+                            class='register-form'
                             onSubmit={handlefileSubmit}
                           >
                             <h3>Final Evaluation</h3>
 
                             <input
-                              id="final"
-                              class="form-field widt input1"
-                              type="file"
-                              placeholder="file"
-                              name="file"
+                              id='final'
+                              class='form-field widt input1'
+                              type='file'
+                              placeholder='file'
+                              name='file'
                               onChange={onChange}
                             />
 
                             <button
-                              className="form-field button1 docu green"
-                              type="submit"
-                              name="upload"
+                              className='form-field button1 docu green'
+                              type='submit'
+                              name='upload'
                             >
                               Upload
                             </button>
@@ -692,7 +665,7 @@ export default function Projects({ student }) {
               data={displayData}
               supdata={supervisorData}
               stddata={studentData}
-              type="add"
+              type='add'
               setid={setidset}
             />
             <ReturnModal
@@ -704,7 +677,7 @@ export default function Projects({ student }) {
               data={displayData}
               supdata={supervisorData}
               stddata={studentData}
-              type="update"
+              type='update'
               setid={setidset}
               supid={supervisor ? JSON.parse(supervisor).userId : null}
               supervisor={supervisor}
@@ -719,7 +692,7 @@ export default function Projects({ student }) {
             submitfunc={studentupdateprojectsubmit}
             changefunc={handleChange}
             data={displayData}
-            type="update"
+            type='update'
             setid={setidset}
           />
         )}
