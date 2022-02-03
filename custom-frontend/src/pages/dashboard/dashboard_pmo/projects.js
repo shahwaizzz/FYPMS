@@ -7,6 +7,7 @@ import {
   stdgetproject,
   supervisorgetproject,
   stdupdatetemp,
+  preliminaryForm,
 } from "../../../apis";
 import axios from "axios";
 import { AiFillDelete } from "react-icons/ai";
@@ -308,17 +309,33 @@ export default function Projects({ student }) {
     }
   }
 
-  function createPerforma(project) {
-    console.log(project)
-    setForm(project);
-    var content = document.getElementById("preliminary-form");
-    var pri = document.getElementById("print-preliminary-form").contentWindow;
-    pri.document.open();
-    pri.document.write(content.innerHTML);
-    pri.document.close();
-    pri.focus();
-    pri.print();
+
+
+  function handleFormClick(e){
+    const name = e.target.name;
+    var value = e.target.value;
+    setForm({ ...form, [name]: value });  
   }
+  function handleForm(e){
+    e.preventDefault();
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    };
+    fetch(`${preliminaryForm}/${form._id}`, options)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          console.log(result);
+        },
+        (error) => {
+          erroralert("Error", error);
+        }
+      );
+  }
+
+  
 
   return (
     <>
@@ -582,7 +599,7 @@ export default function Projects({ student }) {
                           <AiFillDelete size='1.5rem' />
                         </button>
                       )}
-                      <button onClick={() => createPerforma(project)}>
+                      <button onClick={() => setForm({_id:project._id})}>
                         Preliminary Form
                       </button>
                     </div>
@@ -713,177 +730,28 @@ export default function Projects({ student }) {
           />
         )}
       </div>
-      
-      <iframe id="print-preliminary-form" style={{display:"none"}} title="Online Management System">
-          <div  id="preliminary-form"  style={{display:"none",width:"100%"}}>
-          {form &&
-          <div className="main" border= "1px solid black">
-        <div className="hdr">
-            <div className="imgdiv">
-                <img src="logo.jpg" height="76%"  alt="logo"/>
-            </div>
-            <div className="hdrdiv2">
-                <h2>Gujrat Institute of Management Sciences</h2>
-                    <h2>PMAS-Arid Agriculture University Rawalpindi/</h2>
-                    <h3 className="hd1">Preliminary Proposal Form</h3>
-            </div>
-        </div>
-        <div className="content">
-                <table border= "1px solid black" spellspace="0">
-                    <tr>
-                        <td className="blackc"><b>Program/Semester </b></td>
-                        <td className="td-width"></td>
-                        <td className="blackc"><b>No.of Members </b></td>
-                        <td className="td-width">{form.group.length}</td>
-                    </tr>
-                    
-                    <tr>
-                        <td className="blackc"><b>SUPERVISOR NAME </b></td>
-                        <td className="td-width"></td>
-                        <td className="blackc"><b>Date </b></td>
-                        <td className="td-width"></td>
-                    </tr>
-                </table>
-            </div>
-            <div>
-                <h4 className="studhd"></h4>
-            </div>
-            <div className="tab23">
-                <table border="1px solid black">
-                    <tr>
-                        <th></th>
-                        <th>Reg.No.</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        
-                    </tr>
-                    <tr>
-                        <th>{form.group[0]}</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                    </tr>
-                    <tr>
-                        <th>{form.group[1]}</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                    </tr>
-                    <tr>
-                        <th>{form.group[2]}</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                    </tr>
-                </table>
-            </div>
-            <div>
-                <h3 className="studhd">(Provide 3 project ideas starting from first priority):</h3>
-            </div>
-            <div className="t3">
-                <table border= "1px solid black">
-                    <tr>
-                        <td colspan="4"><b>1st preference:</b></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"><b>2nd preference:</b></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"><b>3rd preference:</b></td>
-                    </tr>
-                    
-                </table>
-            </div>
-            <div>
-                <h3 className="studhd">(Mention here elective courses taken in degree):</h3>
-            </div>
-            <div className="t3">
-                <table border= "1px solid black">
-                    <tr>
-                        <td colspan="4"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"></td>
-                    </tr>
-                    
-                </table>
-            </div>
-            <div>
-                <h3 className="studhd">(Mention your programming languages, tools you are skilled in:</h3>
-            </div>
-            <div className="t3">
-                <table border= "1px solid black">
-                    <tr>
-                        <td colspan="4"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"></td>
-                    </tr>
-                    
-                </table>
-            </div>
-            <div className="space">
-
-            </div>
-            <div>
-                <table>
-                    <tr>
-                        <td>
-                            <table border= "1px solid black" spellspace="0">
-                                <tr>
-                                    <th colspan="3" className="blackc padd1">MEMBERS’ SIGNATURES</th>
-                                </tr>
-                                <tr>
-                                    <td className="srwidth">1</td>
-                                    <td colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td className="srwidth">2</td>
-                                    <td colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td className="srwidth">3</td>
-                                    <td colspan="2"></td>
-                                </tr>
-                            </table>
-                        </td>
-                         <td><div className="signdiv"><p>Supervisor’s Signature</p></div></td>   
-                    </tr>
-                    <tr >
-                          
-                    </tr>
-
-                </table>
-            </div>
-            <div>
-                <ul>
-                    <li><h2>Note:</h2></li>
-                    <li className="mmargin"><h3>Skills, objectives or idea you choose shoul be purposeful</h3></li>
-                    <li className="mmargin"><h3>Skills/project being covered in the projects should be objective driven</h3></li>
-                    <li className="mmargin"><h3>Confirm that the projects are rigors and truly assess your abilities</h3></li>
-                </ul>
-            </div>
-            <div className="space">
-                
-            </div>
-        </div>
-}
-   
+     {form &&
+     <div>
+       <form onSubmit={handleForm}>
+         <div>
+           <label>Elective Course 1</label>
+           <input type="text" name="electiveCourses" value={form.electiveCourses} onChange={handleFormClick}/>
          </div>
-         </iframe>
+         <div>
+           <label>Tool :</label>
+           <input type="text" name="tools" value={form.tools} onChange={handleFormClick}/>
+         </div>
+         <div>
+           <label>Languages</label>
+           <input type="text" name="language" value={form.languages} onChange={handleFormClick}/>
+         </div>
+         <div>
+           <button>Submit</button>
+         </div>
+       </form>
+     </div>
+     }
+         
 
     </>
   );
