@@ -2,15 +2,15 @@ module.exports = ({
   program,
   noOfMember,
   supervisorName,
+  projectIdea,
   date,
-  rollno,
-  name,
-  email,
-  contact,
+  student1,
+  student2,
+  student3,
+  electiveCourses,
   pref1,
-  tool,
+  tools,
   language,
-  skill,
 }) => {
   return ` <!DOCTYPE html>
 <html lang="en">
@@ -195,7 +195,7 @@ ul li {
                 <table border="1px solid black" spellspace="0">
                     <tr>
                         <td class="blackc"><b>Program/Semester </b></td>
-                        <td class="td-width">${program}</td>
+                        <td class="td-width">BSCS</td>
                         <td class="blackc"><b>No.of Members </b></td>
                         <td class="td-width">${noOfMember}</td>
                     </tr>
@@ -223,26 +223,26 @@ ul li {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>${rollno}</td>
-                        <td>${name}</td>
-                        <td>${email}</td>
-                        <td>${contact}</td>
+                        <td>${student1.rollNo}</td>
+                        <td>${student1.name}</td>
+                        <td>${student1.email}</td>
+                        <td>${student1.phone}</td>
                         
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>${rollno}</td>
-                        <td>${name}</td>
-                        <td>${email}</td>
-                        <td>${contact}</td>
+                        <td>${student2 ? student2.rollNo : ""}</td>
+                        <td>${student2 ? student2.name : ""}</td>
+                        <td>${student2 ? student2.email : ""}</td>
+                        <td>${student2 ? student2.phone : ""}</td>
                         
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>${rollno}</td>
-                        <td>${name}</td>
-                        <td>${email}</td>
-                        <td>${contact}</td>
+                        <td>${student3 ? student3.rollNo : ""}</td>
+                        <td>${student3 ? student3.name : ""}</td>
+                        <td>${student3 ? student3.email : ""}</td>
+                        <td>${student3 ? student3.phone : ""}</td>
                         
                     </tr>
                     
@@ -254,7 +254,7 @@ ul li {
             <div class="t3">
                 <table border="1px solid black">
                     <tr>
-                        <td colspan="4"><b>1st preference:</b></td>
+                        <td colspan="4"><b>1st preference: ${projectIdea}</b></td>
                     </tr>
                     <tr>
                         <td colspan="4"><b>2nd preference:</b></td>
@@ -271,13 +271,13 @@ ul li {
             <div class="t3">
                 <table border="1px solid black">
                     <tr>
-                        <td colspan="4">${pref1}</td>
+                        <td colspan="4">${electiveCourses}</td>
                     </tr>
                     <tr>
-                        <td colspan="4">${pref1}</td>
+                        <td colspan="4"></td>
                     </tr>
                     <tr>
-                        <td colspan="4">${pref1}</td>
+                        <td colspan="4"></td>
                     </tr>
                     
                 </table>
@@ -288,13 +288,13 @@ ul li {
             <div class="t3">
                 <table border="1px solid black">
                     <tr>
-                        <td colspan="4">${tool}</td>
+                        <td colspan="4">${tools}</td>
                     </tr>
                     <tr>
                         <td colspan="4">${language}</td>
                     </tr>
                     <tr>
-                        <td colspan="4">${skill}</td>
+                        <td colspan="4"></td>
                     </tr>
                     
                 </table>

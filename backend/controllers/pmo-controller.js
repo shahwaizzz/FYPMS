@@ -1,16 +1,18 @@
 const PMO = require("../models/pmo-model");
 const Supervisor = require("../models/supervisor-model");
-const multer = require("multer")
+const pdf = require("html-pdf");
+const preliminaryTemplate = require("../perfomas/preliminary");
+const multer = require("multer");
 const { StatusCodes } = require("http-status-codes");
 const {
   BadRequestError,
   NotFoundError,
   UnauthenticatedError,
 } = require("../errors");
-const folder = "../controllers"
+const folder = "../controllers";
 const fs = require("fs");
 const download = require("download");
-const Template = require("../models/template-model")
+const Template = require("../models/template-model");
 
 const Student = require("../models/student-model");
 
@@ -334,20 +336,19 @@ const uploadTemplateDocuments = async (req, res) => {
   file.mv(`public/uploads/${file.name}`, (err) => {
     console.error(err);
   });
-  try{
-   const template = await Template.create({
-      templateurl:`http://localhost:8000/uploads/${file.name}`
-    })
-    if(!template){
-      throw new Error("ERRROR")
-    }else{
+  try {
+    const template = await Template.create({
+      templateurl: `http://localhost:8000/uploads/${file.name}`,
+    });
+    if (!template) {
+      throw new Error("ERRROR");
+    } else {
       res.status(StatusCodes.OK).json({ msg: "File Uploaded Successfully" });
     }
-  }catch(err){
-    console.log(err)
+  } catch (err) {
+    console.log(err);
   }
 
- 
   // res
   //   .status(StatusCodes.OK)
   //   .json({ fileName: file.name, filePath: `/uploads/${file.name}` });
@@ -365,7 +366,7 @@ const uploadTemplateDocuments = async (req, res) => {
 //     });
 //   });
 
-//   res.status(200).json({ 
+//   res.status(200).json({
 //     data:arr
 //   })
 
@@ -396,33 +397,74 @@ const changePassword = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Password Updated" });
 };
 
-const Findtemplates = async (req,res) => {
-  try{
+const Findtemplates = async (req, res) => {
+  try {
     const templates = await Template.find({});
-    if(!templates){
-      throw new Error('there is an error')
+    if (!templates) {
+      throw new Error("there is an error");
     }
     res.status(StatusCodes.OK).json({
-      data:templates
-    })
-  }catch(err){
-    res.status(404).json({ msg: err.message})
+      data: templates,
+    });
+  } catch (err) {
+    res.status(404).json({ msg: err.message });
   }
-}
+};
+const createPreliminary = async (req, res) => {
+  const { id: projectId } = req.params;
+  const project = await Project.findOne({ _id: projectId });
+  if (!project) {
+    throw new NotFoundError("Project does not exist");
+  }
+  const supervisor = await Project.findOne({ _id: project.supervisor });
+  const student1 = await Student.findOne({ rollNumber: project.group[0] });
+  const student2 = await Student.findOne({ rollNumber: project.group[1] });
+  const student3 = await Student.findOne({ rollNumber: project.group[2] });
 
-// let multerstorage = multer.diskStorage({   
+  const projectIdea = project.title;
+  const noOfMember = project.group.length;
+  const supervisorName = supervisor;
+  const date = new Date();
+  const { electiveCourses, tools, language } = req.body;
+
+  const data = {
+    student1,
+    student2,
+    student3,
+    projectIdea,
+    noOfMember,
+    supervisorName,
+    date,
+    electiveCourses,
+    tools,
+    language,
+  };
+  console.log(data);
+  pdf
+    .create(preliminaryTemplate({ ...data, ...req.body }), {})
+    .toFile("preliminary.pdf", (err) => {
+      if (err) {
+        res.send(Promise.reject());
+      }
+
+      res.send(Promise.resolve());
+    });
+  // res.sendFile(`../preliminary.pdf`);
+};
+
+// let multerstorage = multer.diskStorage({
 //   destination: function(req, file, cb) {
 //     console.log(req)
 //     console.log(file)
-//      cb(null, '/public/uploads/'); 
-//     //  require('')   
-//   }, 
-//   filename: function (req, file, cb) { 
-//      cb(null , file.originalname);   
+//      cb(null, '/public/uploads/');
+//     //  require('')
+//   },
+//   filename: function (req, file, cb) {
+//      cb(null , file.originalname);
 //   }
 // });
 
-// function multerFilter (req, file, cb) {    
+// function multerFilter (req, file, cb) {
 
 //   // console.log(file)
 
@@ -451,20 +493,17 @@ const Findtemplates = async (req,res) => {
 //   if(!req.files.file){
 //     throw new Error("please provide the file")
 //   }
-  
-  
+
 //   upload(req, res, function (err) {
 //     if (err) {
 //       console.log("There was an error uploading the image.");
 //     }
 //     res.send(req.files.file)
 //     })
-  
+
 //     // upload(req.files.file)
 
 // }
-
-
 
 // const downloading = async (req, res, next) => {
 //   console.log('fileController.download: started')
@@ -500,5 +539,6 @@ module.exports = {
   createProject,
   uploadTemplateDocuments,
   changePassword,
-  Findtemplates
+  Findtemplates,
+  createPreliminary,
 };
