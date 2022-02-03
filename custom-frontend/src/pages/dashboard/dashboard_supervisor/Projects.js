@@ -256,7 +256,7 @@ export default function Projects() {
           Create A New Project
         </button>
       </div>
-      {/* {!getData ? (
+      {!getData ? (
         <div>
           <Progressbar visibility={true} />
         </div>
@@ -390,12 +390,12 @@ export default function Projects() {
               </div>
             </div>
           ))
-      )} */}
+      )}
       <div style={styles.mainprojectdiv}>
 
       </div>
 
-      {editForm && displayData && (
+      {/* {editForm && displayData && (
         <Modal
         // {...props}
         size="lg"
@@ -417,10 +417,10 @@ export default function Projects() {
         </Modal.Body>
         <Modal.Footer>
           {/* <Button onClick={props.onHide}>Close</Button> */}
-        </Modal.Footer>
+        {/* </Modal.Footer>
       </Modal>
-      )}
-      {/* {addProject && (
+      )} */} 
+      {addProject && (
         <div className='popup-container'>
           <div className='popup'>
             <h2>Crate A New Project</h2>
@@ -557,8 +557,8 @@ export default function Projects() {
             </div>
           </div>
         </div>
-      )} */}
-      {/* {editForm && displayData && (
+      )} 
+       {editForm && displayData && (
         <div className='popup-container'>
           <div className='popup'>
             <h2>Edit Project</h2>
@@ -695,7 +695,7 @@ export default function Projects() {
             </div>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

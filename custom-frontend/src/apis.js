@@ -24,7 +24,7 @@ export const findtemplates = `http://${localhost}/api/v1/pmo/gettemplates`
 export const stdupdatetemp = (rollno,flag) => `http://${localhost}/api/v1/student/updateproject/${rollno}/${flag}`
 export const updatemeetingdocs = (id) => `http://${localhost}/api/v1/supervisor/updatemeetingdocs/${id}`
 export const addmeetingdocs = (id,rollno) => `http://${localhost}/api/v1/student/addmeetingdocs/${id}/${rollno}`
-
+export const preliminaryForm = `http://${localhost}/api/v1/pmo/create-preliminary`
 export async function downloadImage(imageSrc) {
     const options = {
         method: 'GET',
