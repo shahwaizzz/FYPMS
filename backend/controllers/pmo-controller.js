@@ -451,6 +451,9 @@ const createPreliminary = async (req, res) => {
     });
   // res.sendFile(`../preliminary.pdf`);
 };
+const getPreliminary = async (req, res) => {
+  res.sendFile(`../preliminary.pdf`);
+};
 
 // let multerstorage = multer.diskStorage({
 //   destination: function(req, file, cb) {
