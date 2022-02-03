@@ -24,13 +24,13 @@ const {
   createProject,
   uploadTemplateDocuments,
   changePassword,
-  Findtemplates
+  Findtemplates,
+  createPreliminary,
 } = require("../controllers/pmo-controller");
 
 //Student Routes
 
-router.route('/gettemplates').get(Findtemplates)
-
+router.route("/gettemplates").get(Findtemplates);
 
 router.route("/students").get(viewStudentList).post(createStudent);
 
@@ -66,8 +66,6 @@ router
 
 router.route("/templates/upload").post(uploadTemplateDocuments);
 
-
-
-
-router.route("change-password").patch(changePassword);
+router.route("/change-password").patch(changePassword);
+router.route("/create-preliminary/:id").post(createPreliminary);
 module.exports = router;
