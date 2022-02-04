@@ -559,6 +559,15 @@ footer {
   padding: 12px;
   font-size: 16px;
 }
+.btns{
+  padding: 11px 17px;
+  background-color: #00a65a;
+  border-radius: 6px;
+}
+.btn-div{
+  display: flex;
+  justify-content: space-around;
+}
 /* Performa CSS */
 /* 
 .main{
