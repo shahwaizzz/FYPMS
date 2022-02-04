@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IconContext } from "react-icons";
-import {useAppContext} from '../../../context/appContext'
+import { useAppContext } from "../../../context/appContext";
 import {
   AiFillLeftCircle,
   AiOutlineHome,
@@ -14,20 +14,12 @@ import {
   MdLogout,
   MdOutlineEmojiEvents,
 } from "react-icons/md";
-// import Home from "./main-components/home";
-// import Student from "./main-components/student";
-// import Supervisor from "./main-components/supervisor";
-// import UserProfile from "./main-components/user-profile";
-// import Logout from "./main-components/logout";
-// import Projects from "./main-components/projects";
-// import Events from "./main-components/events";
-import { Link ,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function SSidebar(props) {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-  const {removeUserFromLocalStorage} = useAppContext();
+  const { removeUserFromLocalStorage } = useAppContext();
 
   const [menuChange, setMenuChange] = useState("menu-hide");
   const [dataWidth, setDataWidth] = useState("data-width");
@@ -90,28 +82,32 @@ export default function SSidebar(props) {
                   <span>Meeting</span>
                 </li>
               </Link>
-              
+
               <Link to='/supervisor/globaltemplates' className='links'>
                 <li>
                   <AiOutlineBook />
                   <span>Global Templates</span>
                 </li>
               </Link>
-              
-              {/* <Link to='/admin/documents' className='links whiteicon'>
-                <li className='whiteicon'>
-                  <GrDocument className="clr-white" />
-                  <CgFileDocument />
-                  <span className='whiteicon'>Upload Templates</span>
-                </li>
-              </Link> */}
+
               <Link to='/supervisor/updatepassword' className='links'>
                 <li>
                   <AiOutlineProfile />
                   <span>User Profile</span>
                 </li>
               </Link>
-              <Link to='/auth/supervisor' className='links' onClick={() => removeUserFromLocalStorage('supervisor',"supervisortoken","/auth/supervisor",navigate)}>
+              <Link
+                to='/auth/supervisor'
+                className='links'
+                onClick={() =>
+                  removeUserFromLocalStorage(
+                    "supervisor",
+                    "supervisortoken",
+                    "/auth/supervisor",
+                    navigate
+                  )
+                }
+              >
                 <li>
                   <MdLogout />
                   <span>Logout</span>

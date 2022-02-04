@@ -13,23 +13,15 @@ import {
   MdLogout,
   MdOutlineEmojiEvents,
 } from "react-icons/md";
-// import Home from "./main-components/home";
-// import Student from "./main-components/student";
-// import Supervisor from "./main-components/supervisor";
-// import UserProfile from "./main-components/user-profile";
-// import Logout from "./main-components/logout";
-// import Projects from "./main-components/projects";
-// import Events from "./main-components/events";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
-
 
 export default function Sidebar(props) {
   const [menuChange, setMenuChange] = useState("menu-hide");
   const [dataWidth, setDataWidth] = useState("data-width");
   const [menubarList, setMenubarList] = useState("menubar-list");
   const { removeUserFromLocalStorage } = useAppContext();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function menuToggle(e) {
     if (menuChange === "menu-show" && dataWidth === null) {
@@ -44,10 +36,7 @@ export default function Sidebar(props) {
       setMenubarList(null);
     }
   }
-  function logout(){ 
-    removeUserFromLocalStorage();
-    window.location.href='/login';
-  }
+
   return (
     <div>
       <div className={"menubar " + menuChange}>
@@ -105,10 +94,21 @@ export default function Sidebar(props) {
                   <span>User Profile</span>
                 </li>
               </Link>
-              <Link to='/login' className='links' onClick={() => removeUserFromLocalStorage("pmoadmin","pmotoken",'/login',navigate)}>
+              <Link
+                to='/login'
+                className='links'
+                onClick={() =>
+                  removeUserFromLocalStorage(
+                    "pmoadmin",
+                    "pmotoken",
+                    "/login",
+                    navigate
+                  )
+                }
+              >
                 <li>
                   <MdLogout />
-                  <span>Logout</span> 
+                  <span>Logout</span>
                 </li>
               </Link>
             </ul>

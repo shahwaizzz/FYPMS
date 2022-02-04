@@ -9,15 +9,9 @@ export default function Navbar() {
       <div className='title-bar'>
         <span></span>
         <div>
-        <h2 style={{textAlign: 'center'}}>FYPMS</h2>
+          <h2 style={{ textAlign: "center" }}>FYPMS</h2>
         </div>
         <div className='title-bar-icons'>
-          <div>
-            <IoNotificationsCircleSharp size='2.5rem' />
-          </div>
-          <div>
-            <CgProfile size='2.5rem' />
-          </div>
           <div>
             <p className='lead' onClick={logoutUser}>
               LOGOUT

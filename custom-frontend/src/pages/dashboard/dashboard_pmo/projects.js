@@ -49,14 +49,10 @@ export default function Projects({ student }) {
     setFile(e.target.files[0]);
     setFileName(e.target.files[0].name);
   };
-
-  console.log(file);
-  console.log(fileName);
   const handlefileSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
     try {
       const response = axios.patch(
         stdupdatetemp(JSON.parse(std).rollno, flag),
@@ -309,14 +305,12 @@ export default function Projects({ student }) {
     }
   }
 
-
-
-  function handleFormClick(e){
+  function handleFormClick(e) {
     const name = e.target.name;
     var value = e.target.value;
-    setForm({ ...form, [name]: value });  
+    setForm({ ...form, [name]: value });
   }
-  function handleForm(e){
+  function handleForm(e) {
     e.preventDefault();
     const options = {
       method: "POST",
@@ -334,8 +328,6 @@ export default function Projects({ student }) {
         }
       );
   }
-
-  
 
   return (
     <>
@@ -599,7 +591,7 @@ export default function Projects({ student }) {
                           <AiFillDelete size='1.5rem' />
                         </button>
                       )}
-                      <button onClick={() => setForm({_id:project._id})}>
+                      <button onClick={() => setForm({ _id: project._id })}>
                         Preliminary Form
                       </button>
                     </div>
@@ -730,29 +722,42 @@ export default function Projects({ student }) {
           />
         )}
       </div>
-     {form &&
-     <div>
-       <form onSubmit={handleForm}>
-         <div>
-           <label>Elective Course 1</label>
-           <input type="text" name="electiveCourses" value={form.electiveCourses} onChange={handleFormClick}/>
-         </div>
-         <div>
-           <label>Tool :</label>
-           <input type="text" name="tools" value={form.tools} onChange={handleFormClick}/>
-         </div>
-         <div>
-           <label>Languages</label>
-           <input type="text" name="language" value={form.languages} onChange={handleFormClick}/>
-         </div>
-         <div>
-           <button>Submit</button>
-         </div>
-       </form>
-     </div>
-     }
-         
-
+      {form && (
+        <div>
+          <form onSubmit={handleForm}>
+            <div>
+              <label>Elective Course 1</label>
+              <input
+                type='text'
+                name='electiveCourses'
+                value={form.electiveCourses}
+                onChange={handleFormClick}
+              />
+            </div>
+            <div>
+              <label>Tool :</label>
+              <input
+                type='text'
+                name='tools'
+                value={form.tools}
+                onChange={handleFormClick}
+              />
+            </div>
+            <div>
+              <label>Languages</label>
+              <input
+                type='text'
+                name='language'
+                value={form.languages}
+                onChange={handleFormClick}
+              />
+            </div>
+            <div>
+              <button>Submit</button>
+            </div>
+          </form>
+        </div>
+      )}
     </>
   );
 }

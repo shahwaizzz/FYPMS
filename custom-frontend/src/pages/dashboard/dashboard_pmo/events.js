@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
-import { AiFillCloseCircle } from "react-icons/ai";
 import axios from "axios";
 import Progressbar from "../../../components/progressbar";
 import { eventUrl } from "../../../apis";
@@ -74,7 +73,6 @@ export default function Events({ admin }) {
         api
           .delete(`/${id}`)
           .then((res) => {
-            console.log(res);
             if (res.status === 200) {
               setRefresh(!refresh);
               Swal.fire("Deleted!", "Event Deleted Successfully", "success");
@@ -175,164 +173,175 @@ export default function Events({ admin }) {
 
   return (
     <>
-      <div className="data-container">
-        {/* <div className='data-container-top'>
-          <input
-            type='search'
-            value={searchData}
-            onChange={(e) => setSearchData(e.target.value)}
-            placeholder={"Search Student By " + searchBy}
-          />
-
-          <select onChange={handleSearch}>
-            <option value='Name'>Name</option>
-            <option value='Date'>Date</option>
-            <option value='Venue'>Venue</option>
-            <option value='Year'>Year</option>
-            <option value='Semester'>Semester</option>
-            <option value='Details'>Details</option>
-          </select>
-          
-          
-        </div> */}
+      <div className='data-container'>
         {!getData ? (
           <div>
             <Progressbar visibility={true} />
           </div>
         ) : (
           <>
-          <div style={{alignItems: 'center',justifyContent:'center',display: 'flex',flexDirection:'column'}}>
-            <h1>Events</h1>
-            {admin && (
-              <button
-                style={{margin:'10px auto'}}
-                className="add-data-btn"
-                onClick={() => {
-                  setAddEvent(true);
-                  setvisible(true);
-                }}
-              >
-                Add New Event
-              </button>
-            )}
+            <div
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <h1>Events</h1>
+              {admin && (
+                <button
+                  style={{ margin: "10px auto" }}
+                  className='add-data-btn'
+                  onClick={() => {
+                    setAddEvent(true);
+                    setvisible(true);
+                  }}
+                >
+                  Add New Event
+                </button>
+              )}
             </div>
             {getData &&
-              getData?.map((e, i) => {
-                const eventdate = new Date(e.date);
-                // const today = new Date()
-                const ms = date?.getTime() - eventdate.getTime();
-                const days = ms / (1000 * 60 * 60 * 24);
-                console.log(Math.ceil(days) < 0)
+              getData
+                ?.map((e, i) => {
+                  const eventdate = new Date(e.date);
+                  const ms = date?.getTime() - eventdate.getTime();
+                  const days = ms / (1000 * 60 * 60 * 24);
 
-                if (Math.ceil(days) > 0) {
-                  return (
+                  if (Math.ceil(days) > 0 && Math.ceil(days) < 30) {
+                    return (
                       <div className={styles.flexdiv}>
-                    <div className={styles.flexunderdiv}>
-                      <div className={styles.infodivbox}>
-                        <h2 className={styles.black}>Event Name :</h2>
-                        <h2 className={styles.green}>{e.name}</h2>
-                      </div>
-                      <div className={styles.infodivbox}>
-                        <h2 className={styles.black}>Date:</h2>
-                        
-                        <h2 className={styles.green}>
-               {eventdate.getFullYear() +
-                 "/" +
-                 (eventdate.getMonth() + 1) +
-                 "/" +
-                 eventdate.getDate()}
-             </h2>
-                      </div>
-                      <div className={styles.infodivbox}>
-                        <h2 className={styles.black}>Venue :</h2>
-                        <h2 className={styles.green}>{e.venue}</h2>
-                      </div>
-                      <div className={styles.infodivbox}>
-                        <h2 className={styles.black}>Year :</h2>
-                        <h2 className={styles.green}>{e.year}</h2>
-                      </div>
-                      <div className={styles.infodivbox}>
-                        <h2 className={styles.black}>Semester :</h2>
-                        <h2 className={styles.green}>{e.semester}</h2>
-                      </div>
+                        <div className={styles.flexunderdiv}>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Event Name :</h2>
+                            <h2 className={styles.green}>{e.name}</h2>
+                          </div>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Date:</h2>
 
-                      <div className={styles.infodivbox}>
-                        <h2 className={styles.black}>Details :</h2>
-                        <h2 className={styles.green}>{e.details}</h2>
-                      </div>
-                      <div className={styles.infodivbox}>
-                 
-                  <FaEdit size='1.5rem' color='green'  onClick={() => {
-                    setsettid(e._id)
-                    setEditEvent(true)
-                    setvisibletwo(true)
-                  }}/>
-               
-                  <AiFillDelete
-                    size='1.5rem'
-                    color="red"
-                    onClick={() => deleteEvent(e._id)}
-                  />
-                        </div>
-                    </div>
-                  </div>
-                  );
-                }else{
-                return (
-                  <div className={styles.eventdiv}>
-                      <div className={styles.countdowndiv}>
-                        <h1>{Math.abs(Math.ceil(days))}</h1>
-                        <h3>days left</h3>
-                        <h2>Current Event</h2>
-                        <div style={{display: 'flex',alignItems:'center',width:'100%',justifyContent:'space-around',marginTop:'25px'}}>
-                           <button title='Edit Student'
-                  onClick={() => {
-                    setsettid(e._id)
-                    setEditEvent(true)
-                    setvisibletwo(true)
-                  }}>Update</button>
-                           <button onClick={() => deleteEvent(e._id)}>Delete</button>
-                        </div>
-                      </div>
-                      <div>
-                        <div className={styles.infodivbox}>
-                          <h2 className={styles.black}>Event Name :</h2>
-                          <h2 className={styles.green}>{e.name}</h2>
-                        </div>
-                        <div className={styles.infodivbox}>
-                          <h2 className={styles.black}>Date:</h2>
-                          <h2 className={styles.green}>
-                            {eventdate.getFullYear() +
-                              "/" +
-                              (eventdate.getMonth() + 1) +
-                              "/" +
-                              eventdate.getDate()}
-                          </h2>
-                        </div>
-                        <div className={styles.infodivbox}>
-                          <h2 className={styles.black}>Venue :</h2>
-                          <h2 className={styles.green}>{e.venue}</h2>
-                        </div>
-                        <div className={styles.infodivbox}>
-                          <h2 className={styles.black}>Year :</h2>
-                          <h2 className={styles.green}>{e.year}</h2>
-                        </div>
-                        <div className={styles.infodivbox}>
-                          <h2 className={styles.black}>Semester :</h2>
-                          <h2 className={styles.green}>{e.semester}</h2>
-                        </div>
+                            <h2 className={styles.green}>
+                              {eventdate.getFullYear() +
+                                "/" +
+                                (eventdate.getMonth() + 1) +
+                                "/" +
+                                eventdate.getDate()}
+                            </h2>
+                          </div>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Venue :</h2>
+                            <h2 className={styles.green}>{e.venue}</h2>
+                          </div>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Year :</h2>
+                            <h2 className={styles.green}>{e.year}</h2>
+                          </div>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Semester :</h2>
+                            <h2 className={styles.green}>{e.semester}</h2>
+                          </div>
 
-                        <div className={styles.infodivbox}>
-                          <h2 className={styles.black}>Description :</h2>
-                          <h2 className={styles.green}>{e.details}</h2>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Details :</h2>
+                            <h2 className={styles.green}>{e.details}</h2>
+                          </div>
+                          <div className={styles.infodivbox}>
+                            {admin && (
+                              <>
+                                <FaEdit
+                                  size='1.5rem'
+                                  color='green'
+                                  onClick={() => {
+                                    setsettid(e._id);
+                                    setEditEvent(true);
+                                    setvisibletwo(true);
+                                  }}
+                                />
+
+                                <AiFillDelete
+                                  size='1.5rem'
+                                  color='red'
+                                  onClick={() => deleteEvent(e._id)}
+                                />
+                              </>
+                            )}
+                          </div>
                         </div>
-                        
                       </div>
-                    </div>
-                  
-                );
-               }
-              }).reverse()}
+                    );
+                  } else {
+                    return (
+                      <div className={styles.eventdiv}>
+                        <div className={styles.countdowndiv}>
+                          <h1>{Math.abs(Math.ceil(days))}</h1>
+                          <h3>days left</h3>
+                          <h2>Current Event</h2>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              width: "100%",
+                              justifyContent: "space-around",
+                              marginTop: "25px",
+                            }}
+                          >
+                            {admin && (
+                              <>
+                                <button
+                                  title='Edit Student'
+                                  onClick={() => {
+                                    setsettid(e._id);
+                                    setEditEvent(true);
+                                    setvisibletwo(true);
+                                  }}
+                                >
+                                  Update
+                                </button>
+                                <button onClick={() => deleteEvent(e._id)}>
+                                  Delete
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                        <div>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Event Name :</h2>
+                            <h2 className={styles.green}>{e.name}</h2>
+                          </div>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Date:</h2>
+                            <h2 className={styles.green}>
+                              {eventdate.getFullYear() +
+                                "/" +
+                                (eventdate.getMonth() + 1) +
+                                "/" +
+                                eventdate.getDate()}
+                            </h2>
+                          </div>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Venue :</h2>
+                            <h2 className={styles.green}>{e.venue}</h2>
+                          </div>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Year :</h2>
+                            <h2 className={styles.green}>{e.year}</h2>
+                          </div>
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Semester :</h2>
+                            <h2 className={styles.green}>{e.semester}</h2>
+                          </div>
+
+                          <div className={styles.infodivbox}>
+                            <h2 className={styles.black}>Description :</h2>
+                            <h2 className={styles.green}>{e.details}</h2>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                })
+                .reverse()}
           </>
         )}
       </div>
@@ -344,7 +353,7 @@ export default function Events({ admin }) {
         submitfunc={handleEditSubmit}
         changefunc={handleChange}
         data={displayData}
-        type="update"
+        type='update'
         setsettid={setsettid}
       />
       <ReturnModal
@@ -354,7 +363,7 @@ export default function Events({ admin }) {
         submitfunc={handleAddSubmit}
         changefunc={handleChange}
         data={displayData}
-        type="add"
+        type='add'
         setsettid={setsettid}
       />
     </>

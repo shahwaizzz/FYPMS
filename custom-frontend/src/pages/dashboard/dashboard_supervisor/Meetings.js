@@ -8,7 +8,7 @@ import {
   projectUrl,
   getstdmeetings,
   supervisoraddmeetingnotes,
-  addmeetingdocs
+  addmeetingdocs,
 } from "../../../apis";
 import Progressbar from "../../../components/progressbar";
 import styles from "./meetings.module.css";
@@ -23,7 +23,7 @@ import { erroralert, successalert } from "../../../components/alert";
 
 const Meetings = ({ supervisor }) => {
   const user = localStorage.getItem("supervisor");
-  const std = localStorage.getItem("student")
+  const std = localStorage.getItem("student");
 
   const [data, setdata] = useState([]);
   const [timeOfMeeting, settimeOfMeeting] = useState(new Date());
@@ -55,14 +55,14 @@ const Meetings = ({ supervisor }) => {
 
   console.log(file);
   console.log(fileName);
-  const handlefileSubmit = async (e,id) => {
+  const handlefileSubmit = async (e, id) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
     console.log(formData);
     try {
       const response = axios.patch(
-        addmeetingdocs(id,JSON.parse(std).rollno),
+        addmeetingdocs(id, JSON.parse(std).rollno),
         formData,
         {
           headers: {
@@ -229,7 +229,7 @@ const Meetings = ({ supervisor }) => {
 
   return (
     <>
-      <div className="data-container-top">
+      <div className='data-container-top'>
         {/* <input
           type="search"
             value={searchData}
@@ -248,7 +248,7 @@ const Meetings = ({ supervisor }) => {
         {supervisor && (
           <div style={{ margin: "10px auto" }}>
             <button
-              className="add-data-btn"
+              className='add-data-btn'
               onClick={() => {
                 setvisible(true);
               }}
@@ -293,10 +293,17 @@ const Meetings = ({ supervisor }) => {
               </div>
               <div>
                 <h1>Meeting Docs</h1>
-                {e.document?.map((e,i) => {
-                  return(
-                    <a key={i} href={e.doctype} download={'filename'} style={{color:'green',textDecoration: 'none'}}>{e.doctype}</a>
-                  )
+                {e.document?.map((e, i) => {
+                  return (
+                    <a
+                      key={i}
+                      href={e.doctype}
+                      download={"filename"}
+                      style={{ color: "green", textDecoration: "none" }}
+                    >
+                      {e.doctype}
+                    </a>
+                  );
                 })}
               </div>
               <div>
@@ -345,24 +352,27 @@ const Meetings = ({ supervisor }) => {
                   </>
                 )}
                 {std && (
-                  <form class="register-form" onSubmit={(eve) => handlefileSubmit(eve,e._id)}>
-                  <input
-                    id="email1"
-                    class="form-field widt input1"
-                    type="file"
-                    placeholder="file"
-                    name="file"
-                    onChange={onChange}
-                  />
-
-                  <button
-                    className="form-field button1 docu green"
-                    type="submit"
-                    name="upload"
+                  <form
+                    class='register-form'
+                    onSubmit={(eve) => handlefileSubmit(eve, e._id)}
                   >
-                    Upload
-                  </button>
-                </form>
+                    <input
+                      id='email1'
+                      class='form-field widt input1'
+                      type='file'
+                      placeholder='file'
+                      name='file'
+                      onChange={onChange}
+                    />
+
+                    <button
+                      className='form-field button1 docu green'
+                      type='submit'
+                      name='upload'
+                    >
+                      Upload
+                    </button>
+                  </form>
                 )}
               </div>
             </div>
@@ -374,7 +384,7 @@ const Meetings = ({ supervisor }) => {
         setvisibility={setvisible}
         changefunc={handlechange}
         submitfunc={createMeeting}
-        type="add"
+        type='add'
         setsettid={setid}
         projects={projects}
         data={datasend}
