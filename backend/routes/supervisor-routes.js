@@ -13,6 +13,7 @@ const {
   addMarks,
   updatemeeting,
   addmeetingnotes,
+  sendCertificate,
 } = require("../controllers/supervisor-controller");
 
 // router.post("/project", createProject).get(getAllProjects);
@@ -29,5 +30,5 @@ router.route("/getmeetings/:id").get(viewMeetings);
 router.route("/marks").patch(addMarks);
 router.route("/addmeetingnotes").patch(addmeetingnotes)
 router.route('/updatemeeting/:id').patch(updatemeeting)
-
+router.route("/assigndefencecertificate").post(sendCertificate)
 module.exports = router;

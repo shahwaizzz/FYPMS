@@ -567,6 +567,7 @@ footer {
 .btn-div{
   display: flex;
   justify-content: space-around;
+  padding: 15px 0px;
 }
 /* Performa CSS */
 /* 

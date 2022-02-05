@@ -2,9 +2,18 @@ const Project = require("../models/project-model");
 const Supervisor = require("../models/supervisor-model");
 const Student = require("../models/student-model");
 const Meeting = require("../models/meeting-model");
+const DefenceCertificate = require("../models/defencecertificate-model");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
+//Send certificate comments
+
+const sendCertificate = async (req,res) => {
+  console.log("supervisor comments: ",req.body.comments);
+  console.log("project id", req.body._id);
+  const defencecertificate = await DefenceCertificate.create({...req.body});
+  res.status(StatusCodes.OK).json({defencecertificate, err: {code: 0, msg: "No error found"}});
+}
 // Create And Manage Project
 const createProject = async (req, res) => {
   req.body.supervisor = req.user.userId;
@@ -187,4 +196,5 @@ module.exports = {
   addMarks,
   updatemeeting,
   addmeetingnotes,
+  sendCertificate,
 };

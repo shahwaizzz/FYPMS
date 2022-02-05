@@ -8,7 +8,7 @@ export const supervisorloginapi = `http://${localhost}/api/v1/auth/supervisor/lo
 export const studentloginapi = `http://${localhost}/api/v1/auth/student/login`
 export const pmologinapi = `http://${localhost}/api/v1/auth/pmo/login`
 export const pmouploadtemplate = `http://${localhost}/api/v1/pmo/upload`
-export const pmouploadtemplatetwo = `http://${localhost}/api/v1/pmo/templates/upload`
+export const pmouploadtemplatetwo = `http://${localhost}/api/v1/pmo/templates/upload` 
 export const supervisorcreatemeetingapi = `http://${localhost}/api/v1/supervisor/create-meeting`
 export const supervisorgetmeetingapi = (id) => `http://${localhost}/api/v1/supervisor/getmeetings/${id}`
 export const supervisorupdatemeetingapi = (id) => `http://${localhost}/api/v1/supervisor/updatemeeting/${id}`
@@ -25,6 +25,7 @@ export const stdupdatetemp = (rollno,flag) => `http://${localhost}/api/v1/studen
 export const updatemeetingdocs = (id) => `http://${localhost}/api/v1/supervisor/updatemeetingdocs/${id}`
 export const addmeetingdocs = (id,rollno) => `http://${localhost}/api/v1/student/addmeetingdocs/${id}/${rollno}`
 export const preliminaryForm = `http://${localhost}/api/v1/pmo/create-preliminary`
+export const defencecertificate= `http://${localhost}/api/v1/supervisor/assigndefencecertificate`
 export async function downloadImage(imageSrc) {
     const options = {
         method: 'GET',
@@ -46,5 +47,5 @@ export async function downloadImage(imageSrc) {
       }catch(err){
           console.log(err)
       }
-    
+   
 }

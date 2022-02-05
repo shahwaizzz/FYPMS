@@ -52,5 +52,17 @@ const ProjectSchema = new mongoose.Schema({
       default: 'Pending'    
     }
   },
+  defence: {
+    type: Number,
+    default: 0
+  },
+  mid: {
+    type: Number,
+    default: 0
+  },
+  final: {
+    type: Number,
+    default: 0
+  }
 });
 module.exports = mongoose.model("Project", ProjectSchema);
