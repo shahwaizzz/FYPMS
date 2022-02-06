@@ -7,6 +7,7 @@ import {
   AiOutlineBook,
   AiOutlineProfile,
   AiOutlineProject,
+  AiFillCaretRight,
 } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
 import {
@@ -68,6 +69,12 @@ export default function SSidebar(props) {
                 <li>
                   <AiOutlineProject />
                   <span>Students</span>
+                </li>
+              </Link>
+              <Link to='/supervisor/certificates' className="links">
+                <li>
+                    <AiOutlineProject />
+                    <span>Certificates</span>
                 </li>
               </Link>
               <Link to='/supervisor/events' className='links'>

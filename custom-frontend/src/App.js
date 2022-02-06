@@ -27,6 +27,7 @@ import {
   Meetings,
   SupervisorSidebar,
 } from "./pages/dashboard/dashboard_supervisor";
+import Certificates from "./pages/dashboard/dashboard_supervisor/Certificates";
 import {
   PmoLogout,
   Stdlogout,
@@ -113,6 +114,11 @@ function App() {
               />
             }
           />
+          <Route 
+            path="/supervisor/certificates"
+            element={<SupervisorSidebar name="Certificates" abc={<Certificates />} />}
+          />
+          
           <Route
             path='/supervisor/meetings'
             element={
