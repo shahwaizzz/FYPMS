@@ -25,8 +25,9 @@ export const stdupdatetemp = (rollno,flag) => `http://${localhost}/api/v1/studen
 export const updatemeetingdocs = (id) => `http://${localhost}/api/v1/supervisor/updatemeetingdocs/${id}`
 export const addmeetingdocs = (id,rollno) => `http://${localhost}/api/v1/student/addmeetingdocs/${id}/${rollno}`
 export const preliminaryForm = `http://${localhost}/api/v1/pmo/create-preliminary`
-export const defencecertificate= `http://${localhost}/api/v1/supervisor/assigndefencecertificate`
-export const midcertificate= `http://${localhost}/api/v1/supervisor/assignmidcertificate`
+export const defencecertificate = `http://${localhost}/api/v1/supervisor/assigndefencecertificate`
+export const midcertificate = `http://${localhost}/api/v1/supervisor/assignmidcertificate`
+export const finalcertificate = `http://${localhost}/api/v1/supervisor/assignfinalcertificate`
 export async function downloadImage(imageSrc) {
     const options = {
         method: 'GET',

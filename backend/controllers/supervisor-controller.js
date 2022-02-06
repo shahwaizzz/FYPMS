@@ -4,6 +4,7 @@ const Student = require("../models/student-model");
 const Meeting = require("../models/meeting-model");
 const DefenceCertificate = require("../models/defencecertificate-model");
 const MidCertificate = require("../models/midcertificate-model");
+const FinalCertificate = require("../models/finalcertificate-model");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
@@ -35,6 +36,42 @@ const sendMidCertificate = async (req,res) => {
   const resss = await MidCertificate.findOne();
   console.log(resss);
   res.status(StatusCodes.OK).json({midcertificate, err: {code: 0, msg: "No error found"}});
+}
+
+
+const sendFinalCertificate = async (req,res) => {
+  const projID3 = req.body.project;
+  console.log("check object values: ",req.body);
+  let students= []
+  if(req.body.member0){
+    students= [
+      {rollNo: req.body.member0, grade: req.body.grade0, comment: req.body.commentmember0},
+    ]
+  }
+  if(req.body.member1){
+    students= [
+      {rollNo: req.body.member0, grade: req.body.grade0, comment: req.body.commentmember0},
+      {rollNo: req.body.member1, grade: req.body.grade1, comment: req.body.commentmember1},
+    ]
+  }
+
+  if(req.body.member2){
+    students= [
+      {rollNo: req.body.member0, grade: req.body.grade0, comment: req.body.commentmember0},
+      {rollNo: req.body.member1, grade: req.body.grade1, comment: req.body.commentmember1},
+      {rollNo: req.body.member2, grade: req.body.grade2, comment: req.body.commentmember2},
+    ]
+  }
+  
+
+  const finalcertificate = await FinalCertificate.create({...req.body, students});
+  console.log(finalcertificate);
+  const updateprojectt3 =await Project.updateOne({ _id: projID3 }, {
+    final: 1
+  });
+  // const resss1 = await FinalCertificate.findOne();
+  // console.log(resss1);
+  res.status(StatusCodes.OK).json({finalcertificate, err: {code: 0, msg: "No error found"}});
 }
 
 
@@ -230,4 +267,5 @@ module.exports = {
   addmeetingnotes,
   sendCertificate,
   sendMidCertificate,
+  sendFinalCertificate,
 };

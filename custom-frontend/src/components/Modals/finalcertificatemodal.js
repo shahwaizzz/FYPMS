@@ -35,7 +35,7 @@ const Finalcertificatemodal = ({
         <h2 style={{ textAlign: "center",marginTop: '5%' }}>{type} Mid Certificate</h2>
         <div>
           <form onSubmit={submitfunc} autoComplete="off" id="student-form">
-            <input type="text" name="_id" value={data?._id} onChange={changefunc} hidden />
+            <input type="text" name="_id" value={data?.project} onChange={changefunc} hidden />
 
             <div className={styles.inputdiv}>
               <label>Project Title</label>
@@ -99,14 +99,27 @@ const Finalcertificatemodal = ({
                 <>
                 <div className={styles.inputdiv}>
               <label>Group member {i+1}</label>
+              
               <input
                 type="text"
-                name={"member".concat(i)}
+                name={"group".concat(i)}
                 value={data?.group[i]}
                 onChange={changefunc}
                 readOnly
                 style={{marginLeft:'40px'}}
               />
+            </div>
+                <div className={styles.inputdiv}>
+                
+              <label>Grade for member {i+1}</label>
+              <select name={"grade"+i} required onChange={changefunc} style={{marginLeft:'40px'}}>
+                <option value="">Select Option</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="F">F</option>
+              </select>
             </div>
                 <div className={styles.inputdiv}>
                 <label className="event-details" style={{paddingRight:' 24px',marginLeft: '-20px'}}>Comments for Member{i+1}</label>
@@ -115,7 +128,7 @@ const Finalcertificatemodal = ({
                     cols={40}
                     type="text"
                     name={"commentmember"+i}
-                    value={data?.commentmember1}
+                    // value={data?.commentmember+i}
                     onChange={changefunc}
                     style={{marginLeft:'40px'}}
                     required

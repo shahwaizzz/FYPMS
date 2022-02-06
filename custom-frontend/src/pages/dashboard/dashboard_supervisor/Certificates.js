@@ -4,7 +4,7 @@ import  '../../../index.css';
 import axios from 'axios'; 
 import Progressbar from "../../../components/progressbar";
 import { defencecertificate,assignmarks,assignmarkssupervisor } from "../../../apis";
-import { projectUrl, midcertificate } from '../../../apis';
+import { projectUrl, midcertificate, finalcertificate } from '../../../apis';
 import { successalert,erroralert } from "../../../components/alert";
 import Defencecertificatemodal from "../../../components/Modals/defencecertificatemodal";
 import Midcertificatemodal from "../../../components/Modals/midcertificatemodal";
@@ -105,7 +105,7 @@ const Certificates = () =>{
           .then((res) => res.json())
           .then(
             (result) => {
-                alert("then 2");
+                // alert("then 2");
               console.log(result);
               if (result.err.code === 0) {
                 setGetCertificate(result);
@@ -122,6 +122,45 @@ const Certificates = () =>{
             },
             (error) => {
               erroralert('Error',error);
+            }
+          );
+      }
+      function submitFinalCertificate(e) {
+        e.preventDefault();
+        alert("submit form");
+        // console.log(displayData)
+        // setGetCertificate({getCertificate, ...idset})
+        console.log(getCertificate);
+        // console.warn(getCertificate);
+        // console.warn(idset);
+        const options = {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(getCertificate),
+        };
+        fetch(finalcertificate, options)
+          .then((res) => res.json())
+          .then(
+            (result) => {
+                alert("then 2");
+              console.log(result);
+              if (result.err.code === 0) {
+                setGetCertificate(result);
+                setRefresh(!refresh);
+                setvisiblethree(false)
+                successalert('Success',"Certificate Send Successfully");
+              } else if (result.err.code === 11000) {
+                  setvisiblethree(false);
+                  erroralert('Error', `This ${JSON.stringify(result.err.keyValue)} is already in use`
+                  );
+                } else if (result.err.message) {
+                  setvisiblethree(false);
+                  erroralert('Error',result.err.message);
+                }
+            },
+            (error) => {
+                setvisiblethree(false);
+                erroralert('Error',error);
             }
           );
       }
@@ -296,11 +335,12 @@ const Certificates = () =>{
                                     <td>{project&&project.final === 1?(<b>Assigned</b>) : (<button
                                             onClick={
                                                 ()=>{
-                                                    setDisplayData(project);
+                                                    setGetCertificate(project);
                                                     setidset(project._id);
-                                                    setEditForm(true);
                                                     setvisiblethree(true);
-                                                    setProjectName(project.title);                        
+                                                    // setProjectName(project.title);
+                                                    // setGetCertificate({getCertificate,...project._id, ...project.supervisor});
+                                                    setGetCertificate({ ...getCertificate,title: project.title, project: project._id, supervisor: project.supervisor,group: project.group, member0:project.group[0], member1: project.group[1], member2: project.group[2]});                        
                                                 }
                                             }
                                         >Assign Certificate</button>)}
@@ -314,13 +354,13 @@ const Certificates = () =>{
                     <Finalcertificatemodal
                         visibilty={visiblethree}
                         setvisibility={setvisiblethree}
-                        setDisplayData={setDisplayData}
-                        submitfunc={submitMidCertificate}
+                        setDisplayData={setGetCertificate}
+                        submitfunc={submitFinalCertificate}
                         changefunc={handleChange1}
                         type={"add"}
                         // projname={projectName}
                         setsettid={setidset}
-                        data={displayData}
+                        data={getCertificate}
                     />
                     </>):null
                     }
