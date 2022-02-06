@@ -100,7 +100,6 @@ const deleteStudent = async (req, res) => {
 
 // Create And Manage Supervisors
 const createSupervisors = async (req, res) => {
-  console.log(req.body);
   const supervisor = await Supervisor.create({ ...req.body });
   res.status(StatusCodes.CREATED).json({
     supervisor: { name: supervisor.name },
@@ -197,6 +196,7 @@ const editEvent = async (req, res) => {
     .json({ event, err: { code: 0, message: "No error found" } });
 };
 const viewEvents = async (req, res) => {
+  console.log(req.headers.authorization);
   const events = await Event.find({});
   res
     .status(StatusCodes.OK)

@@ -1,7 +1,7 @@
 require("dotenv").config();
-const cors = require("cors")
+const cors = require("cors");
 require("express-async-errors");
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
 const connectDB = require("./db/connect");
@@ -22,9 +22,9 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 
 app.use(morgan("dev"));
 // app.use(bodyParser())
-const publicdir = require('path').join(__dirname, '/public')
+const publicdir = require("path").join(__dirname, "/public");
 
-app.use(express.static(publicdir))
+app.use(express.static(publicdir));
 app.use(fileUpload());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -58,9 +58,11 @@ const port = process.env.PORT || 8000;
 
 const start = async () => {
   try {
-    await connectDB("mongodb+srv://ali:ali7676@cluster0.ozphx.mongodb.net/FYPMS?retryWrites=true&w=majority");
-    app.listen(port, () =>{
-      console.log(`Server is listening on port ${port}...`)
+    await connectDB(
+      "mongodb+srv://ali:ali7676@cluster0.ozphx.mongodb.net/FYPMS?retryWrites=true&w=majority"
+    );
+    app.listen(port, () => {
+      console.log(`Server is listening on port ${port}...`);
     });
   } catch (error) {
     console.log(error);

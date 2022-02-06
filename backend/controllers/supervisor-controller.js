@@ -77,22 +77,33 @@ const createMeeting = async (req, res) => {
 };
 
 const addmeetingnotes = async (req, res) => {
-  console.log(req.body)
-  const {meetingNotes,id} = req.body
+  console.log(req.body);
+  const { meetingNotes, id } = req.body;
 
-  if(!id){
-    throw new Error("No meetings with this id")
+  if (!id) {
+    throw new Error("No meetings with this id");
   }
 
-  const updatemeeting = await Meeting.findByIdAndUpdate({_id:id},{meetingNotes:meetingNotes},{new:true,upsert:true})
+  const updatemeeting = await Meeting.findByIdAndUpdate(
+    { _id: id },
+    { meetingNotes: meetingNotes },
+    { new: true, upsert: true }
+  );
 
-
-  if(!updatemeeting){
-    throw new Error("could not update the meeting")
+  if (!updatemeeting) {
+    throw new Error("could not update the meeting");
   }
 
-  res.status(StatusCodes.OK).json({ mesage:'meeting has been updated' });
-}
+  res.status(StatusCodes.OK).json({ mesage: "meeting has been updated" });
+};
+const getAllMeetings = async (req, res) => {
+  const meetings = await Meeting.find({ supervisor: req.user.userId });
+  if (!meetings) {
+    throw new NotFoundError("No meetings to show");
+  }
+  console.log(meetings);
+  res.status(StatusCodes.OK).json(meetings);
+};
 
 const viewMeetings = async (req, res) => {
   const meetings = await Meeting.find({ supervisor: req.params.id });
@@ -104,10 +115,8 @@ const viewMeetings = async (req, res) => {
 
 // const addmeetingdocscomment = async (req,res) => {
 
-  
-
 //   try{
-//     const meetings = await Meeting.findOneAndUpdate({ supervisor: req.params.id },{document:[{doctype: `http://localhost:8000/meetingdocs/${file.name}`,id:req.params.id}]}); 
+//     const meetings = await Meeting.findOneAndUpdate({ supervisor: req.params.id },{document:[{doctype: `http://localhost:8000/meetingdocs/${file.name}`,id:req.params.id}]});
 
 //     if(!meetings){
 //       throw new Error("there is an error")
@@ -136,44 +145,42 @@ const addMarks = async (req, res) => {
     }
   );
 
-  // console.log(updateStudent);
-  // res.status(StatusCodes.OK).json({ project });
   res.status(StatusCodes.OK).json({ updateStudent });
 };
 
-const updatemeeting = async (req,res) => {
+const updatemeeting = async (req, res) => {
+  try {
+    const { timeOfMeeting } = req.body;
+    console.log(timeOfMeeting);
 
-  try{
-    const {timeOfMeeting} = req.body
-    console.log(timeOfMeeting)
+    const { id } = req.params;
+    console.log(id);
 
-    const {id} = req.params
-    console.log(id)
-  
+    const updatemeeting = await Meeting.findByIdAndUpdate(
+      { _id: id },
+      { timeOfMeeting: timeOfMeeting },
+      { new: true, upsert: true }
+    );
 
-    const updatemeeting = await Meeting.findByIdAndUpdate({_id:id},{timeOfMeeting:timeOfMeeting},{new:true,upsert:true})
+    //   const meeting = Meeting.find({_id:id})
+    //   meeting.timeOfMeeting = timeOfMeeting
+    //  await meeting.save({runValidators:false})
 
-  //   const meeting = Meeting.find({_id:id})
-  //   meeting.timeOfMeeting = timeOfMeeting
-  //  await meeting.save({runValidators:false})
-    
-    if(!id){
-       throw new Error('No id available')
+    if (!id) {
+      throw new Error("No id available");
     }
-    if(!updatemeeting){
-       throw new Error('There is an problem in updating meeting')
+    if (!updatemeeting) {
+      throw new Error("There is an problem in updating meeting");
     }
-  
+
     res.status(StatusCodes.OK).json({
-      message:'meeting has been postponed'
-    })
-  
-  }catch(err){
-    console.log(err)
-    throw new Error(err.message)
+      message: "meeting has been postponed",
+    });
+  } catch (err) {
+    console.log(err);
+    throw new Error(err.message);
   }
-}
-
+};
 
 module.exports = {
   createProject,
@@ -183,6 +190,7 @@ module.exports = {
   updateProject,
   viewEvents,
   createMeeting,
+  getAllMeetings,
   viewMeetings,
   addMarks,
   updatemeeting,
