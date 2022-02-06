@@ -68,4 +68,5 @@ router.route("/templates/upload").post(uploadTemplateDocuments);
 
 router.route("/change-password").patch(changePassword);
 router.route("/create-preliminary/:id").post(createPreliminary);
+
 module.exports = router;

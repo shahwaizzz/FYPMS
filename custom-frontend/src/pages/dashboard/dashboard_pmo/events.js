@@ -24,16 +24,18 @@ export default function Events({ admin }) {
   const [settid, setsettid] = useState("");
   const [date, setdate] = useState(new Date());
   const [countdown, setcountdown] = useState();
-
-  console.log(settid);
-
+  const token = localStorage.getItem("pmotoken");
   const api = axios.create({
     baseURL: eventUrl,
   });
 
   useEffect(() => {
     api
-      .get("/")
+      .get("/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         setGetData(res.data.events);
       })
@@ -166,10 +168,6 @@ export default function Events({ admin }) {
         }
       );
   }
-
-  // const date = new Date();
-  // console.log(date)
-  console.log(moment());
 
   return (
     <>

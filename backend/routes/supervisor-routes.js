@@ -13,6 +13,7 @@ const {
   addMarks,
   updatemeeting,
   addmeetingnotes,
+  getAllMeetings,
   sendCertificate,
   sendMidCertificate,
 } = require("../controllers/supervisor-controller");
@@ -25,6 +26,7 @@ router
   .delete(deleteProject)
   .patch(updateProject);
 router.route("/events").get(viewEvents);
+router.route("/meetings").get(getAllMeetings);
 router.route("/create-meeting").post(createMeeting);
 // router.route("/updatemeetingdocs/:id").patch(updatemeetingdocs);
 router.route("/getmeetings/:id").get(viewMeetings);

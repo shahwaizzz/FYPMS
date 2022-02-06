@@ -1,15 +1,13 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { supervisorloginapi,studentloginapi,pmologinapi } from "../apis";
-import {useNavigate} from 'react-router-dom'
-import {erroralert} from '../components/alert'
-import Swal from 'sweetalert2'
+import { supervisorloginapi, studentloginapi, pmologinapi } from "../apis";
+import { erroralert } from "../components/alert";
+import Swal from "sweetalert2";
 
 const token = localStorage.getItem("token");
 const adminpmo = localStorage.getItem("pmoadmin");
 const supervisor = localStorage.getItem("supervisor");
 const student = localStorage.getItem("student");
-console.log(adminpmo,supervisor,student)
 const initialState = {
   isPMO: false,
   isStudent: false,
@@ -19,6 +17,7 @@ const initialState = {
   student: student ? JSON.parse(student) : null,
   token: token,
 };
+
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
@@ -29,52 +28,46 @@ const AppProvider = ({ children }) => {
     localStorage.setItem("token", token);
   };
 
-  const removeUserFromLocalStorage = (userinfo,tokenname,route,navigate) => {
+  const removeUserFromLocalStorage = (userinfo, tokenname, route, navigate) => {
     localStorage.removeItem(userinfo);
     localStorage.removeItem(tokenname);
-    navigate(route)
+    navigate(route);
   };
 
-  const pmoLogin = async ({ email, password },navigate) => {
+  const pmoLogin = async ({ email, password }, navigate) => {
     try {
       const { data } = await axios.post(pmologinapi, {
         email,
         password,
       });
       const { pmo, token } = data;
-      console.log(data);
-      console.log(pmo);
-
       localStorage.setItem("pmoadmin", JSON.stringify(pmo));
       localStorage.setItem("pmotoken", token);
+      // navigate("/pmo");
       window.location.href = "/pmo";
-
     } catch (error) {
       console.log(error.response.data);
       // return error.response.data;
-      erroralert('Error',error.response.data.msg);
+      erroralert("Error", error.response.data.msg);
       // alert(error);
     }
   };
-  const supervisorLogin = async ({ email, password },navigate) => {
+  const supervisorLogin = async ({ email, password }, navigate) => {
     console.log(email, password);
     try {
       const { data } = await axios.post(supervisorloginapi, {
         email,
         password,
       });
-
-
       const { supervisor, token } = data;
 
       localStorage.setItem("supervisor", JSON.stringify(supervisor));
       localStorage.setItem("supervisortoken", token);
       window.location.href = "/supervisor/home";
-      
     } catch (error) {
-      console.log("msg",error.response.data.msg);
-      console.warn("error:",error);
-      erroralert('Error',error.response.data.msg);
+      console.log("msg", error.response.data.msg);
+      console.warn("error:", error);
+      erroralert("Error", error.response.data.msg);
 
       setError(error.response.data.msg);
       // alert(error)
@@ -95,14 +88,14 @@ const AppProvider = ({ children }) => {
 
       localStorage.setItem("student", JSON.stringify(student));
       localStorage.setItem("stdtoken", token);
-      window.location.href = "/student/home"
+      window.location.href = "/student/home";
     } catch (error) {
       console.log("msg", error.response.data.msg);
       setError(error.response.data.msg);
-      
-      erroralert('Error',error.response.data.msg);
 
-      console.warn("error:",error);
+      erroralert("Error", error.response.data.msg);
+
+      console.warn("error:", error);
       // return error.response.data.msg;
     }
   };
@@ -121,7 +114,7 @@ const AppProvider = ({ children }) => {
         supervisorLogin,
         studentLogin,
         setError,
-        removeUserFromLocalStorage
+        removeUserFromLocalStorage,
       }}
     >
       {children}
