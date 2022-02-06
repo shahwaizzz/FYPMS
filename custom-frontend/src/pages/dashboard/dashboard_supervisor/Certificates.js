@@ -4,9 +4,11 @@ import  '../../../index.css';
 import axios from 'axios'; 
 import Progressbar from "../../../components/progressbar";
 import { defencecertificate,assignmarks,assignmarkssupervisor } from "../../../apis";
-import { projectUrl } from '../../../apis';
+import { projectUrl, midcertificate } from '../../../apis';
 import { successalert,erroralert } from "../../../components/alert";
 import Defencecertificatemodal from "../../../components/Modals/defencecertificatemodal";
+import Midcertificatemodal from "../../../components/Modals/midcertificatemodal";
+import Finalcertificatemodal from "../../../components/Modals/finalcertificatemodal";
 const projects = axios.create({
     baseURL:projectUrl
 })
@@ -16,6 +18,8 @@ const Certificates = () =>{
     const [refresh,setRefresh] = useState();
     const [displayData, setDisplayData] = useState(false);
     const [visible, setvisible] = useState(false);
+    const [visibletwo, setvisibletwo] = useState(false);
+    const [visiblethree, setvisiblethree] = useState(false);
     const [idset, setidset] = useState();
     const [addCertificate, setAddCertificate] = useState(false);
     const [editForm, setEditForm] = useState(false);
@@ -38,22 +42,23 @@ const Certificates = () =>{
         })
     },[refresh])
 
-    // function handleChange(e) {
-    //     const name = e.target.name;
-    //     var value = e.target.value;
-    //     setGetCertificate({ ...getCertificate, [name]: value });
-    // }
+    function handleChange1(e) {
+        const name = e.target.name;
+        var value = e.target.value;
+        setGetCertificate({ ...getCertificate, [name]: value });
+    }
     function handleChange(e) {
         const name = e.target.name;
         var value = e.target.value;
         setDisplayData({ ...displayData, [name]: value });
     }
     // console.log(displayData);
-    console.log("------");
+    // console.log("------");
     function submitCertificate(e) {
         e.preventDefault();
         alert("submit form");
         console.log(displayData)
+        console.log(displayData);
         const options = {
           method: "post",
           headers: { "Content-Type": "application/json" },
@@ -69,6 +74,44 @@ const Certificates = () =>{
                 setRefresh(!refresh);
                 setvisible(false)
                 successalert('Success',"Student Add Successfully");
+                setDisplayData(false);
+              } else if (result.err.code === 11000) {
+                erroralert('Error',`This ${JSON.stringify(result.err.keyValue)} is already in use`
+                );
+              } else if (result.err.message) {
+                erroralert('Error',result.err.message);
+              }
+            },
+            (error) => {
+              erroralert('Error',error);
+            }
+          );
+      }
+    
+      function submitMidCertificate(e) {
+        e.preventDefault();
+        alert("submit form");
+        console.log(getCertificate);
+        console.log(displayData)
+        // setGetCertificate({...idset})
+        console.warn(getCertificate);
+        console.warn(idset);
+        const options = {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(getCertificate),
+        };
+        fetch(midcertificate, options)
+          .then((res) => res.json())
+          .then(
+            (result) => {
+                alert("then 2");
+              console.log(result);
+              if (result.err.code === 0) {
+                setGetCertificate(result);
+                setRefresh(!refresh);
+                setvisibletwo(false)
+                successalert('Success',"Certificate Send Successfully");
               } else if (result.err.code === 11000) {
                 erroralert('Error'
                   `This ${JSON.stringify(result.err.keyValue)} is already in use`
@@ -94,7 +137,7 @@ const Certificates = () =>{
                 </div>
                 <div>
                     {certificateType ==='defence'?
-                    (<table className='table'>
+                    (<><table className='table'>
                         <thead>
                             <tr>
                                 <th scope='col'>Sr No</th>
@@ -107,6 +150,7 @@ const Certificates = () =>{
                             </tr>
                         </thead>
                         <tbody>
+                        
                         {
                             supervisorData&&
                             supervisorData.filter((currentS)=>{
@@ -118,19 +162,21 @@ const Certificates = () =>{
                                     <td>{i+1}</td>
                                     <td>{project.title}</td>
                                     <td>{project.batch}</td>
-                                    <td>{project.group.map((student)=>(" "+ student+ "  "))}</td>
+                                    <td>Fall</td>
                                     <td>Defence certificate</td>
-                                    <td><button
+                                    <td>
+                                    {project&&project.group.map((student)=>(" "+ student+ "  "))}</td>
+                                    <td>{project&&project.defence === 1?(<b>Assigned</b>) : (<button
                                             onClick={
                                                 ()=>{
-                                                    setDisplayData(project);
+                                                    setDisplayData({...project, project: project._id});
                                                     setidset(project._id);
                                                     setEditForm(true);
                                                     setvisible(true);
-                                                    setProjectName(project.title);                        
+                                                    setProjectName(project.title);                         
                                                 }
                                             }
-                                        >Assign Certificate</button>
+                                        >Assign Certificate</button>)}
                                     </td>
                                 </tr>
                                 )
@@ -138,9 +184,22 @@ const Certificates = () =>{
                         }
                         </tbody>
                     </table>
+                        <Defencecertificatemodal
+                        visibilty={visible}
+                        setvisibility={setvisible}
+                        setDisplayData={setDisplayData}
+                        // setstdtype={setAddCertificate}
+                        submitfunc={submitCertificate}
+                        changefunc={handleChange}
+                        type={"add"}
+                        projname={projectName}
+                        setsettid={setidset}
+                        data={displayData}
+                    />
+                    </>
                     )
                     :certificateType ==='mid'?
-                    (<table className='table'>
+                    (<><table className='table'>
                         <thead>
                             <tr>
                                 <th scope='col'>Sr No</th>
@@ -168,71 +227,106 @@ const Certificates = () =>{
                                     <td>Mid</td>
                                     <td>{project.group.map((student)=>(" "+ student+ "  "))}</td>
                                     
-                                    <td><button
+                                    <td>{project&&project.mid === 1?(<b>Assigned</b>) : ( <button
                                             onClick={
                                                 ()=>{
+                                                    setvisibletwo(true);
                                                     setDisplayData(project);
                                                     setidset(project._id);
-                                                    setEditForm(true);
-                                                    setvisible(true);
-                                                    setProjectName(project.title);                        
+                                                    setProjectName(project.title);
+                                                    // console.warn("onclick button check");
+                                                    // getCertificate.project=project._id;
+                                                    setGetCertificate({getCertificate,...project._id, ...project.supervisor});
+                                                    // setGetCertificate({...project.group})
+                                                    // console.warn("obj",getCertificate);
+                                                    setGetCertificate({ ...getCertificate, project: project._id, supervisor: project.supervisor, ...project.group});                        
+                                                    // setGetCertificate({ ...getCertificate});                        
                                                 }
                                             }
-                                        >Assign Certificate</button>
+                                        >Assign Certificate</button>)}
                                     </td>
                                 </tr>
                                 )
                             })
                         }
                         </tbody>
-                    </table>)
+                    </table>
+                    <Midcertificatemodal
+                        visibilty={visibletwo}
+                        setvisibility={setvisibletwo}
+                        setDisplayData={setDisplayData}
+                        submitfunc={submitMidCertificate}
+                        changefunc={handleChange1}
+                        type={"add"}
+                        // projname={projectName}
+                        setsettid={setidset}
+                        data={displayData}
+                    />
+                    </>
+                    )
                     :certificateType === "final"?
-                    (<table className='table'>
+                    (<><table className='table'>
                         <thead>
                             <tr>
                                 <th scope='col'>Sr No</th>
                                 <th scope='col'>Project Title</th>
                                 <th scope='col'>Batch</th>
                                 <th scope='col'>Session</th>
+                                <th scope='col'>type</th>
+                                <th scope='col'>Group Members</th>
                                 <th scope='col'>Comments</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Project Approval System</td>
-                                <td>Fall</td>
-                                <td>2018</td>
-                                <td><button>Assign Comments</button></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Weed Detection</td>
-                                <td>Fall</td>
-                                <td>2018</td>
-                                <td><button>Assign Comments</button></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Doctor Pok</td>
-                                <td>Fall</td>
-                                <td>2018</td>
-                                <td><button>Assign Comments</button></td>
-                            </tr>
+                        {
+                            supervisorData&&
+                            supervisorData.filter((currentS)=>{
+                                return currentS.supervisor === userId;
+                            }).map((project,i)=>{
+                                {/* {console.log(project._id)} */}
+                                return(
+                                    <tr key={project._id}>
+                                    <td>{i+1}</td>
+                                    <td>{project.title}</td>
+                                    <td>{project.batch}</td>
+                                    <td>Fall</td>
+                                    <td>Final</td>
+                                    <td>{project.group.map((student)=>(" "+ student+ "  "))}</td>
+                                    
+                                    <td>{project&&project.final === 1?(<b>Assigned</b>) : (<button
+                                            onClick={
+                                                ()=>{
+                                                    setDisplayData(project);
+                                                    setidset(project._id);
+                                                    setEditForm(true);
+                                                    setvisiblethree(true);
+                                                    setProjectName(project.title);                        
+                                                }
+                                            }
+                                        >Assign Certificate</button>)}
+                                    </td>
+                                </tr>
+                                )
+                            })
+                        }
                         </tbody>
-                    </table>):null
-                    }
-                    <Defencecertificatemodal
-                        visibilty={visible}
-                        setvisibility={setvisible}
-                        // setstdtype={setAddCertificate}
-                        submitfunc={submitCertificate}
-                        changefunc={handleChange}
+                    </table>
+                    <Finalcertificatemodal
+                        visibilty={visiblethree}
+                        setvisibility={setvisiblethree}
+                        setDisplayData={setDisplayData}
+                        submitfunc={submitMidCertificate}
+                        changefunc={handleChange1}
                         type={"add"}
                         // projname={projectName}
                         setsettid={setidset}
                         data={displayData}
                     />
+                    </>):null
+                    }
+                    
+                    
+
                 </div>
             </div>
         </>

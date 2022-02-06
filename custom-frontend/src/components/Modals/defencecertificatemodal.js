@@ -5,13 +5,12 @@ import styles from "../../pages/dashboard/dashboard_supervisor/projects.module.c
 const Defencecertificatemodal = ({
     visibilty,
     setvisibility,
-    // seteventtype,
     submitfunc,
     changefunc,
     data,
     type,
     setsettid,
-    // projname
+    setDisplayData,
 }) => {
     console.log(data);
   return( 
@@ -22,12 +21,12 @@ const Defencecertificatemodal = ({
         height="650"
         effect="fadeInUp"
         onClickAway={() => {
-        //   seteventtype(false);
           setsettid("");
           setvisibility(false);
+          setDisplayData(false);
         }}
       >
-        <h2 style={{ textAlign: "center",marginTop: '10%' }}>{type} Defence Certificate</h2>
+        <h2 style={{ textAlign: "center",marginTop: '10%' }}> Defence Certificate</h2>
         <div>
           <form onSubmit={submitfunc} autoComplete="off" id="student-form">
             <input type="text" name="_id" value={data?._id} hidden />

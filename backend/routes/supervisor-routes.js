@@ -14,6 +14,7 @@ const {
   updatemeeting,
   addmeetingnotes,
   sendCertificate,
+  sendMidCertificate,
 } = require("../controllers/supervisor-controller");
 
 // router.post("/project", createProject).get(getAllProjects);
@@ -31,4 +32,5 @@ router.route("/marks").patch(addMarks);
 router.route("/addmeetingnotes").patch(addmeetingnotes)
 router.route('/updatemeeting/:id').patch(updatemeeting)
 router.route("/assigndefencecertificate").post(sendCertificate)
+router.route("/assignmidcertificate").post(sendMidCertificate)
 module.exports = router;

@@ -3,6 +3,7 @@ const Supervisor = require("../models/supervisor-model");
 const Student = require("../models/student-model");
 const Meeting = require("../models/meeting-model");
 const DefenceCertificate = require("../models/defencecertificate-model");
+const MidCertificate = require("../models/midcertificate-model");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
@@ -11,9 +12,32 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const sendCertificate = async (req,res) => {
   console.log("supervisor comments: ",req.body.comments);
   console.log("project id", req.body._id);
+  const projID= req.body._id;
+  console.log("body: ",req.body);
   const defencecertificate = await DefenceCertificate.create({...req.body});
+  
+  const updateprojectt =await Project.updateOne({ _id: projID }, {
+    defence: 1
+  });
+  console.log(updateprojectt);
   res.status(StatusCodes.OK).json({defencecertificate, err: {code: 0, msg: "No error found"}});
 }
+
+
+const sendMidCertificate = async (req,res) => {
+  console.log(req.body);
+  const projID2 = req.body.project;
+  const midcertificate = await MidCertificate.create({...req.body});
+  console.log(midcertificate);
+  const updateprojectt2 =await Project.updateOne({ _id: projID2 }, {
+    mid: 1
+  });
+  const resss = await MidCertificate.findOne();
+  console.log(resss);
+  res.status(StatusCodes.OK).json({midcertificate, err: {code: 0, msg: "No error found"}});
+}
+
+
 // Create And Manage Project
 const createProject = async (req, res) => {
   req.body.supervisor = req.user.userId;
@@ -197,4 +221,5 @@ module.exports = {
   updatemeeting,
   addmeetingnotes,
   sendCertificate,
+  sendMidCertificate,
 };
