@@ -40,6 +40,7 @@ import Dashoard_std from "./pages/dashboard/dashboard_student/Dashboard_std";
 import { SupervisorViewEvents } from "./pages/dashboard/dashboard_supervisor/supervisorevents";
 import Marks from "./pages/dashboard/dashboard_student/Marks";
 import { Showdocments } from "./pages/dashboard/dashboard_supervisor/docs";
+import DownloadPerform from "./pages/dashboard/dashboard_pmo/DownloadPerform";
 // function handleValidation(params) {}
 function App() {
   // Commit Test
@@ -67,6 +68,12 @@ function App() {
             path='/pmo/supervisors'
             element={
               <Sidebar name='Supervisors' abc={<Supervisor admin={true} />} />
+            }
+          />
+          <Route
+            path='/pmo/downloadperforma'
+            element={
+              <Sidebar name='Download Performa' abc={<DownloadPerform admin={true} />} />
             }
           />
           <Route

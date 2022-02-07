@@ -2,6 +2,7 @@ const PMO = require("../models/pmo-model");
 const Supervisor = require("../models/supervisor-model");
 const pdf = require("html-pdf");
 const preliminaryTemplate = require("../perfomas/preliminary");
+const defenseTemplate = require("../perfomas/defense");
 const multer = require("multer");
 const { StatusCodes } = require("http-status-codes");
 const {
@@ -13,7 +14,7 @@ const folder = "../controllers";
 const fs = require("fs");
 const download = require("download");
 const Template = require("../models/template-model");
-
+const DefenceCertificate = require("../models/defencecertificate-model");
 const Student = require("../models/student-model");
 
 // Create And Manage Students
@@ -454,6 +455,50 @@ const createPreliminary = async (req, res) => {
 const getPreliminary = async (req, res) => {
   res.sendFile(`../preliminary.pdf`);
 };
+//defencse performa's 
+const createDefense = async (req, res) => {
+  const projectId = req.body.project;
+  const project = await Project.findOne({ _id: projectId });
+  if (!project) {
+    throw new NotFoundError("Project does not exist");
+  }
+  const supervisor = await Project.findOne({ _id: project.supervisor });
+  const student1 = await Student.findOne({ rollNumber: project.group[0] });
+  const student2 = await Student.findOne({ rollNumber: project.group[1] });
+  const student3 = await Student.findOne({ rollNumber: project.group[2] });
+  const defensedata = await DefenceCertificate.findOne({ project: projectId });
+
+  const projectIdea = project.title;
+  const noOfMember = project.group.length;
+  const supervisorName = supervisor;
+  const date = new Date();
+  const { electiveCourses, tools, language } = req.body;
+
+  const data = {
+    student1,
+    student2,
+    student3,
+    projectIdea,
+    noOfMember,
+    supervisorName,
+    date,
+    electiveCourses,
+    tools,
+    language,
+    defensedata
+  };
+  console.log(data);
+  pdf
+    .create(defenseTemplate({ ...data, ...req.body }), {})
+    .toFile("askdfk.pdf", (err) => {
+      if (err) {
+        res.send(Promise.reject());
+      }
+
+      res.send(Promise.resolve());
+    });
+  // res.sendFile(`../preliminary.pdf`);
+};
 
 // let multerstorage = multer.diskStorage({
 //   destination: function(req, file, cb) {
@@ -544,4 +589,5 @@ module.exports = {
   changePassword,
   Findtemplates,
   createPreliminary,
+  createDefense,
 };

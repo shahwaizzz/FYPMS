@@ -81,6 +81,12 @@ export default function Sidebar(props) {
                   <span>Supervisors</span>
                 </li>
               </Link>
+              <Link to='/pmo/downloadperforma' className='links'>
+                <li>
+                  <MdOutlineSupervisedUserCircle />
+                  <span>Download Performa</span>
+                </li>
+              </Link>
               <Link to='/pmo/documents' className='links whiteicon'>
                 <li className='whiteicon'>
                   {/* <GrDocument className="clr-white" /> */}
